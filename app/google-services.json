@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "259534259329",
+    "firebase_url": "https://projetotcc1-17b53.firebaseio.com",
+    "project_id": "projetotcc1-17b53",
+    "storage_bucket": "projetotcc1-17b53.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259534259329:android:51be8f92e44e13e5837980",
+        "android_client_info": {
+          "package_name": "br.com.Co2CheckerCompanion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "259534259329-lo29223p2c0920f8tlcekaq4704mhb05.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.Co2CheckerCompanion",
+            "certificate_hash": "eb8ddc3016dfc3fe0603a4ad8c55d371423dec45"
+          }
+        },
+        {
+          "client_id": "259534259329-j547r3cem3140r9od8mduddf7j3aftn3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALShPN-yeXdLnmkzM5T1tqo-6cdA0YP-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "259534259329-j547r3cem3140r9od8mduddf7j3aftn3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259534259329:android:f9d66b258e52551e837980",
+        "android_client_info": {
+          "package_name": "br.com.co2checkercompanion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "259534259329-j547r3cem3140r9od8mduddf7j3aftn3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALShPN-yeXdLnmkzM5T1tqo-6cdA0YP-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "259534259329-j547r3cem3140r9od8mduddf7j3aftn3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259534259329:android:06f9f4ce4582dfbb837980",
+        "android_client_info": {
+          "package_name": "com.Gustavo.COCheckerCompanionKotlin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "259534259329-j547r3cem3140r9od8mduddf7j3aftn3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALShPN-yeXdLnmkzM5T1tqo-6cdA0YP-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "259534259329-j547r3cem3140r9od8mduddf7j3aftn3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
