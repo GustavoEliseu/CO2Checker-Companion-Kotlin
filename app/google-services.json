@@ -76,7 +76,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:259534259329:android:06f9f4ce4582dfbb837980",
         "android_client_info": {
-          "package_name": "com.Gustavo.COCheckerCompanionKotlin"
+          "package_name": "com.gustavo.cocheckercompanionkotlin"
         }
       },
       "oauth_client": [

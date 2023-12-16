@@ -6,9 +6,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.gustavo.cocheckercompaniomkotlin.R
-import com.gustavo.cocheckercompaniomkotlin.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.gustavo.cocheckercompanionkotlin.R
+import com.gustavo.cocheckercompanionkotlin.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {

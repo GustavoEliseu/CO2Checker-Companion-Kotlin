@@ -1,8 +1,9 @@
 package com.gustavo.cocheckercompaniomkotlin.di
 
-import com.gustavo.cocheckercompaniomkotlin.BuildConfig
-import com.gustavo.cocheckercompaniomkotlin.BuildConfig.ESP_URL
+
 import com.gustavo.cocheckercompaniomkotlin.utils.ESP_WIFI_TIMEOUT
+import com.gustavo.cocheckercompanionkotlin.BuildConfig
+import com.gustavo.cocheckercompanionkotlin.BuildConfig.ESP_URL
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

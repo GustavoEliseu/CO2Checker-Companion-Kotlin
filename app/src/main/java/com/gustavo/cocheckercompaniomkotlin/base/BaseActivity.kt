@@ -9,8 +9,8 @@ import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.gustavo.cocheckercompaniomkotlin.R
 import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_REQUEST
+import com.gustavo.cocheckercompanionkotlin.R
 
 abstract class BaseActivity<out VM : BaseViewModel> : AppCompatActivity() {
 
@@ -21,8 +21,8 @@ abstract class BaseActivity<out VM : BaseViewModel> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?){
         //INIT VIEW MODEL
-        mViewModel
         super.onCreate(savedInstanceState)
+        initializeUi()
     }
     open fun onPermissionGranted(permissions: Array<out String>) {}
     open fun onPermissionDenied(permanently: Boolean = false) {}

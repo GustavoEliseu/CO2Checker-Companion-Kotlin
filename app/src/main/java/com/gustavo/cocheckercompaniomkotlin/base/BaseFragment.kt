@@ -9,7 +9,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.gustavo.cocheckercompaniomkotlin.R
+import com.gustavo.cocheckercompanionkotlin.R
 
 abstract class BaseFragment<VM: BaseViewModel,VDB: ViewDataBinding> : Fragment() {
     lateinit var mActivity: BaseActivity<VM>

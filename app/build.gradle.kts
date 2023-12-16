@@ -1,17 +1,19 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id ("kotlin-kapt")
+    id("kotlin-kapt")
     id("com.google.gms.google-services")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("dagger.hilt.android.plugin")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
-    namespace = "com.Gustavo.COCheckerCompanionKotlin"
+    namespace = "com.gustavo.cocheckercompanionkotlin"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.Gustavo.COCheckerCompanionKotlin"
+        applicationId = "com.gustavo.cocheckercompanionkotlin"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -78,10 +80,10 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
 
-    implementation("com.google.firebase:firebase-analytics:21.5.0")
-    implementation("com.google.firebase:firebase-auth:22.3.0")
     implementation("com.google.firebase:firebase-crashlytics:18.2.10")
+    implementation("com.google.firebase:firebase-analytics:21.0.0")
     implementation("com.google.firebase:firebase-database:20.0.5")
+    implementation("com.google.firebase:firebase-auth:21.0.4")
 
     // Glide
     implementation("com.github.bumptech.glide:glide:4.12.0")
