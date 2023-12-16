@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name ="colorPrimary">#4caf50</color>
+    <color name ="colorPrimaryDark">#388e3b</color>
+    <color name ="color_accent">#7F8C71</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+    <color name="red">#ff0000</color>
+    <color name="gray">#949090</color>
+    <color name="card_background">#ffffff</color>
+    <color name="lists_background">#f1f1f1</color>
+    <color name="fab_background">#268945</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="sensor_green">#0d7a1a</color>
+    <color name="sensor_yellow">#7a660d</color>
+    <color name="sensor_orange">#7a3b0d</color>
+    <color name="sensor_red">#c21535</color>
+    <color name="sensor_purple">#510d7a</color>
+
+    <color name="loginPageBackgroundColor">#FFFFFF</color>
 </resources>

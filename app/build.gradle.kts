@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
     id("com.google.gms.google-services")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -24,6 +25,7 @@ android {
             isMinifyEnabled =  false
             isDebuggable = false
             android.buildFeatures.dataBinding = true
+            manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug"
             proguardFiles (getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("Boolean", "DEBUG_MODE", "false")
             buildConfigField( "String", "ESP_URL", "\"http://192.168.4.1\"")
@@ -33,6 +35,7 @@ android {
             isMinifyEnabled = false
             isDebuggable = true
             android.buildFeatures.dataBinding = true
+            manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug"
             buildConfigField("Boolean", "DEBUG_MODE", "true")
             buildConfigField("String", "ESP_URL", "\"http://192.168.4.1\"")
             buildConfigField("okhttp3.logging.HttpLoggingInterceptor.Level", "INTERCEPTOR_LEVEL", "okhttp3.logging.HttpLoggingInterceptor.Level.BODY")
@@ -40,6 +43,8 @@ android {
         create("localHost") {
             isMinifyEnabled = false
             buildFeatures.buildConfig= true
+            android.buildFeatures.dataBinding = true
+            manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug"
             initWith(getByName("debug"))
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "ESP_URL", "\"https://10.0.2.2:PORTHERE/\"") //ADD PORT for local server

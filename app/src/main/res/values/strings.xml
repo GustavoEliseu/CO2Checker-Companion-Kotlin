@@ -1,6 +1,137 @@
 <resources>
-    <string name="app_name">CO2Checker Companion Kotlin</string>
-    <string name="title_home">Home</string>
+    <string name="app_name">Co2Checker Companion</string>
+    <string name="title_devices">Sensores</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_locations">Lugares</string>
+    <string name="edit">Editar</string>
+    <string name="canceled">Cancelado</string>
+    <string name="loading">Carregando</string>
+    <string name="wifi_name">Nome da sua rede</string>
+    <string name="login_hint">Email</string>
+    <string name="password_hint">Senha</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="cancel_button">Cancelar</string>
+
+    <!-- Lists-->
+    <string name="no_sensors">Ops, não encontramos nenhum sensor!</string>
+    <string name="no_locations">Não encontramos nenhum local salvo!</string>
+    <string name="no_measures">Ops, ainda não temos medidas feitas por este sensor!</string>
+
+    <!-- Sensors-->
+    <string name="ssid_error_message">Conecte-se ao Wifi %1$s antes de continuar!\n\nCaso este wifi não esteja disponível, verifique se o sensor está ligado.</string>
+    <string name="save_esp">Salvar este sensor</string>
+    <string name="success">Sucesso</string>
+    <string name="send_data_to_sensor_failure">Falha em enviar os dados ao sensor!</string>
+    <string name="wifi_password">Senha da sua rede</string>
+    <string name="select_location">Selecione um lugar</string>
+    <string name="send_wifi_data">Envie os dados do wifi para conectar o sensor</string>
+    <string name="must_have_password">Campos senha e nome da rede são obrigatórios</string>
+    <string name="select_or_type_wifi">Selecione um wifi ou digite o nome da rede 2.4</string>
+    <string name="wrong_wifi">conecte-se ao wifi informado no sensor!</string>
+    <string name="wifi_connected">conectado ao wifi do sensor!</string>
+    <string name="incorrect_wifi_btn">Wifi incorreto</string>
+    <string name="error_sensor_name">Digite um nome para este sensor!</string>
+    <string name="error_location_name">Digite um nome para este lugar!</string>
+    <string name="error_sensor_mac">Digite a senha do wifi deste sensor!</string>
+    <string name="hint_sensor_name">Nome</string>
+    <string name="hint_sensor_mac">mac</string>
+    <string name="error_sensor_ssid">Digite o nome da rede deste sensor!</string>
+    <string name="hint_sensor_ssid">ssid</string>
+
+    <!-- Login, Register Screens strings -->
+    <string name="next">Próximo</string>
+    <string name="previous">Anterior</string>
+    <string name="login">Logar</string>
+    <string name="error_password">Senha deve conter pelo menos 8 caracteres e ao menos 1 numero.</string>
+    <string name="error_email">Email não é válido</string>
+    <string name="hint_username">Email</string>
+    <string name="hint_password">Senha</string>
+    <string name="button_next">Próximo</string>
+    <string name="button_register">Registrar</string>
+    <string name="button_forgot">Esqueci a senha</string>
+    <string name="button_signout">Deslogar</string>
+    <string name="login_title">Login</string>
+    <string name="new_location_title">Adicionar Lugar</string>
+    <string name="registerError">Não foi registrar o usuário, verifique os dados informados e a conexão</string>
+    <string name="loginError">Não foi possível logar com o Email informado, verifique se os dados corretos foram informados</string>
+
+    <!-- Locations Strings-->
+    <string name="hint_location_name">Nome do lugar</string>
+    <string name="hint_location_name_marker">Digite um nome abaixo</string>
+    <string name="measure">Medida:</string>
+
+    <!--CAMERA -->
+    <string name="permissions_camera">Você precisa garantir a permissão de câmera para seguir com esta operação</string>
+    <string name="permissions_camera_settings">Vá nas configurações e ative a permissão de câmera para prosseguir.</string>
+    <string name="permissions_location">Você precisa garantir a permissão de localização para seguir com esta operação</string>
+    <string name="permissions_location_settings">Vá nas configurações e ative a permissão de localização para prosseguir.</string>
+    <string name="send_to_sensor">Enviar ao sensor</string>
+    <string name="camera_hint">Alinhar o código QR dentro do quadro para digitalizar</string>
+    <string name="invalid_qr_code">QRCode inválido</string>
+    <string name="success_change_wifi">Sucesso, lembre-se de conectar-se ao wifi antigo!</string>
+    <string name="sensor_options">Opções do sensor</string>
+    <string name="add_sensor">Adicionar Sensor a lista</string>
+    <string name="view_sensor">Abrir dados do Sensor</string>
+    <string name="configure_sensor">Configurar o Sensor</string>
+    <string name="register_sensor_failure">Não foi possível registrar o sensor</string>
+    <string name="register_location_failure">Não foi possível registrar o lugar</string>
+    <string name="my_sensors">Meus Sensores</string>
+    <string name="saved_locations">Lugares Salvos</string>
+    <string name="not_have_measure_sensor">Não há medidas para este sensor!</string>
+    <string name="not_have_measure_location">Não há medidas para este lugar!</string>
+    <string name="adicionar">adicionar</string>
+    <string name="name_your_sensor">Dê um nome ao seu sensor!</string>
+    <string name="add_sensor_text">Adicione um sensor</string>
+    <string name="type_ssid">Digite a rede do seu sensor</string>
+    <string name="type_password">Digite a senha da rede do seu sensor</string>
+    <string name="type_mac">Digite o mac do seu sensor</string>
+    <string name="temperature">Temperatura:</string>
+    <string name="humidity">Umidade:</string>
+    <string name="location">Local:</string>
+    <string name="co_title_text">CO:</string>
+    <string name="co2_title_text">CO2:</string>
+    <string name="date_title_text">Data:</string>
+    <string name="time_title_text">Hora:</string>
+
+    <!--GLIDE URL REQUEST-->
+    <string name="glide_url_request" translatable="false">https://maps.googleapis.com/maps/api/staticmap?center=%s,%s\u0026zoom=%s\u0026size=%sx%s\u0026maptype=roadmap\u0026markers=color:red|label:C|%s,%s\u0026key=%s</string>
+
+    <!--DESCRIPTIONS-->
+    <string name="add_sensor_button_description">Botão para adicionar dispositivos</string>
+    <string name="qrcode_button_description">Botão para abrir a cama e ler QRCodes</string>
+    <string name="type_your_email">Digite o seu email para resetar a senha!</string>
+    <string name="get_location_error">Não foi possível identificar sua localização, verifique as permissões do aplicativo e tente novamente</string>
+    <string name="broken_location_error">Algo de errado com o local selecionado, selecione outra ou edite ela na lista de locais</string>
+    <string name="try_reconnect">Tentar conectar novamente</string>
+    <string name="esp8266_status_error">ESP8266 Not Connected!</string>
+    <string name="wifi_not_found_esp">Não foi possível encontrar a rede informada.</string>
+    <string name="wifi_not_possible_esp">Não foi possível verificar se o sensor está conectado a rede informada.</string>
+    <string name="wifi_not_possible_esp_error">Não foi possível verificar se o sensor está conectado a rede informada. Caso o led esteja aceso, você pode retornar para a tela anterior.</string>
+    <string name="sensor_wifi_unnavailable">Não foi possível encontrar a rede do sensor!</string>
+    <string name="select_wifi_description">Botão para trocar entre seletor de wifi e caixa de texto</string>
+    <string name="password">senha</string>
+    <string name="enonet_exception">socket failed: ENONET (Machine is not on the network)</string>
+    <string name="mac_is_null_error">Não foi possível obter os detalhes deste sensor, tente novamente</string>
+    <string name="get_my_location">Usar minha localização</string>
+    <string name="select_wifi">Selecione um wifi</string>
+    <string name="update_wifi">Atualizar Lista</string>
+    <string name="sensor_connection_lost">Conexão com o sensor perdida, verifique se o mesmo continua ligado</string>
+    <string name="save_as_new_location">Será salvo como novo local</string>
+    <string name="unnamed_location">Local não nomeado</string>
+    <string name="go_to_local">Deseja ver os detalhes de %s?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="could_not_load_location">Não foi possível carregar este local no mapa</string>
+    <string name="location_id_null_message">Não foi possivel receber os detalhes deste local, tente mais tarde.</string>
+    <string name="no_measure_detected">Sem medidas detectadas.</string>
+    <string name="not_possible_connect">Não foi possível se conectar ao servidor</string>
+    <string name="no_data_measure">Sem dados para esta medida!</string>
+    <string name="week">Semana</string>
+    <string name="month">Mês</string>
+    <string name="year">Ano</string>
+    <string name="all">Todos</string>
+    <string name="type_new_name">Digite o novo nome</string>
+    <string name="field_name_must_be_filled">O campo nome precisa ser preenchido!</string>
+    <string name="name_edited_success">Nome editado com sucesso!</string>
+
 </resources>

@@ -5,21 +5,15 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.Gustavo.COCheckerCompanionKotlin.ui.main.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+<!--    <fragment-->
+<!--        android:id="@+id/navigation_home"-->
+<!--        android:name="br.com.co2checkercompanion.ui.main.sensors.SensorListFragment"-->
+<!--        android:label="@string/title_devices"-->
+<!--        tools:layout="@layout/fragment_sensor_list" />-->
 
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.Gustavo.COCheckerCompanionKotlin.ui.main.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.Gustavo.COCheckerCompanionKotlin.ui.main.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+<!--    <fragment-->
+<!--        android:id="@+id/navigation_notifications"-->
+<!--        android:name="br.com.co2checkercompanion.ui.main.locations.LocationsListFragment"-->
+<!--        android:label="@string/title_locations"-->
+<!--        tools:layout="@layout/fragment_locations_list" />-->
 </navigation>
