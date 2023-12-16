@@ -31,6 +31,7 @@ android {
             proguardFiles (getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("Boolean", "DEBUG_MODE", "false")
             buildConfigField( "String", "ESP_URL", "\"http://192.168.4.1\"")
+            buildConfigField("String", "MAPS_API_KEY", "AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug")
             buildConfigField ("okhttp3.logging.HttpLoggingInterceptor.Level", "INTERCEPTOR_LEVEL", "okhttp3.logging.HttpLoggingInterceptor.Level.HEADER")
         }
         debug{
@@ -40,6 +41,7 @@ android {
             manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug"
             buildConfigField("Boolean", "DEBUG_MODE", "true")
             buildConfigField("String", "ESP_URL", "\"http://192.168.4.1\"")
+            buildConfigField("String", "MAPS_API_KEY", "\"AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug\"")
             buildConfigField("okhttp3.logging.HttpLoggingInterceptor.Level", "INTERCEPTOR_LEVEL", "okhttp3.logging.HttpLoggingInterceptor.Level.BODY")
         }
         create("localHost") {
@@ -49,7 +51,9 @@ android {
             manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug"
             initWith(getByName("debug"))
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            buildConfigField("Boolean", "DEBUG_MODE", "true")
             buildConfigField("String", "ESP_URL", "\"https://10.0.2.2:PORTHERE/\"") //ADD PORT for local server
+            buildConfigField("String", "MAPS_API_KEY", "AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug")
             buildConfigField("okhttp3.logging.HttpLoggingInterceptor.Level", "INTERCEPTOR_LEVEL", "okhttp3.logging.HttpLoggingInterceptor.Level.BODY")
         }
     }

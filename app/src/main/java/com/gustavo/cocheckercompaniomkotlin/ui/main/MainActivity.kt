@@ -1,5 +1,7 @@
 package com.gustavo.cocheckercompaniomkotlin.ui.main
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -7,9 +9,18 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.gustavo.cocheckercompaniomkotlin.utils.FROM_LOGIN
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityMainBinding
 
+fun Context.mainIntent(
+    fromLogin: Boolean
+): Intent {
+    return Intent(this, MainActivity::class.java).apply {
+        //todo- use fromLogin = false to update user data(name etc) when theres a backend
+        putExtra(FROM_LOGIN, fromLogin)
+    }
+}
 
 class MainActivity : AppCompatActivity() {
 

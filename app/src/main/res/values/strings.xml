@@ -53,6 +53,9 @@
     <string name="login_title">Login</string>
     <string name="new_location_title">Adicionar Lugar</string>
     <string name="registerError">Não foi registrar o usuário, verifique os dados informados e a conexão</string>
+    <string name="registerErrorAlreadyExists">Email já utilizado, tente recuperar a senha</string>
+    <string name="registerErrorCredemtialError">Email ou senha não estão corretos.</string>
+    <string name="ForgotErrorEmail">Email não encontrado no sistema.</string>
     <string name="loginError">Não foi possível logar com o Email informado, verifique se os dados corretos foram informados</string>
 
     <!-- Locations Strings-->
