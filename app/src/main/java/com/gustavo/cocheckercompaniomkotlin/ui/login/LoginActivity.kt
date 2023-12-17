@@ -77,7 +77,7 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                     if (task.isSuccessful) {
                         val user = auth?.currentUser
                         mViewModel.changeLoadingVisibility(false)
-                        startActivity(mainIntent(fromLogin = false))
+                        startActivity(mainIntent())
                         finish()
                     } else {
                         when(task.exception){
@@ -127,7 +127,7 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                         }
                     }
                     mViewModel.changeLoadingVisibility(false)
-                    startActivity(mainIntent(fromLogin = false))
+                    startActivity(mainIntent())
                     finish()
                 } else {
                     when(task.exception){

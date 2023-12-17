@@ -13,13 +13,8 @@ import com.gustavo.cocheckercompaniomkotlin.utils.FROM_LOGIN
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityMainBinding
 
-fun Context.mainIntent(
-    fromLogin: Boolean
-): Intent {
-    return Intent(this, MainActivity::class.java).apply {
-        //todo- use fromLogin = false to update user data(name etc) when theres a backend
-        putExtra(FROM_LOGIN, fromLogin)
-    }
+fun Context.mainIntent(): Intent {
+    return Intent(this, MainActivity::class.java)
 }
 
 class MainActivity : AppCompatActivity() {
