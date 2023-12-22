@@ -57,22 +57,17 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
     }
 
     private fun loginClick() {
-        val passwordEditText: TextInputEditText? = findViewById(R.id.password_edit_text)
-        val passwordErrorTextView: TextView? = findViewById(R.id.password_error_message)
-        val loginEditText: TextInputEditText? = findViewById(R.id.email_edit_text)
-        val loginTextInput: TextInputLayout? = findViewById(R.id.email_text_input)
-
         mViewModel.changeLoadingVisibility(true)
-        if (!passwordEditText?.text.isPasswordValid()) {
-            passwordErrorTextView?.text = getString(R.string.error_password)
+        if (!mBinding.passwordEditText.text.isPasswordValid()) {
+            mBinding.passwordErrorMessage.text = getString(R.string.error_password)
             mViewModel.changeLoadingVisibility(false)
-        } else if (!loginEditText?.text.isValidEmail()) {
-            loginTextInput?.error = getString(R.string.error_email)
+        } else if (!mBinding.emailEditText.text.isValidEmail()) {
+            mBinding.emailTextInput.error = getString(R.string.error_email)
             mViewModel.changeLoadingVisibility(false)
         } else {
-            passwordErrorTextView?.text = null
-            val email: String = loginEditText?.text.toString()
-            auth?.signInWithEmailAndPassword(email, passwordEditText?.text.toString())
+            mBinding.passwordErrorMessage.text = null
+            val email: String = mBinding.emailEditText.text.toString()
+            auth?.signInWithEmailAndPassword(email, mBinding.passwordEditText.text.toString())
                 ?.addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         val user = auth?.currentUser
@@ -96,22 +91,18 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
     }
 
     private fun registerClick() {
-        val passwordEditText: TextInputEditText? = findViewById(R.id.password_edit_text)
-        val passwordErrorTextView: TextView? = findViewById(R.id.password_error_message)
-        val loginEditText: TextInputEditText? = findViewById(R.id.email_edit_text)
-        val loginTextInput: TextInputLayout? = findViewById(R.id.email_text_input)
-        passwordErrorTextView?.text = ""
-        if (!passwordEditText?.text.isPasswordValid()) {
-            passwordErrorTextView?.text = getString(R.string.error_password)
-        } else if (!loginEditText?.text.isValidEmail()) {
-            loginTextInput?.error = getString(R.string.error_email)
+        mBinding.passwordErrorMessage.text = ""
+        if (!mBinding.passwordEditText.text.isPasswordValid()) {
+            mBinding.passwordErrorMessage.text = getString(R.string.error_password)
+        } else if (!mBinding.emailEditText.text.isValidEmail()) {
+            mBinding.emailTextInput.error = getString(R.string.error_email)
         } else {
-            passwordErrorTextView?.text = null
-            loginTextInput?.error = null
+            mBinding.passwordErrorMessage.text = null
+            mBinding.emailTextInput.error = null
             mViewModel.changeLoadingVisibility(true)
             auth?.createUserWithEmailAndPassword(
-                loginEditText?.text.toString(),
-                passwordEditText?.text.toString()
+                mBinding.emailEditText.text.toString(),
+                mBinding.passwordEditText.text.toString()
             )?.addOnCompleteListener() { task ->
                 if (task.isSuccessful) {
                     val user = auth?.currentUser
@@ -125,10 +116,10 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                                 toast("Não foi possível registrar o usuário!")
                             }
                         }
+                        mViewModel.changeLoadingVisibility(false)
+                        startActivity(mainIntent())
+                        finish()
                     }
-                    mViewModel.changeLoadingVisibility(false)
-                    startActivity(mainIntent())
-                    finish()
                 } else {
                     when(task.exception){
                         is FirebaseAuthUserCollisionException -> {
@@ -149,12 +140,12 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
     }
 
     private fun forgotClick() {
-        val loginEditText: TextInputEditText? = findViewById(R.id.email_edit_text)
-        val loginTextInput: TextInputLayout? = findViewById(R.id.email_text_input)
+        val email = mBinding.emailEditText.text.toString()
+        mBinding.emailTextInput
+        mBinding.emailEditText
 
-        val email = loginEditText?.text.toString()
-        if (email.isNullOrEmptyOrBlank() || !loginEditText?.text.isValidEmail()) {
-            loginTextInput?.error = getString(R.string.error_email)
+        if (email.isNullOrEmptyOrBlank() || !mBinding.emailEditText.text.isValidEmail()) {
+            mBinding.emailTextInput.error = getString(R.string.error_email)
             toast(R.string.type_your_email)
             return
         }
