@@ -53,6 +53,7 @@
     <string name="login_title">Login</string>
     <string name="new_location_title">Adicionar Lugar</string>
     <string name="registerError">Não foi registrar o usuário, verifique os dados informados e a conexão</string>
+    <string name="genericLoginError">Não foi possível verificar o usuário, verifique os dados informados e a conexão</string>
     <string name="registerErrorAlreadyExists">Email já utilizado, tente recuperar a senha</string>
     <string name="registerErrorCredemtialError">Email ou senha não estão corretos.</string>
     <string name="ForgotErrorEmail">Email não encontrado no sistema.</string>
@@ -136,5 +137,6 @@
     <string name="type_new_name">Digite o novo nome</string>
     <string name="field_name_must_be_filled">O campo nome precisa ser preenchido!</string>
     <string name="name_edited_success">Nome editado com sucesso!</string>
+    <string name="forgot_password_result">Você receberá um e-mail para a recuperação de senha</string>
 
 </resources>

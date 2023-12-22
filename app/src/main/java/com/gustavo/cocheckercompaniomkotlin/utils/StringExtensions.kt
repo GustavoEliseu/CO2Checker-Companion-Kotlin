@@ -18,9 +18,16 @@ fun String?.getValueOrEmpty(): String {
 fun Editable?.isValidEmail(): Boolean{
     return if (this != null) Patterns.EMAIL_ADDRESS.matcher(this).matches() else false
 }
+fun String.isValidEmail(): Boolean{
+    return Patterns.EMAIL_ADDRESS.matcher(this).matches()
+}
 
 fun Editable?.isPasswordValid(): Boolean{
-    return this != null && this.length >= 8 && this.toString().containsDigit();
+    return this != null && this.length >= 8 && this.toString().containsDigit()
+}
+
+fun String.isPasswordValid(): Boolean{
+    return  this.length >= 8 && this.containsDigit();
 }
 fun String?.containsDigit(): Boolean {
     var containsDigit = false

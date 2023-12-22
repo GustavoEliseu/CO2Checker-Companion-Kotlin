@@ -2,8 +2,10 @@ package com.gustavo.cocheckercompaniomkotlin.ui.login
 
 import android.text.Editable
 import android.util.Patterns
+import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -16,11 +18,13 @@ import com.gustavo.cocheckercompaniomkotlin.base.BaseActivity
 import com.gustavo.cocheckercompaniomkotlin.data.RegisterUser
 import com.gustavo.cocheckercompaniomkotlin.ui.login.viewmodel.LoginViewModel
 import com.gustavo.cocheckercompaniomkotlin.ui.main.mainIntent
+import com.gustavo.cocheckercompaniomkotlin.utils.LoggerUtil
 import com.gustavo.cocheckercompaniomkotlin.utils.containsDigit
 import com.gustavo.cocheckercompaniomkotlin.utils.isNullOrEmptyOrBlank
 import com.gustavo.cocheckercompaniomkotlin.utils.isPasswordValid
 import com.gustavo.cocheckercompaniomkotlin.utils.isValidEmail
 import com.gustavo.cocheckercompaniomkotlin.utils.longToast
+import com.gustavo.cocheckercompaniomkotlin.utils.safeRun
 import com.gustavo.cocheckercompaniomkotlin.utils.toast
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityLoginBinding
@@ -31,15 +35,14 @@ import timber.log.Timber
 class LoginActivity : BaseActivity<LoginViewModel>() {
     private lateinit var mBinding: ActivityLoginBinding
     override val mViewModel: LoginViewModel by viewModels()
-    private var auth: FirebaseAuth? = null
     val database = FirebaseDatabase.getInstance()
+    var showErrors = false
     override fun getLayoutId(): Int = R.layout.activity_login
 
     override fun initializeUi() {
-        auth = FirebaseAuth.getInstance()
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
         mBinding.viewModel = mViewModel
-
+        mViewModel.initialize()
         setContentView(mBinding.root)
         initClicks()
     }
@@ -54,58 +57,95 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
         mBinding.forgotButton.setOnClickListener {
             forgotClick()
         }
+
+        mBinding.emailEditText.doOnTextChanged { text, start, before, count ->
+            if (showErrors) verifyValidEmail(text.toString())
+        }
+        mBinding.passwordEditText.doOnTextChanged { text, start, before, count ->
+            if (showErrors) verifyPasswordValid(text.toString())
+        }
+    }
+
+    private fun verifyPasswordValid(value: String): Boolean {
+        if (!value.isPasswordValid()) {
+            mBinding.passwordTextInput.error = getString(R.string.error_password)
+            mViewModel.changeLoadingVisibility(false)
+            return false
+        } else {
+            mBinding.passwordTextInput.error = null
+            return true
+        }
+    }
+
+    private fun verifyValidEmail(value: String): Boolean {
+        if (!value.isValidEmail()) {
+            mBinding.emailTextInput.error = getString(R.string.error_email)
+            mViewModel.changeLoadingVisibility(false)
+            return false
+        } else {
+            mBinding.emailTextInput.error = getString(R.string.error_email)
+            mViewModel.changeLoadingVisibility(false)
+            return true
+        }
     }
 
     private fun loginClick() {
+        var validCredentials = true
         mViewModel.changeLoadingVisibility(true)
-        if (!mBinding.passwordEditText.text.isPasswordValid()) {
-            mBinding.passwordErrorMessage.text = getString(R.string.error_password)
-            mViewModel.changeLoadingVisibility(false)
-        } else if (!mBinding.emailEditText.text.isValidEmail()) {
-            mBinding.emailTextInput.error = getString(R.string.error_email)
-            mViewModel.changeLoadingVisibility(false)
-        } else {
+        if (!verifyPasswordValid(mBinding.passwordEditText.text.toString())) {
+            validCredentials = false
+        }
+        if (!verifyValidEmail(mBinding.emailEditText.text.toString())) {
+            validCredentials = false
+        }
+        if (validCredentials) {
             mBinding.passwordErrorMessage.text = null
-            val email: String = mBinding.emailEditText.text.toString()
-            auth?.signInWithEmailAndPassword(email, mBinding.passwordEditText.text.toString())
-                ?.addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        val user = auth?.currentUser
-                        mViewModel.changeLoadingVisibility(false)
-                        startActivity(mainIntent())
-                        finish()
-                    } else {
-                        when(task.exception){
-                            is FirebaseAuthInvalidCredentialsException -> {
-                                longToast(R.string.registerErrorAlreadyExists)
-                            }
-                            else -> {
-                                longToast(R.string.registerError)
-                                Timber.i(task.result.toString())
+            mBinding.emailTextInput.error = null
+            mViewModel.login(
+                email = mBinding.emailEditText.text.toString(),
+                password = mBinding.passwordEditText.text.toString()
+            ) { success, user, exception ->
+                if (success) {
+                    startActivity(mainIntent())
+                    finish()
+                } else {
+                    when (exception) {
+                        is FirebaseAuthInvalidCredentialsException -> {
+                            toast(R.string.registerErrorAlreadyExists)
+                        }
+
+                        else -> {
+                            val message = exception?.message
+                            toast(message ?: getString(R.string.genericLoginError))
+                            exception?.let {
+                                LoggerUtil.printStackTraceOnlyInDebug(it)
                             }
                         }
-                        mViewModel.changeLoadingVisibility(false)
                     }
                 }
+            }
+        } else {
+            showErrors = true
         }
     }
 
     private fun registerClick() {
-        mBinding.passwordErrorMessage.text = ""
         if (!mBinding.passwordEditText.text.isPasswordValid()) {
-            mBinding.passwordErrorMessage.text = getString(R.string.error_password)
-        } else if (!mBinding.emailEditText.text.isValidEmail()) {
+            mBinding.passwordTextInput.error = getString(R.string.error_password)
+        } else {
+            mBinding.passwordTextInput.error = null
+        }
+
+        if (!mBinding.emailEditText.text.isValidEmail()) {
             mBinding.emailTextInput.error = getString(R.string.error_email)
         } else {
-            mBinding.passwordErrorMessage.text = null
             mBinding.emailTextInput.error = null
             mViewModel.changeLoadingVisibility(true)
-            auth?.createUserWithEmailAndPassword(
-                mBinding.emailEditText.text.toString(),
-                mBinding.passwordEditText.text.toString()
-            )?.addOnCompleteListener() { task ->
-                if (task.isSuccessful) {
-                    val user = auth?.currentUser
+            mViewModel.register(
+                email = mBinding.emailEditText.text.toString()
+                , password = mBinding.passwordEditText.text.toString()
+            ) { success,user, exception ->
+                if (success) {
                     if (user != null) {
                         val myRef = database.getReference("Users")
                         val registerUser = RegisterUser(user.email)
@@ -116,24 +156,25 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                                 toast("Não foi possível registrar o usuário!")
                             }
                         }
-                        mViewModel.changeLoadingVisibility(false)
                         startActivity(mainIntent())
                         finish()
                     }
                 } else {
-                    when(task.exception){
+                    when (exception) {
                         is FirebaseAuthUserCollisionException -> {
                             longToast(R.string.registerErrorAlreadyExists)
                         }
+
                         is FirebaseAuthInvalidCredentialsException -> {
                             longToast(R.string.registerErrorAlreadyExists)
                         }
+
                         else -> {
                             longToast(R.string.registerError)
-                            Timber.i(task.result.toString())
+
+                            if(exception!= null) LoggerUtil.printStackTraceOnlyInDebug(exception)
                         }
                     }
-                    mViewModel.changeLoadingVisibility(false)
                 }
             }
         }
@@ -150,22 +191,21 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
             return
         }
         mViewModel.changeLoadingVisibility(true)
-        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-            .addOnCompleteListener { task ->
-                mViewModel.changeLoadingVisibility(false)
-                if (task.isSuccessful) {
-                    toast("")
-                } else{
-                    when(task.exception){
-                        is FirebaseAuthEmailException -> {
-                            longToast(R.string.ForgotErrorEmail)
-                        }
-                        else -> {
-                            longToast(R.string.registerError)
-                            Timber.i(task.result.toString())
-                        }
+        mViewModel.forgot(email){success, exception ->
+            if (success) {
+                toast(R.string.forgot_password_result)
+            } else {
+                when (exception) {
+                    is FirebaseAuthEmailException -> {
+                        longToast(R.string.ForgotErrorEmail)
+                    }
+
+                    else -> {
+                        longToast(R.string.registerError)
+                        if(exception!= null) LoggerUtil.printStackTraceOnlyInDebug(exception)
                     }
                 }
             }
+        }
     }
 }

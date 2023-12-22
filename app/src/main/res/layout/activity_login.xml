@@ -69,6 +69,7 @@
                 android:layout_width="match_parent"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
+
                 android:inputType="textPassword"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -77,6 +78,7 @@
             android:layout_margin="5dp"
             android:id="@+id/password_error_message"
             android:layout_gravity="center"
+            mutableVisibility="@{viewModel.errorVisibility}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/red"/>
