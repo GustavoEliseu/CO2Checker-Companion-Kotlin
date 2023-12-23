@@ -164,14 +164,11 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                         is FirebaseAuthUserCollisionException -> {
                             longToast(R.string.registerErrorAlreadyExists)
                         }
-
                         is FirebaseAuthInvalidCredentialsException -> {
                             longToast(R.string.registerErrorAlreadyExists)
                         }
-
                         else -> {
                             longToast(R.string.registerError)
-
                             if(exception!= null) LoggerUtil.printStackTraceOnlyInDebug(exception)
                         }
                     }
@@ -181,17 +178,13 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
     }
 
     private fun forgotClick() {
-        val email = mBinding.emailEditText.text.toString()
-        mBinding.emailTextInput
-        mBinding.emailEditText
-
-        if (email.isNullOrEmptyOrBlank() || !mBinding.emailEditText.text.isValidEmail()) {
+        if (mBinding.emailEditText.text.isNullOrEmptyOrBlank() || !mBinding.emailEditText.text.isValidEmail()) {
             mBinding.emailTextInput.error = getString(R.string.error_email)
             toast(R.string.type_your_email)
             return
         }
         mViewModel.changeLoadingVisibility(true)
-        mViewModel.forgot(email){success, exception ->
+        mViewModel.forgot(mBinding.emailEditText.text.toString()){success, exception ->
             if (success) {
                 toast(R.string.forgot_password_result)
             } else {
@@ -199,7 +192,6 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                     is FirebaseAuthEmailException -> {
                         longToast(R.string.ForgotErrorEmail)
                     }
-
                     else -> {
                         longToast(R.string.registerError)
                         if(exception!= null) LoggerUtil.printStackTraceOnlyInDebug(exception)

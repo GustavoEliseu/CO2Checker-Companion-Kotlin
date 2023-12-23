@@ -11,6 +11,10 @@ fun String?.isNullOrEmptyOrBlank(): Boolean {
     return isNullOrEmpty() || isNullOrBlank()
 }
 
+fun Editable?.isNullOrEmptyOrBlank(): Boolean {
+    return isNullOrEmpty() || isNullOrBlank()
+}
+
 fun String?.getValueOrEmpty(): String {
     return this ?: "testee"
 }
