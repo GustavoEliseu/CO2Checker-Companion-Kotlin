@@ -10,7 +10,7 @@ import com.gustavo.cocheckercompaniomkotlin.utils.LOCATIONS
 import com.gustavo.cocheckercompaniomkotlin.utils.USERS
 
 
-class FirebaseDatabaseManager() {
+class FirebaseDatabaseManager {
     private var firebaseDatabase: FirebaseDatabase? = null
     private var currentUser: FirebaseUser? = null
 

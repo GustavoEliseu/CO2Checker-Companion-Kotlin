@@ -31,19 +31,19 @@ fun Editable?.isPasswordValid(): Boolean{
 }
 
 fun String.isPasswordValid(): Boolean{
-    return  this.length >= 8 && this.containsDigit();
+    return  this.length >= 8 && this.containsDigit()
 }
 fun String?.containsDigit(): Boolean {
     var containsDigit = false
-    if (this == null || this.isEmpty()) {
-        return containsDigit
+    return if (this.isNullOrEmpty()) {
+        containsDigit
     } else {
         for (c in this) {
             containsDigit = Character.isDigit(c)
-            if (containsDigit == true) {
+            if (containsDigit) {
                 break
             }
         }
-        return containsDigit
+        containsDigit
     }
 }

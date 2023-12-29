@@ -1,6 +1,5 @@
 package com.gustavo.cocheckercompaniomkotlin.model.domain
 
-import android.view.View
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -8,7 +7,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.gustavo.cocheckercompaniomkotlin.data.remote.FirebaseSensorsDataSource
 import com.gustavo.cocheckercompaniomkotlin.model.data.SensorItemList
 import com.gustavo.cocheckercompaniomkotlin.utils.SAVED_DEVICES
-import com.gustavo.cocheckercompaniomkotlin.utils.USERS
 
 class FetchSensorsUseCase {
 

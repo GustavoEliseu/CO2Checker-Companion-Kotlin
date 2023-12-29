@@ -15,7 +15,7 @@ import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.SensorItemBinding
 
 class SensorListAdapter(private val viewMoreClick: (String) -> Unit,
-private val currentSensors: MutableList<SensorItemList> = mutableListOf<SensorItemList>()
+private val currentSensors: MutableList<SensorItemList> = mutableListOf()
 ) : RecyclerView.Adapter<SensorListAdapter.SensorViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SensorViewHolder {
         return SensorViewHolder(

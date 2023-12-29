@@ -2,8 +2,6 @@ package com.gustavo.cocheckercompaniomkotlin.ui.login
 
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
@@ -27,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<LoginViewModel>() {
-    //TODO - MOVE LOGIN ACTIONS TO VIEWMODEL, USECASE AND REPOSITORY
+    //TODO - MOVE LOGIN ACTIONS TO VIEW MODEL, USE-CASE AND REPOSITORY
     private lateinit var mBinding: ActivityLoginBinding
     override val mViewModel: LoginViewModel by viewModels()
     private val database = FirebaseDatabase.getInstance()
@@ -112,7 +110,7 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
             mViewModel.login(
                 email = mBinding.emailEditText.text.toString(),
                 password = mBinding.passwordEditText.text.toString()
-            ) { success, user, exception ->
+            ) { success, _, exception ->
                 if (success) {
                     startActivity(mainIntent())
                 } else {
@@ -157,9 +155,9 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                         val registerUser = RegisterUser(user.email)
                         myRef.child(user.uid).setValue(
                             registerUser
-                        ) { error, ref ->
+                        ) { error, _ ->
                             if (error != null) {
-                                toast("Não foi possível registrar o usuário!")
+                                toast(R.string.error_register)
                             }
                         }
                         startActivity(mainIntent())

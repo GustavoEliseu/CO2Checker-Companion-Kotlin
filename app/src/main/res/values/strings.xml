@@ -138,5 +138,6 @@
     <string name="field_name_must_be_filled">O campo nome precisa ser preenchido!</string>
     <string name="name_edited_success">Nome editado com sucesso!</string>
     <string name="forgot_password_result">Você receberá um e-mail para a recuperação de senha</string>
+    <string name="error_register">Não foi possível registrar o usuário!</string>
 
 </resources>

@@ -7,7 +7,7 @@ import com.gustavo.cocheckercompanionkotlin.BR
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.FragmentSensorsListBinding
 
-class SensorsListFragment() : BaseFragment<SensorsListViewModel,FragmentSensorsListBinding>(){
+class SensorsListFragment : BaseFragment<SensorsListViewModel,FragmentSensorsListBinding>(){
     override val mViewModel: SensorsListViewModel by viewModels()
     override fun getLayoutId(): Int = R.layout.fragment_sensors_list
 

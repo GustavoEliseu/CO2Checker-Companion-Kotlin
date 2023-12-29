@@ -9,13 +9,11 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.gustavo.cocheckercompanionkotlin.R
 
 abstract class BaseFragment<VM: BaseViewModel,VDB: ViewDataBinding> : Fragment() {
-    lateinit var mActivity: BaseActivity<BaseViewModel>
-    lateinit var mBinding: VDB
+    private lateinit var mActivity: BaseActivity<BaseViewModel>
+    private lateinit var mBinding: VDB
     abstract val mViewModel: VM
     private var rootView: View? = null
 
@@ -38,7 +36,6 @@ abstract class BaseFragment<VM: BaseViewModel,VDB: ViewDataBinding> : Fragment()
 
     abstract fun onBackPressed(): Boolean
 
-    @Suppress("UNCHECKED_CAST")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mActivity = activity as BaseActivity<BaseViewModel>

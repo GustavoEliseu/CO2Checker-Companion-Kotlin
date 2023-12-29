@@ -4,16 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gustavo.cocheckercompaniomkotlin.base.BaseActivity
-import com.gustavo.cocheckercompaniomkotlin.ui.login.viewmodel.LoginViewModel
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.MainViewModel
-import com.gustavo.cocheckercompaniomkotlin.utils.FROM_LOGIN
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityMainBinding
 

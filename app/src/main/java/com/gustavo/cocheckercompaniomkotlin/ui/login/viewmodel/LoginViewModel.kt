@@ -20,7 +20,7 @@ class LoginViewModel @Inject constructor(): BaseViewModel() {
 
     fun login(email:String, password:String, onFinish:  (success:Boolean,user:FirebaseUser?,  e:Exception?) -> Unit){
         auth?.signInWithEmailAndPassword(email, password)
-            ?.addOnCompleteListener() { task ->
+            ?.addOnCompleteListener { task ->
                 changeLoadingVisibility(false)
                 onFinish(task.isSuccessful,auth?.currentUser, task.exception)
             }
@@ -30,7 +30,7 @@ class LoginViewModel @Inject constructor(): BaseViewModel() {
         auth?.createUserWithEmailAndPassword(
             email,
             password
-        )?.addOnCompleteListener() { task ->
+        )?.addOnCompleteListener { task ->
             val user = auth?.currentUser
             onFinish(task.isSuccessful,user,task.exception)
             changeLoadingVisibility(false)
