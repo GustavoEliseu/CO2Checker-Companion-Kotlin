@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.recyclerview.widget.RecyclerView
-import com.gustavo.cocheckercompaniomkotlin.model.SensorItemList
-import com.gustavo.cocheckercompaniomkotlin.ui.main.adapters.viewmodel.SensorItemViewModel
+import com.gustavo.cocheckercompaniomkotlin.model.data.SensorItemList
+import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.SensorItemViewModel
 import com.gustavo.cocheckercompaniomkotlin.utils.getSafeMapUrlString
 import com.gustavo.cocheckercompaniomkotlin.utils.load
 import com.gustavo.cocheckercompaniomkotlin.utils.safeRun

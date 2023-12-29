@@ -9,12 +9,14 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.gustavo.cocheckercompanionkotlin.R
 
 abstract class BaseFragment<VM: BaseViewModel,VDB: ViewDataBinding> : Fragment() {
-    lateinit var mActivity: BaseActivity<VM>
+    lateinit var mActivity: BaseActivity<BaseViewModel>
     lateinit var mBinding: VDB
-    lateinit var mViewModel: VM
+    abstract val mViewModel: VM
     private var rootView: View? = null
 
     open fun onPermissionGranted(permissions: Array<out String>) {}
@@ -39,20 +41,7 @@ abstract class BaseFragment<VM: BaseViewModel,VDB: ViewDataBinding> : Fragment()
     @Suppress("UNCHECKED_CAST")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mActivity = activity as BaseActivity<VM>
-        mViewModel = mActivity.mViewModel
-    }
-
-    //Todo - test this on leak canary
-    fun getPersistentView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?, layout: Int): View? {
-        if (rootView == null) {
-            mBinding= DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
-            rootView = mBinding.root
-
-        } else {
-            (rootView?.getParent() as? ViewGroup)?.removeView(rootView)
-        }
-        return rootView
+        mActivity = activity as BaseActivity<BaseViewModel>
     }
 
     fun simpleCreate(savedInstanceState: Bundle?) {
@@ -78,6 +67,7 @@ abstract class BaseFragment<VM: BaseViewModel,VDB: ViewDataBinding> : Fragment()
             mBinding.setVariable(getBindingVariable(), mViewModel)
             mBinding.executePendingBindings()
         }
+        initializeUi()
     }
 
     @SuppressLint("PrivateResource")

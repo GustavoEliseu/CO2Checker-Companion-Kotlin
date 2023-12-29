@@ -3,16 +3,8 @@ package com.gustavo.cocheckercompaniomkotlin.ui.login.viewmodel
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.gustavo.cocheckercompaniomkotlin.base.BaseViewModel
-import com.gustavo.cocheckercompaniomkotlin.data.RegisterUser
-import com.gustavo.cocheckercompaniomkotlin.ui.main.mainIntent
-import com.gustavo.cocheckercompaniomkotlin.utils.longToast
-import com.gustavo.cocheckercompaniomkotlin.utils.toast
-import com.gustavo.cocheckercompanionkotlin.R
-import timber.log.Timber
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(): BaseViewModel() {

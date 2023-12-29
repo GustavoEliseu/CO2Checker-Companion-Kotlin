@@ -1,4 +1,4 @@
-package com.gustavo.cocheckercompaniomkotlin.model
+package com.gustavo.cocheckercompaniomkotlin.model.data
 
 import java.io.Serializable
 

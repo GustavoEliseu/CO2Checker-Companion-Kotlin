@@ -28,17 +28,15 @@ class MainActivity : BaseActivity<MainViewModel>() {
     override fun getLayoutId(): Int = R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        super.onCreate(savedInstanceState)
 
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_sensors, R.id.navigation_dashboard, R.id.navigation_locations
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -50,10 +48,10 @@ class MainActivity : BaseActivity<MainViewModel>() {
     }
 
     fun openSensor(deviceMac: String) {
-        startActivity(sensorDetailsIntent(deviceMac))
+       // startActivity(sensorDetailsIntent(deviceMac))
     }
 
-//    fun openLocation(locationUid: String, locationName: String) {
+    fun openLocation(locationUid: String, locationName: String) {
 //        startActivity(locationDetailsIntent(locationUid, locationName))
-//    }
+    }
 }

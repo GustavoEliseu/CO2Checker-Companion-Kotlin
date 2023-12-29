@@ -1,42 +1,37 @@
 package com.gustavo.cocheckercompaniomkotlin.ui.login
 
-import android.text.Editable
-import android.util.Patterns
-import android.view.View
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthEmailException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.database.FirebaseDatabase
 import com.gustavo.cocheckercompaniomkotlin.base.BaseActivity
-import com.gustavo.cocheckercompaniomkotlin.data.RegisterUser
+import com.gustavo.cocheckercompaniomkotlin.model.data.RegisterUser
 import com.gustavo.cocheckercompaniomkotlin.ui.login.viewmodel.LoginViewModel
 import com.gustavo.cocheckercompaniomkotlin.ui.main.mainIntent
 import com.gustavo.cocheckercompaniomkotlin.utils.LoggerUtil
-import com.gustavo.cocheckercompaniomkotlin.utils.containsDigit
 import com.gustavo.cocheckercompaniomkotlin.utils.isNullOrEmptyOrBlank
 import com.gustavo.cocheckercompaniomkotlin.utils.isPasswordValid
 import com.gustavo.cocheckercompaniomkotlin.utils.isValidEmail
 import com.gustavo.cocheckercompaniomkotlin.utils.longToast
-import com.gustavo.cocheckercompaniomkotlin.utils.safeRun
 import com.gustavo.cocheckercompaniomkotlin.utils.toast
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<LoginViewModel>() {
+    //TODO - MOVE LOGIN ACTIONS TO VIEWMODEL, USECASE AND REPOSITORY
     private lateinit var mBinding: ActivityLoginBinding
     override val mViewModel: LoginViewModel by viewModels()
-    val database = FirebaseDatabase.getInstance()
-    var showErrors = false
+    private val database = FirebaseDatabase.getInstance()
+    private var showErrors = false
     override fun getLayoutId(): Int = R.layout.activity_login
 
     override fun initializeUi() {
@@ -58,46 +53,59 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
             forgotClick()
         }
 
-        mBinding.emailEditText.doOnTextChanged { text, start, before, count ->
+        mBinding.emailEditText.doOnTextChanged { text, _, _, _ ->
             if (showErrors) verifyValidEmail(text.toString())
         }
-        mBinding.passwordEditText.doOnTextChanged { text, start, before, count ->
+        mBinding.passwordEditText.doOnTextChanged { text, _, _, _ ->
             if (showErrors) verifyPasswordValid(text.toString())
+        }
+        mBinding.passwordEditText.setOnEditorActionListener { _, i, keyEvent ->
+            if(i == EditorInfo.IME_ACTION_DONE){
+                loginClick()
+                true
+            }else if(keyEvent.keyCode == KeyEvent.KEYCODE_ENTER){
+                loginClick()
+                true
+            }else{
+                false
+            }
         }
     }
 
     private fun verifyPasswordValid(value: String): Boolean {
-        if (!value.isPasswordValid()) {
+        return if (!value.isPasswordValid()) {
             mBinding.passwordTextInput.error = getString(R.string.error_password)
             mViewModel.changeLoadingVisibility(false)
-            return false
+            false
         } else {
             mBinding.passwordTextInput.error = null
-            return true
+            true
         }
     }
 
     private fun verifyValidEmail(value: String): Boolean {
-        if (!value.isValidEmail()) {
+        return if (!value.isValidEmail()) {
             mBinding.emailTextInput.error = getString(R.string.error_email)
             mViewModel.changeLoadingVisibility(false)
-            return false
+            false
         } else {
-            mBinding.emailTextInput.error = getString(R.string.error_email)
-            mViewModel.changeLoadingVisibility(false)
-            return true
+            mViewModel.changeLoadingVisibility(true)
+            true
         }
     }
 
     private fun loginClick() {
         var validCredentials = true
         mViewModel.changeLoadingVisibility(true)
+
         if (!verifyPasswordValid(mBinding.passwordEditText.text.toString())) {
             validCredentials = false
         }
+
         if (!verifyValidEmail(mBinding.emailEditText.text.toString())) {
             validCredentials = false
         }
+
         if (validCredentials) {
             mBinding.passwordErrorMessage.text = null
             mBinding.emailTextInput.error = null
@@ -107,13 +115,11 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
             ) { success, user, exception ->
                 if (success) {
                     startActivity(mainIntent())
-                    finish()
                 } else {
                     when (exception) {
                         is FirebaseAuthInvalidCredentialsException -> {
-                            toast(R.string.registerErrorAlreadyExists)
+                            toast(R.string.loginErrorCredentialError)
                         }
-
                         else -> {
                             val message = exception?.message
                             toast(message ?: getString(R.string.genericLoginError))

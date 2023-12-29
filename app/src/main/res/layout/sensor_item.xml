@@ -2,25 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
-
         <variable
             name="viewModel"
-            type="com.gustavo.cocheckercompaniomkotlin.ui.main.adapters.viewmodel.SensorItemViewModel" />
-
+            type="com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.SensorItemViewModel" />
         <import type="android.view.View" />
     </data>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below=""
-            android:layout_toEndOf=""/>
-    </RelativeLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

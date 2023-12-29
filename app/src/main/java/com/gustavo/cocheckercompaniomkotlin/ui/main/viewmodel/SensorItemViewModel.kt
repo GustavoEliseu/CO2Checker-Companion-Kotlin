@@ -1,28 +1,29 @@
-package com.gustavo.cocheckercompaniomkotlin.ui.main.adapters.viewmodel
+package com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.gustavo.cocheckercompaniomkotlin.model.SensorItemList
+import com.gustavo.cocheckercompaniomkotlin.model.data.SensorItemList
 import com.gustavo.cocheckercompanionkotlin.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 @HiltViewModel
-class SensorItemViewModel:
+class SensorItemViewModel @Inject constructor() :
     ViewModel() {
     val mutableSensorName = MutableLiveData<String>()
     val mutableSensorLastMeasure = MutableLiveData<String>()
     val mutableSensorLastLocation = MutableLiveData<String?>()
     val mutableSensorLastLocationReference = MutableLiveData<Int?>()
 
-    fun bind(sensorItem: SensorItemList){
+    fun bind(sensorItem: SensorItemList) {
         mutableSensorName.value = sensorItem.name
-        if(sensorItem.LastLocation!= null){
-            sensorItem.LastLocation?.let{
+        if (sensorItem.LastLocation != null) {
+            sensorItem.LastLocation?.let {
                 mutableSensorLastLocationReference.value = null
                 mutableSensorLastLocation.value = it.locationName
             }
-        }else{
-            mutableSensorLastMeasure.value= ""
+        } else {
+            mutableSensorLastMeasure.value = ""
             mutableSensorLastLocation.value = ""
             mutableSensorLastLocationReference.value = R.string.not_have_measure_sensor
         }
