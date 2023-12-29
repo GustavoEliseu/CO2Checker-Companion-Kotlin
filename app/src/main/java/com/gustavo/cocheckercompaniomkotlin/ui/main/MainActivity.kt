@@ -3,12 +3,16 @@ package com.gustavo.cocheckercompaniomkotlin.ui.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.gustavo.cocheckercompaniomkotlin.base.BaseActivity
+import com.gustavo.cocheckercompaniomkotlin.ui.login.viewmodel.LoginViewModel
+import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.MainViewModel
 import com.gustavo.cocheckercompaniomkotlin.utils.FROM_LOGIN
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityMainBinding
@@ -17,18 +21,18 @@ fun Context.mainIntent(): Intent {
     return Intent(this, MainActivity::class.java)
 }
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<MainViewModel>() {
 
     private lateinit var binding: ActivityMainBinding
+    override val mViewModel: MainViewModel by viewModels()
+    override fun getLayoutId(): Int = R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        super.onCreate(savedInstanceState)
 
         val navView: BottomNavigationView = binding.navView
-
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -40,4 +44,16 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+
+    override fun initializeUi() {
+
+    }
+
+    fun openSensor(deviceMac: String) {
+        startActivity(sensorDetailsIntent(deviceMac))
+    }
+
+//    fun openLocation(locationUid: String, locationName: String) {
+//        startActivity(locationDetailsIntent(locationUid, locationName))
+//    }
 }
