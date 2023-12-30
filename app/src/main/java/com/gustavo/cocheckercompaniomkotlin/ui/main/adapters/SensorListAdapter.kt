@@ -43,6 +43,8 @@ private val currentSensors: MutableList<SensorItemList> = mutableListOf()
         safeRun {
             val index = currentSensors.indexOf(sensorWifiData)
             currentSensors.removeAt(index)
+
+            notifyItemRemoved(index)
         }
     }
 

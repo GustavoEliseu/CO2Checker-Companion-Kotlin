@@ -54,6 +54,7 @@ abstract class BaseFragment<VM: BaseViewModel,VDB: ViewDataBinding> : Fragment()
 
         setTitle()
         mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
+        initializeUi()
         return mBinding.root
     }
 
@@ -64,7 +65,6 @@ abstract class BaseFragment<VM: BaseViewModel,VDB: ViewDataBinding> : Fragment()
             mBinding.setVariable(getBindingVariable(), mViewModel)
             mBinding.executePendingBindings()
         }
-        initializeUi()
     }
 
     @SuppressLint("PrivateResource")

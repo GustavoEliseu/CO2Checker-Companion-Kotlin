@@ -21,7 +21,13 @@ class SensorsListViewModel @Inject constructor() : BaseViewModel() {
     val emptySensorListMessageVisibility = MutableLiveData<Int>()
 
     override fun initialize() {
-        fetchSensorsUseCase.fetchUserData(object : FetchSensorsUseCase.UserSensorsDataListener {
+        mySensorListAdapter.clear()
+//        fetchSensorsUseCase.fetchSensorsList(){
+//            if(!it.isNullOrEmpty()){
+//                mySensorListAdapter.setCurrentSensors(it)
+//            }
+//        }
+        fetchSensorsUseCase.fetchUserSensorsData(object : FetchSensorsUseCase.UserSensorsDataListener {
             override fun onChildAdded(sensor: SensorItemList) {
                 emptySensorListMessageVisibility.postValue(View.GONE)
                 mySensorListAdapter.addSensor(sensor)

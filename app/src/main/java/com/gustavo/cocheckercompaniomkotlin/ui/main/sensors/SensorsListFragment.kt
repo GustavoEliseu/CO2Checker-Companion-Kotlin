@@ -1,5 +1,6 @@
 package com.gustavo.cocheckercompaniomkotlin.ui.main.sensors
 
+import android.os.Bundle
 import androidx.fragment.app.viewModels
 import com.gustavo.cocheckercompaniomkotlin.base.BaseFragment
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.SensorsListViewModel
@@ -14,6 +15,10 @@ class SensorsListFragment : BaseFragment<SensorsListViewModel,FragmentSensorsLis
     override fun viewTitle(): Int = R.string.my_sensors
 
     override fun getBindingVariable(): Int = BR.viewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun initializeUi() {
         mViewModel.initialize()
