@@ -12,7 +12,7 @@ class FetchSensorsUseCase {
 
     private val firebaseDataSource = FirebaseSensorsDataSource()
     val database = FirebaseDatabase.getInstance()
-    val currentSensorsPage = 0
+    val currentSensorsPage = 20
 
     interface UserSensorsDataListener {
         fun onChildAdded(sensor: SensorItemList)
@@ -29,7 +29,6 @@ class FetchSensorsUseCase {
                     override fun onChildAdded(snapshot: DataSnapshot, previousChild: String?) {
                         val sensor = snapshot.getValue(SensorItemList::class.java)
                         sensor?.let { userListener.onChildAdded(it) }
-                        //emptySensorListMessageVisibility.postValue(View.GONE)
                     }
 
                     override fun onChildChanged(

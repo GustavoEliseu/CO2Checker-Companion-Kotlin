@@ -7,8 +7,8 @@ import com.gustavo.cocheckercompanionkotlin.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-@HiltViewModel
-class SensorItemViewModel @Inject constructor() :
+
+class SensorItemViewModel :
     ViewModel() {
     val mutableSensorName = MutableLiveData<String>()
     val mutableSensorLastMeasure = MutableLiveData<String>()

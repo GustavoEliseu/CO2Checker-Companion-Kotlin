@@ -1,8 +1,11 @@
 package com.gustavo.cocheckercompaniomkotlin.ui.login
 
+import android.content.Context
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuthEmailException
@@ -14,6 +17,7 @@ import com.gustavo.cocheckercompaniomkotlin.model.data.RegisterUser
 import com.gustavo.cocheckercompaniomkotlin.ui.login.viewmodel.LoginViewModel
 import com.gustavo.cocheckercompaniomkotlin.ui.main.mainIntent
 import com.gustavo.cocheckercompaniomkotlin.utils.LoggerUtil
+import com.gustavo.cocheckercompaniomkotlin.utils.hideKeyboard
 import com.gustavo.cocheckercompaniomkotlin.utils.isNullOrEmptyOrBlank
 import com.gustavo.cocheckercompaniomkotlin.utils.isPasswordValid
 import com.gustavo.cocheckercompaniomkotlin.utils.isValidEmail
@@ -22,6 +26,8 @@ import com.gustavo.cocheckercompaniomkotlin.utils.toast
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.ref.WeakReference
+
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<LoginViewModel>() {
@@ -30,6 +36,7 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
     override val mViewModel: LoginViewModel by viewModels()
     private val database = FirebaseDatabase.getInstance()
     private var showErrors = false
+    private var activeButton = true
     override fun getLayoutId(): Int = R.layout.activity_login
 
     override fun initializeUi() {
@@ -57,15 +64,19 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
         mBinding.passwordEditText.doOnTextChanged { text, _, _, _ ->
             if (showErrors) verifyPasswordValid(text.toString())
         }
-        mBinding.passwordEditText.setOnEditorActionListener { _, i, keyEvent ->
+        mBinding.passwordEditText.setOnEditorActionListener { textView, i, keyEvent ->
+
             if(i == EditorInfo.IME_ACTION_DONE){
                 loginClick()
-                true
-            }else if(keyEvent.keyCode == KeyEvent.KEYCODE_ENTER){
-                loginClick()
-                true
-            }else{
                 false
+            }else if(keyEvent.keyCode == KeyEvent.KEYCODE_ENTER){
+                if(textView.isFocused) {
+                    textView.hideKeyboard(WeakReference(this))
+                }
+                loginClick()
+                false
+            }else{
+                true
             }
         }
     }
@@ -93,43 +104,50 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
     }
 
     private fun loginClick() {
-        var validCredentials = true
-        mViewModel.changeLoadingVisibility(true)
+        if(activeButton) {
+            activeButton = false
+            var validCredentials = true
+            mViewModel.changeLoadingVisibility(true)
 
-        if (!verifyPasswordValid(mBinding.passwordEditText.text.toString())) {
-            validCredentials = false
-        }
+            if (!verifyPasswordValid(mBinding.passwordEditText.text.toString())) {
+                validCredentials = false
+            }
 
-        if (!verifyValidEmail(mBinding.emailEditText.text.toString())) {
-            validCredentials = false
-        }
+            if (!verifyValidEmail(mBinding.emailEditText.text.toString())) {
+                validCredentials = false
+            }
 
-        if (validCredentials) {
-            mBinding.passwordErrorMessage.text = null
-            mBinding.emailTextInput.error = null
-            mViewModel.login(
-                email = mBinding.emailEditText.text.toString(),
-                password = mBinding.passwordEditText.text.toString()
-            ) { success, _, exception ->
-                if (success) {
-                    startActivity(mainIntent())
-                } else {
-                    when (exception) {
-                        is FirebaseAuthInvalidCredentialsException -> {
-                            toast(R.string.loginErrorCredentialError)
-                        }
-                        else -> {
-                            val message = exception?.message
-                            toast(message ?: getString(R.string.genericLoginError))
-                            exception?.let {
-                                LoggerUtil.printStackTraceOnlyInDebug(it)
+            if (validCredentials) {
+                mBinding.passwordErrorMessage.text = null
+                mBinding.emailTextInput.error = null
+                mViewModel.login(
+                    email = mBinding.emailEditText.text.toString(),
+                    password = mBinding.passwordEditText.text.toString()
+                ) { success, _, exception ->
+                    if (success) {
+                        startActivity(mainIntent())
+                        activeButton = true
+                    } else {
+                        activeButton = true
+                        when (exception) {
+                            is FirebaseAuthInvalidCredentialsException -> {
+                                toast(R.string.loginErrorCredentialError)
+                            }
+
+                            else -> {
+                                val message = exception?.message
+                                toast(message ?: getString(R.string.genericLoginError))
+                                exception?.let {
+                                    LoggerUtil.printStackTraceOnlyInDebug(it)
+                                }
                             }
                         }
                     }
                 }
+            } else {
+                showErrors = true
+                activeButton = true
             }
-        } else {
-            showErrors = true
         }
     }
 

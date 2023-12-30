@@ -8,9 +8,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.gustavo.cocheckercompaniomkotlin.utils.DEVICES
 import com.gustavo.cocheckercompaniomkotlin.utils.LOCATIONS
 import com.gustavo.cocheckercompaniomkotlin.utils.USERS
+import timber.log.Timber
 
 
-class FirebaseDatabaseManager {
+object FirebaseDatabaseManager {
     private var firebaseDatabase: FirebaseDatabase? = null
     private var currentUser: FirebaseUser? = null
 
@@ -21,6 +22,9 @@ class FirebaseDatabaseManager {
     }
 
     fun getCurrentUserReference() : DatabaseReference?{
+        if(firebaseDatabase == null){
+            Timber.e("FirebaseDatabaseManager.initializeFirebase is null, have you called before starting?")
+        }
         firebaseDatabase?.let {database->
         currentUser?.uid?.let {
             val user = database.getReference(USERS).child(it)
