@@ -9,11 +9,9 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor():BaseViewModel() {
 
 
-    val emptyLocationsListMessageVisibility = MutableLiveData<Int>()
-
-    private fun onClickLocation(locationUuid: String,locationName: String) {
-    }
 
     override fun initialize() {
     }
+
+
 }

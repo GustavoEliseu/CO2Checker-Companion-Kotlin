@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DatabaseError
 import com.gustavo.cocheckercompaniomkotlin.base.BaseViewModel
 import com.gustavo.cocheckercompaniomkotlin.model.data.SensorItemList
+import com.gustavo.cocheckercompaniomkotlin.model.data.SimpleSensor
 import com.gustavo.cocheckercompaniomkotlin.model.domain.FetchSensorsUseCase
 import com.gustavo.cocheckercompaniomkotlin.ui.main.adapters.SensorListAdapter
 import com.gustavo.cocheckercompaniomkotlin.utils.LoggerUtil
@@ -19,14 +20,10 @@ class SensorsListViewModel @Inject constructor() : BaseViewModel() {
 
 
     val emptySensorListMessageVisibility = MutableLiveData<Int>()
+    val mutableSensorClick = MutableLiveData<SimpleSensor>()
 
     override fun initialize() {
         mySensorListAdapter.clear()
-//        fetchSensorsUseCase.fetchSensorsList(){
-//            if(!it.isNullOrEmpty()){
-//                mySensorListAdapter.setCurrentSensors(it)
-//            }
-//        }
         fetchSensorsUseCase.fetchUserSensorsData(object : FetchSensorsUseCase.UserSensorsDataListener {
             override fun onChildAdded(sensor: SensorItemList) {
                 emptySensorListMessageVisibility.postValue(View.GONE)
@@ -51,6 +48,6 @@ class SensorsListViewModel @Inject constructor() : BaseViewModel() {
     }
 
     private fun onClickSensor(sensorMac: String) {
-        //openSensor(sensorMac)
+        mutableSensorClick.value = SimpleSensor(sensorMac)
     }
 }

@@ -129,22 +129,22 @@ class FirebaseUserDataSource {
             locationRef.orderByValue().limitToLast(currentLocationsPage)
                 .addChildEventListener(object : ChildEventListener {
                     override fun onChildAdded(snapshot: DataSnapshot, previousChild: String?) {
-                        val sensor = snapshot.getValue(LocationItemList::class.java)
-                        sensor?.let { userLocationListener.onChildAdded(it) }
+                        val location = snapshot.getValue(LocationItemList::class.java)
+                        location?.let { userLocationListener.onChildAdded(it) }
                     }
 
                     override fun onChildChanged(
                         snapshot: DataSnapshot,
                         previousChildName: String?
                     ) {
-                        val sensor = snapshot.getValue(LocationItemList::class.java)
-                        sensor?.let { userLocationListener.onChildChanged(it) }
+                        val location = snapshot.getValue(LocationItemList::class.java)
+                        location?.let { userLocationListener.onChildChanged(it) }
 
                     }
 
                     override fun onChildRemoved(snapshot: DataSnapshot) {
-                        val sensor = snapshot.getValue(LocationItemList::class.java)
-                        sensor?.let { userLocationListener.onChildRemoved(it) }
+                        val location = snapshot.getValue(LocationItemList::class.java)
+                        location?.let { userLocationListener.onChildRemoved(it) }
                     }
 
                     override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {

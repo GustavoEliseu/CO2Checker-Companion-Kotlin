@@ -17,3 +17,5 @@ data class LocationItemList(
 ) : Serializable{
     constructor() : this("", "", "", null, null, null)
 }
+
+data class SimpleLocation(val locationId: String,val locationName:String)

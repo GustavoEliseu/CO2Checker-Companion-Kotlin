@@ -9,6 +9,7 @@ data class SensorItemList(
 ) : Serializable {
     constructor() : this("", "", null)
 }
+data class SimpleSensor(val mac: String)
 
 data class LastMeasure(
     val locationLatitude: String? = null,

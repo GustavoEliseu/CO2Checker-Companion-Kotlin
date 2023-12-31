@@ -1,7 +1,9 @@
 package com.gustavo.cocheckercompaniomkotlin.ui.main.sensors
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.gustavo.cocheckercompaniomkotlin.base.BaseFragment
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.SensorsListViewModel
 import com.gustavo.cocheckercompanionkotlin.BR
@@ -16,16 +18,23 @@ class SensorsListFragment : BaseFragment<SensorsListViewModel,FragmentSensorsLis
 
     override fun getBindingVariable(): Int = BR.viewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun initializeUi() {
         mViewModel.initialize()
+        mViewModel.mutableSensorClick.observe(this, Observer{
+            if(it!=null){
+                Toast.makeText(context,it.mac,Toast.LENGTH_SHORT).show()
+                mViewModel.mutableSensorClick.value = null
+            }
+        })
     }
 
     override fun onBackPressed(): Boolean {
         return false
+    }
+
+    override fun onStop() {
+        mViewModel.mutableSensorClick.removeObservers(this)
+        super.onStop()
     }
 
 }
