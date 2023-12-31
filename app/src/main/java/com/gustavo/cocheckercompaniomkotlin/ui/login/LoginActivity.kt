@@ -32,10 +32,8 @@ import java.lang.ref.WeakReference
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<LoginViewModel>() {
-    //TODO - MOVE LOGIN ACTIONS TO VIEW MODEL, USE-CASE AND REPOSITORY
     private lateinit var mBinding: ActivityLoginBinding
     override val mViewModel: LoginViewModel by viewModels()
-    private val database = FirebaseDatabase.getInstance()
     private var showErrors = false
     private var activeButton = true
     override fun getLayoutId(): Int = R.layout.activity_login
@@ -182,7 +180,7 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                     when (result) {
                         is Result.Success -> {
                             mViewModel.changeLoadingVisibility(false)
-                            Toast.makeText(applicationContext,"sucesso",Toast.LENGTH_SHORT).show()
+                            startActivity(mainIntent())
                             activeButton = true
                         }
                         is Result.Error ->{

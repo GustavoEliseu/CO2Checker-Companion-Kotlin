@@ -24,18 +24,6 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
         auth = FirebaseAuth.getInstance()
     }
 
-//    fun login(
-//        email: String,
-//        password: String,
-//        onFinish: (success: Boolean, user: FirebaseUser?, e: Exception?) -> Unit
-//    ) {
-//        auth?.signInWithEmailAndPassword(email, password)
-//            ?.addOnCompleteListener { task ->
-//                changeLoadingVisibility(false)
-//                onFinish(task.isSuccessful, auth?.currentUser, task.exception)
-//            }
-//    }
-
     suspend fun login(email: String, password: String): Result<FirebaseUser?> {
         return try {
             val authResult = auth?.signInWithEmailAndPasswordSuspend(email, password)
@@ -54,20 +42,6 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
-//    fun register(
-//        email: String,
-//        password: String,
-//        onFinish: (success: Boolean, user: FirebaseUser?, e: Exception?) -> Unit
-//    ) {
-//        auth?.createUserWithEmailAndPassword(
-//            email,
-//            password
-//        )?.addOnCompleteListener { task ->
-//            val user = auth?.currentUser
-//            onFinish(task.isSuccessful, user, task.exception)
-//            changeLoadingVisibility(false)
-//        }
-//    }
 suspend fun  forgot(email: String): Result<Any?>{
     return try {
         val authResult = auth?.sendPasswordResetEmailSuspend(email)
@@ -76,22 +50,8 @@ suspend fun  forgot(email: String): Result<Any?>{
         Result.Error(e)
     }
 }
-//    fun forgot(email: String, onFinish: (success: Boolean, e: Exception?) -> Unit) {
-//        auth?.let { }
-//        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-//            .addOnCompleteListener { task ->
-//                onFinish(task.isSuccessful, task.exception)
-//                changeLoadingVisibility(false)
-//            }
-//    }
-
     fun changeLoadingVisibility(showLoad: Boolean) {
         mutableBtnVisibility.value = if (showLoad) View.GONE else View.VISIBLE
         mutableLoadVisibility.value = if (showLoad) View.VISIBLE else View.GONE
     }
-
-    fun changeErrorVisibility(showError: Boolean) {
-        errorVisibility.value = if (showError) View.VISIBLE else View.GONE
-    }
-
 }
