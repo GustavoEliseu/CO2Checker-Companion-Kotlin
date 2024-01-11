@@ -140,5 +140,6 @@
     <string name="forgot_password_result">Você receberá um e-mail para a recuperação de senha</string>
     <string name="error_register">Não foi possível registrar o usuário!</string>
     <string name="no_devices_found">Nenhum dispositivo encontrado, adicione um novo!</string>
+    <string name="logo_description">App\'s logo</string>
 
 </resources>
