@@ -3,6 +3,7 @@ package com.gustavo.cocheckercompaniomkotlin.ui.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -12,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gustavo.cocheckercompaniomkotlin.base.BaseActivity
 import com.gustavo.cocheckercompaniomkotlin.data.remote.FirebaseDatabaseManager
+import com.gustavo.cocheckercompaniomkotlin.ui.main.sensors.SensorsListFragment
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.MainViewModel
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityMainBinding
@@ -44,10 +46,26 @@ class MainActivity : BaseActivity<MainViewModel>() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        initializeUi()
     }
 
     override fun initializeUi() {
+    }
 
+    override fun onResume() {
+        super.onResume()
+        binding.addFab.setOnClickListener {
+            val navHostFragment = supportFragmentManager
+                .findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+            val isSensors = navHostFragment.childFragmentManager.fragments.any {
+                it.javaClass == SensorsListFragment::class.java && it.isVisible
+            }
+            if(isSensors){
+                Toast.makeText(this,"Sensors",Toast.LENGTH_SHORT).show()
+            }else {
+                Toast.makeText(this,"locations",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     fun openSensor(deviceMac: String) {
