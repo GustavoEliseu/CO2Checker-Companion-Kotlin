@@ -1,10 +1,16 @@
 package com.gustavo.cocheckercompaniomkotlin.utils
 
+import android.Manifest
+
 
 const val PERMISSION_REQUEST = 111
 const val FROM_LOGIN = "from_login"
 
 const val ESP_WIFI_TIMEOUT = 20L
+
+
+const val PERMISSION_COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
+const val PERMISSION_FINE_LOCATION= Manifest.permission.ACCESS_FINE_LOCATION
 
 
 const val DEVICES = "Devices"

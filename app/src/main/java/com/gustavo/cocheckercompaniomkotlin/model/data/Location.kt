@@ -17,5 +17,14 @@ data class LocationItemList(
 ) : Serializable{
     constructor() : this("", "", "", null, null, null)
 }
+data class NewLocationData(
+    @Json(name = "UUID")
+    var uuid: String? = null,
+    @Json(name = "Name")
+    var Name: String? = null,
+    var Latitude: String? = null,
+    var Longitude: String? = null,
+    var Owners: String? = null
+) : Serializable
 
 data class SimpleLocation(val locationId: String,val locationName:String)

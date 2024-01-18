@@ -21,19 +21,19 @@ class LocationsListFragment: BaseFragment<LocationsListViewModel, FragmentLocati
 
     override fun initializeUi() {
         mViewModel.initialize()
-        mViewModel.mutableClickedLocation.observe(this, Observer{
-            if(it != null){
-                (activity as? MainActivity)?.openLocation(it.locationId,it.locationName)
+        mViewModel.mutableClickedLocation.observe(this) {
+            if (it != null) {
+                (activity as? MainActivity)?.openLocation(it.locationId, it.locationName)
                 mViewModel.mutableClickedLocation.value = null
             }
-        })
+        }
 
-        mViewModel.fabAddLocationsClick.observe(this, Observer{
-            if(it == true){
+        mViewModel.fabAddLocationsClick.observe(this) {
+            if (it == true) {
                 addLocation()
                 mViewModel.fabAddLocationsClick.value = false
             }
-        })
+        }
     }
 
     override fun onStop() {
@@ -46,7 +46,7 @@ class LocationsListFragment: BaseFragment<LocationsListViewModel, FragmentLocati
         return false
     }
 
-    fun addLocation(){
-        Toast.makeText(context,"testeLocation", Toast.LENGTH_SHORT).show()
+    private fun addLocation(){
+        (activity as? MainActivity)?.addLocation()
     }
 }

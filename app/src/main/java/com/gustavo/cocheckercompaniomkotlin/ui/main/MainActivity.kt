@@ -1,11 +1,16 @@
 package com.gustavo.cocheckercompaniomkotlin.ui.main
 
+import android.Manifest.permission
+import android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.navigation.findNavController
+import androidx.annotation.RequiresPermission
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -13,12 +18,17 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gustavo.cocheckercompaniomkotlin.base.BaseActivity
 import com.gustavo.cocheckercompaniomkotlin.data.remote.FirebaseDatabaseManager
+import com.gustavo.cocheckercompaniomkotlin.model.data.NewLocationData
 import com.gustavo.cocheckercompaniomkotlin.model.data.NewSensorData
 import com.gustavo.cocheckercompaniomkotlin.ui.location.locationDetailsIntent
 import com.gustavo.cocheckercompaniomkotlin.ui.main.custom.NewSensorDialog
-import com.gustavo.cocheckercompaniomkotlin.ui.main.sensors.SensorsListFragment
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.MainViewModel
 import com.gustavo.cocheckercompaniomkotlin.ui.sensor.sensorDetailsIntent
+import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_COARSE_LOCATION
+import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_FINE_LOCATION
+import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_REQUEST
+import com.gustavo.cocheckercompaniomkotlin.utils.longToast
+import com.gustavo.cocheckercompaniomkotlin.utils.toast
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityMainBinding
 
@@ -31,6 +41,11 @@ class MainActivity : BaseActivity<MainViewModel>() {
     private lateinit var binding: ActivityMainBinding
     override val mViewModel: MainViewModel by viewModels()
     override fun getLayoutId(): Int = R.layout.activity_main
+
+    var requestResult: () -> Unit? = ::blank
+    private var locationManager: LocationManager? = null
+    private var currentLocation: Location? = null
+    private var tempLocationData: NewLocationData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +79,33 @@ class MainActivity : BaseActivity<MainViewModel>() {
         startActivity(locationDetailsIntent(locationUid, locationName))
     }
 
+    fun addLocation(){
+        tempLocationData = null
+        val permissionsArray = arrayOf(
+            PERMISSION_COARSE_LOCATION,
+            PERMISSION_FINE_LOCATION
+        )
+        requestResult = ::finishAddLocation
+        askPermissions(permissionsArray)
+    }
+
+    @RequiresPermission(anyOf = [permission.ACCESS_COARSE_LOCATION, permission.ACCESS_FINE_LOCATION])
+    private fun finishAddLocation() {
+        getLocation()
+        currentLocation?.let {
+            tempLocationData?.Latitude = it.latitude.toString()
+            tempLocationData?.Longitude = it.latitude.toString()
+        }
+        Toast.makeText(this,"testee",Toast.LENGTH_SHORT).show()
+        //startActivity(configNewLocationIntent(tempLocationData, currentLocation))
+        requestResult = ::blank
+    }
+
+    @RequiresPermission(anyOf = [permission.ACCESS_COARSE_LOCATION, permission.ACCESS_FINE_LOCATION])
+    private fun getLocation() {
+        currentLocation = locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+    }
+
     fun addSensor(sensor: NewSensorData?){
         val dialog = NewSensorDialog(sensor, ::startQRCodeNewSensor, ::finishAddSensor)
         dialog.show(supportFragmentManager, null)
@@ -77,5 +119,41 @@ class MainActivity : BaseActivity<MainViewModel>() {
         sensor?.let {
             mViewModel.finishAddSensor(it)
         }
+    }
+    private fun blank() {}
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        var anyPermissionGranted = false
+        if (requestCode == PERMISSION_REQUEST) {
+            grantResults.forEachIndexed { index, result ->
+                if (result == PackageManager.PERMISSION_GRANTED) {
+                    anyPermissionGranted = true
+                }
+            }
+            if(anyPermissionGranted) {
+                onPermissionGranted(permissions)
+            }else{
+                grantResults.forEachIndexed { index, result ->
+                    if (shouldShowRequestPermissionRationale(permissions[index])) {
+                        onPermissionDenied()
+                    } else {
+                        onPermissionDenied(permanently = true)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onPermissionDenied(permanently: Boolean) {
+        if (permanently) longToast(R.string.permissions_location_settings)
+        else toast(R.string.permissions_location)
+    }
+    override fun onPermissionGranted(permissions: Array<out String>) {
+        requestResult()
     }
 }
