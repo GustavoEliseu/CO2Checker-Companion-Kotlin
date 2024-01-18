@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.gustavo.cocheckercompaniomkotlin.base.BaseFragment
+import com.gustavo.cocheckercompaniomkotlin.ui.main.MainActivity
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.SensorsListViewModel
 import com.gustavo.cocheckercompanionkotlin.BR
 import com.gustavo.cocheckercompanionkotlin.R
@@ -21,7 +22,7 @@ class SensorsListFragment : BaseFragment<SensorsListViewModel,FragmentSensorsLis
         mViewModel.initialize()
         mViewModel.mutableSensorClick.observe(this, Observer{
             if(it!=null){
-                Toast.makeText(context,it.mac,Toast.LENGTH_SHORT).show()
+                (activity as? MainActivity)?.openSensor(it.mac)
                 mViewModel.mutableSensorClick.value = null
             }
         })

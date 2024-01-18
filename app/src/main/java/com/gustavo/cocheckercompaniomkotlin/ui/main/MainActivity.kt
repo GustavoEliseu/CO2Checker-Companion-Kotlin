@@ -13,8 +13,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gustavo.cocheckercompaniomkotlin.base.BaseActivity
 import com.gustavo.cocheckercompaniomkotlin.data.remote.FirebaseDatabaseManager
+import com.gustavo.cocheckercompaniomkotlin.ui.location.locationDetailsIntent
 import com.gustavo.cocheckercompaniomkotlin.ui.main.sensors.SensorsListFragment
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.MainViewModel
+import com.gustavo.cocheckercompaniomkotlin.ui.sensor.sensorDetailsIntent
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityMainBinding
 
@@ -53,10 +55,10 @@ class MainActivity : BaseActivity<MainViewModel>() {
     }
 
     fun openSensor(deviceMac: String) {
-       // startActivity(sensorDetailsIntent(deviceMac))
+       startActivity(sensorDetailsIntent(deviceMac))
     }
 
     fun openLocation(locationUid: String, locationName: String) {
-//        startActivity(locationDetailsIntent(locationUid, locationName))
+        startActivity(locationDetailsIntent(locationUid, locationName))
     }
 }

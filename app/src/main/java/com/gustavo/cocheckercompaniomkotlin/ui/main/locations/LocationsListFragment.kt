@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.gustavo.cocheckercompaniomkotlin.base.BaseFragment
+import com.gustavo.cocheckercompaniomkotlin.ui.main.MainActivity
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.LocationsListViewModel
 import com.gustavo.cocheckercompanionkotlin.BR
 import com.gustavo.cocheckercompanionkotlin.R
@@ -22,7 +23,7 @@ class LocationsListFragment: BaseFragment<LocationsListViewModel, FragmentLocati
         mViewModel.initialize()
         mViewModel.mutableClickedLocation.observe(this, Observer{
             if(it != null){
-                Toast.makeText(context, it.locationName ?: "emptyName", Toast.LENGTH_SHORT).show()
+                (activity as? MainActivity)?.openLocation(it.locationId,it.locationName)
                 mViewModel.mutableClickedLocation.value = null
             }
         })
