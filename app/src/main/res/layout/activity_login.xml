@@ -24,6 +24,8 @@
         android:padding="24dp"
         android:paddingTop="16dp">
 
+        <!--TODO - ADD LOGO AND NAME-->
+
         <ImageView
             android:layout_width="64dp"
             android:layout_height="64dp"

@@ -1,5 +1,7 @@
 package com.gustavo.cocheckercompaniomkotlin.ui.login
 
+import android.content.Context
+import android.content.Intent
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -15,6 +17,7 @@ import com.gustavo.cocheckercompaniomkotlin.base.BaseActivity
 import com.gustavo.cocheckercompaniomkotlin.model.data.RegisterUser
 import com.gustavo.cocheckercompaniomkotlin.model.domain.Result
 import com.gustavo.cocheckercompaniomkotlin.ui.login.viewmodel.LoginViewModel
+import com.gustavo.cocheckercompaniomkotlin.ui.main.MainActivity
 import com.gustavo.cocheckercompaniomkotlin.ui.main.mainIntent
 import com.gustavo.cocheckercompaniomkotlin.utils.LoggerUtil
 import com.gustavo.cocheckercompaniomkotlin.utils.hideKeyboard
@@ -29,8 +32,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 
-
-@AndroidEntryPoint
+fun Context.loginIntent(): Intent {
+    return Intent(this, LoginActivity::class.java)
+}
 class LoginActivity : BaseActivity<LoginViewModel>() {
     private lateinit var mBinding: ActivityLoginBinding
     override val mViewModel: LoginViewModel by viewModels()

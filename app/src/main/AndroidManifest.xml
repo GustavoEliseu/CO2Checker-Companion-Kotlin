@@ -19,10 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CO2CheckerCompanionKotlin"
         tools:targetApi="31">
-        <activity
-            android:name="com.gustavo.cocheckercompaniomkotlin.ui.login.LoginActivity"
-            android:exported="true"
-            android:label="@string/app_name">
+        <activity android:name="com.gustavo.cocheckercompaniomkotlin.ui.start.StartActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,9 +28,12 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.gustavo.cocheckercompaniomkotlin.ui.login.LoginActivity"
+            android:exported="true">
+        </activity>
+        <activity
             android:name="com.gustavo.cocheckercompaniomkotlin.ui.main.MainActivity"
-            android:exported="true"
-            android:label="@string/app_name">
+            android:exported="true">
         </activity>
     </application>
     <meta-data
