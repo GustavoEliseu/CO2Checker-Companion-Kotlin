@@ -13,7 +13,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gustavo.cocheckercompaniomkotlin.base.BaseActivity
 import com.gustavo.cocheckercompaniomkotlin.data.remote.FirebaseDatabaseManager
+import com.gustavo.cocheckercompaniomkotlin.model.data.NewSensorData
 import com.gustavo.cocheckercompaniomkotlin.ui.location.locationDetailsIntent
+import com.gustavo.cocheckercompaniomkotlin.ui.main.custom.NewSensorDialog
 import com.gustavo.cocheckercompaniomkotlin.ui.main.sensors.SensorsListFragment
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.MainViewModel
 import com.gustavo.cocheckercompaniomkotlin.ui.sensor.sensorDetailsIntent
@@ -60,5 +62,20 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
     fun openLocation(locationUid: String, locationName: String) {
         startActivity(locationDetailsIntent(locationUid, locationName))
+    }
+
+    fun addSensor(sensor: NewSensorData?){
+        val dialog = NewSensorDialog(sensor, ::startQRCodeNewSensor, ::finishAddSensor)
+        dialog.show(supportFragmentManager, null)
+    }
+
+    private fun startQRCodeNewSensor(sensor: NewSensorData? = null) {
+        //startActivityForResult(QRReaderIntent(fromAddSensor = true, sensor), SENSOR_DATA_REQUEST)
+    }
+
+    private fun finishAddSensor(sensor: NewSensorData?) {
+        sensor?.let {
+            mViewModel.finishAddSensor(it)
+        }
     }
 }

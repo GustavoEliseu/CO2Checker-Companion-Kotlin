@@ -44,6 +44,6 @@ class SensorsListFragment : BaseFragment<SensorsListViewModel,FragmentSensorsLis
     }
 
     fun addSensor(){
-        Toast.makeText(context,"testeSensor", Toast.LENGTH_SHORT).show()
+        (activity as? MainActivity)?.addSensor(null)
     }
 }

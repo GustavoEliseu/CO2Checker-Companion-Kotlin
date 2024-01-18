@@ -11,6 +11,15 @@ data class SensorItemList(
 }
 data class SimpleSensor(val mac: String)
 
+data class NewSensorData(
+    var mac: String = "",
+    var name: String? = null
+) : Serializable {
+    fun toSensorItemList(): SensorItemList {
+        return SensorItemList(mac = mac.toString(), name = name.toString(), LastLocation = null)
+    }
+}
+
 data class LastMeasure(
     val locationLatitude: String? = null,
     val locationLongitude: String? = null,
