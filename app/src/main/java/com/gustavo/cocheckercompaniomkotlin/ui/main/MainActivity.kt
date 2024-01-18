@@ -52,22 +52,6 @@ class MainActivity : BaseActivity<MainViewModel>() {
     override fun initializeUi() {
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.addFab.setOnClickListener {
-            val navHostFragment = supportFragmentManager
-                .findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
-            val isSensors = navHostFragment.childFragmentManager.fragments.any {
-                it.javaClass == SensorsListFragment::class.java && it.isVisible
-            }
-            if(isSensors){
-                Toast.makeText(this,"Sensors",Toast.LENGTH_SHORT).show()
-            }else {
-                Toast.makeText(this,"locations",Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     fun openSensor(deviceMac: String) {
        // startActivity(sensorDetailsIntent(deviceMac))
     }

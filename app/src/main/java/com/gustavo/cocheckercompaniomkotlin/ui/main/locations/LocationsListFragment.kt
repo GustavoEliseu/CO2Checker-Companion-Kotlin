@@ -26,6 +26,13 @@ class LocationsListFragment: BaseFragment<LocationsListViewModel, FragmentLocati
                 mViewModel.mutableClickedLocation.value = null
             }
         })
+
+        mViewModel.fabAddLocationsClick.observe(this, Observer{
+            if(it == true){
+                addLocation()
+                mViewModel.fabAddLocationsClick.value = false
+            }
+        })
     }
 
     override fun onStop() {
@@ -38,4 +45,7 @@ class LocationsListFragment: BaseFragment<LocationsListViewModel, FragmentLocati
         return false
     }
 
+    fun addLocation(){
+        Toast.makeText(context,"testeLocation", Toast.LENGTH_SHORT).show()
+    }
 }

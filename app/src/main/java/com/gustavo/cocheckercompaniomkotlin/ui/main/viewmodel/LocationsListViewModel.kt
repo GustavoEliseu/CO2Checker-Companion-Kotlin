@@ -19,6 +19,8 @@ class LocationsListViewModel: BaseViewModel() {
 
 
     val emptyLocationsListMessageVisibility = MutableLiveData<Int>()
+    val fabAddLocationsClick = MutableLiveData<Boolean>()
+
 
     override fun initialize() {
         myLocationsListAdapter.clear()
@@ -48,5 +50,9 @@ class LocationsListViewModel: BaseViewModel() {
     private fun onClickLocation(locationId: String, locationName:String) {
         val simple = SimpleLocation(locationId,locationName)
         mutableClickedLocation.value = simple
+    }
+
+    fun fabClick(){
+        fabAddLocationsClick.value = true
     }
 }

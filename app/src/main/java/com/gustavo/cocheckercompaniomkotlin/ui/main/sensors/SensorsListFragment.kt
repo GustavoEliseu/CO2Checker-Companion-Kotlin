@@ -1,6 +1,5 @@
 package com.gustavo.cocheckercompaniomkotlin.ui.main.sensors
 
-import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -26,6 +25,12 @@ class SensorsListFragment : BaseFragment<SensorsListViewModel,FragmentSensorsLis
                 mViewModel.mutableSensorClick.value = null
             }
         })
+        mViewModel.fabAddSensorClick.observe(this, Observer{
+            if(it == true){
+                addSensor()
+                mViewModel.fabAddSensorClick.value = false
+            }
+        })
     }
 
     override fun onBackPressed(): Boolean {
@@ -37,4 +42,7 @@ class SensorsListFragment : BaseFragment<SensorsListViewModel,FragmentSensorsLis
         super.onStop()
     }
 
+    fun addSensor(){
+        Toast.makeText(context,"testeSensor", Toast.LENGTH_SHORT).show()
+    }
 }

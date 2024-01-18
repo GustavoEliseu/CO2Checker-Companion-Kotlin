@@ -21,6 +21,7 @@ class SensorsListViewModel @Inject constructor() : BaseViewModel() {
 
     val emptySensorListMessageVisibility = MutableLiveData<Int>()
     val mutableSensorClick = MutableLiveData<SimpleSensor>()
+    val fabAddSensorClick = MutableLiveData<Boolean>()
 
     override fun initialize() {
         mySensorListAdapter.clear()
@@ -49,5 +50,9 @@ class SensorsListViewModel @Inject constructor() : BaseViewModel() {
 
     private fun onClickSensor(sensorMac: String) {
         mutableSensorClick.value = SimpleSensor(sensorMac)
+    }
+
+    fun fabClick(){
+        fabAddSensorClick.value = true
     }
 }
