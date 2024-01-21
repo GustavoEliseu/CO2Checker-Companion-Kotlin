@@ -47,6 +47,7 @@
     <string name="hint_username">Email</string>
     <string name="hint_password">Senha</string>
     <string name="button_next">Próximo</string>
+    <string name="button_save">Salvar local</string>
     <string name="button_register">Registrar</string>
     <string name="button_forgot">Esqueci a senha</string>
     <string name="button_signout">Deslogar</string>

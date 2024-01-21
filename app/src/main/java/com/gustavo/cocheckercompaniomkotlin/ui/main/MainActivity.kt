@@ -1,14 +1,13 @@
 package com.gustavo.cocheckercompaniomkotlin.ui.main
 
 import android.Manifest.permission
-import android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresPermission
 import androidx.navigation.fragment.NavHostFragment
@@ -23,6 +22,7 @@ import com.gustavo.cocheckercompaniomkotlin.model.data.NewSensorData
 import com.gustavo.cocheckercompaniomkotlin.ui.location.locationDetailsIntent
 import com.gustavo.cocheckercompaniomkotlin.ui.main.custom.NewSensorDialog
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.MainViewModel
+import com.gustavo.cocheckercompaniomkotlin.ui.newlocation.configNewLocationIntent
 import com.gustavo.cocheckercompaniomkotlin.ui.sensor.sensorDetailsIntent
 import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_COARSE_LOCATION
 import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_FINE_LOCATION
@@ -31,12 +31,15 @@ import com.gustavo.cocheckercompaniomkotlin.utils.longToast
 import com.gustavo.cocheckercompaniomkotlin.utils.toast
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityMainBinding
+import java.util.UUID
+
 
 fun Context.mainIntent(): Intent {
     return Intent(this, MainActivity::class.java)
 }
 
-class MainActivity : BaseActivity<MainViewModel>() {
+class MainActivity : BaseActivity<MainViewModel>(),
+    LocationListener {
 
     private lateinit var binding: ActivityMainBinding
     override val mViewModel: MainViewModel by viewModels()
@@ -69,6 +72,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     }
 
     override fun initializeUi() {
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as? LocationManager
     }
 
     fun openSensor(deviceMac: String) {
@@ -80,7 +84,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     }
 
     fun addLocation(){
-        tempLocationData = null
+        tempLocationData = NewLocationData(uuid = UUID.randomUUID().toString(),)
         val permissionsArray = arrayOf(
             PERMISSION_COARSE_LOCATION,
             PERMISSION_FINE_LOCATION
@@ -92,18 +96,19 @@ class MainActivity : BaseActivity<MainViewModel>() {
     @RequiresPermission(anyOf = [permission.ACCESS_COARSE_LOCATION, permission.ACCESS_FINE_LOCATION])
     private fun finishAddLocation() {
         getLocation()
-        currentLocation?.let {
-            tempLocationData?.Latitude = it.latitude.toString()
-            tempLocationData?.Longitude = it.latitude.toString()
+        if(currentLocation != null) {
+            startActivity(configNewLocationIntent(currentLocation, null))
+        } else{
+            toast("Não foi possível detectar sua localização")
         }
-        Toast.makeText(this,"testee",Toast.LENGTH_SHORT).show()
-        //startActivity(configNewLocationIntent(tempLocationData, currentLocation))
         requestResult = ::blank
     }
 
     @RequiresPermission(anyOf = [permission.ACCESS_COARSE_LOCATION, permission.ACCESS_FINE_LOCATION])
     private fun getLocation() {
         currentLocation = locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        if(currentLocation== null){
+        }
     }
 
     fun addSensor(sensor: NewSensorData?){
@@ -155,5 +160,9 @@ class MainActivity : BaseActivity<MainViewModel>() {
     }
     override fun onPermissionGranted(permissions: Array<out String>) {
         requestResult()
+    }
+
+    override fun onLocationChanged(location: Location) {
+        currentLocation = location
     }
 }

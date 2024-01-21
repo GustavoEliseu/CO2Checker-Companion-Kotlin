@@ -8,14 +8,13 @@ import com.gustavo.cocheckercompaniomkotlin.base.BaseActivity
 import com.gustavo.cocheckercompaniomkotlin.ui.location.viewmodel.LocationDetailsViewModel
 import com.gustavo.cocheckercompaniomkotlin.utils.LOCATION_NAME
 import com.gustavo.cocheckercompaniomkotlin.utils.LOCATION_UID
-import com.gustavo.cocheckercompaniomkotlin.utils.SENSOR_MAC
 import com.gustavo.cocheckercompanionkotlin.R
 
 fun Context.locationDetailsIntent(locationUid: String, locationName: String): Intent {
-    val intent = Intent(this, LocationDetailsActivity::class.java)
-    intent.putExtra(LOCATION_UID, locationUid)
-    intent.putExtra(LOCATION_NAME, locationName)
-    return intent
+    return Intent(this, LocationDetailsActivity::class.java).apply {
+        this.putExtra(LOCATION_UID, locationUid)
+        this.putExtra(LOCATION_NAME, locationName)
+    }
 }
 
 class LocationDetailsActivity: BaseActivity<LocationDetailsViewModel>() {

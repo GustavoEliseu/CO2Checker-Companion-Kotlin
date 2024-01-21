@@ -44,9 +44,14 @@
             android:name="com.gustavo.cocheckercompaniomkotlin.ui.main.MainActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:windowSoftInputMode="adjustPan"
+            android:name="com.gustavo.cocheckercompaniomkotlin.ui.newlocation.AddLocationActivity"
+            android:exported="true">
+        </activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug" />
     </application>
-    <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="${MAPS_API_KEY}" />
 
 </manifest>

@@ -10,9 +10,9 @@ import com.gustavo.cocheckercompaniomkotlin.utils.SENSOR_MAC
 import com.gustavo.cocheckercompanionkotlin.R
 
 fun Context.sensorDetailsIntent(sensorMac: String): Intent {
-    val intent = Intent(this, SensorDetailsActivity::class.java)
-    intent.putExtra(SENSOR_MAC, sensorMac)
-    return intent
+    return Intent(this, SensorDetailsActivity::class.java).apply{
+        this.putExtra(SENSOR_MAC, sensorMac)
+    }
 }
 class SensorDetailsActivity: BaseActivity<LocationDetailsViewModel>() {
     override val mViewModel: LocationDetailsViewModel by viewModels()

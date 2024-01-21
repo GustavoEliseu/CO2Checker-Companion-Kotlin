@@ -1,14 +1,15 @@
 package com.gustavo.cocheckercompaniomkotlin.ui.main.locations
 
-import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.gustavo.cocheckercompaniomkotlin.base.BaseFragment
 import com.gustavo.cocheckercompaniomkotlin.ui.main.MainActivity
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.LocationsListViewModel
 import com.gustavo.cocheckercompanionkotlin.BR
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.FragmentLocationsListBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class LocationsListFragment: BaseFragment<LocationsListViewModel, FragmentLocationsListBinding>(){
 
@@ -36,9 +37,10 @@ class LocationsListFragment: BaseFragment<LocationsListViewModel, FragmentLocati
         }
     }
 
-    override fun onStop() {
+    override fun onDestroy() {
         mViewModel.mutableClickedLocation.removeObservers(this)
-        super.onStop()
+        mViewModel.fabAddLocationsClick.removeObservers(this)
+        super.onDestroy()
     }
 
     override fun onBackPressed(): Boolean {
