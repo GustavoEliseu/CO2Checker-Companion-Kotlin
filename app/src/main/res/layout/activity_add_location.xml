@@ -80,6 +80,7 @@
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:layout_marginBottom="50dp"
             app:layout_constraintBottom_toBottomOf="@+id/map"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -111,7 +112,17 @@
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
+                mutableVisibility="@{viewModel.saveButtonVisibility}"
+                android:onClick="@{()->viewModel.saveLocationClick()}"
                 android:text="@string/button_save" />
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                mutableVisibility="@{viewModel.saveLocationLoadingVisibility}"
+                android:visibility="gone"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

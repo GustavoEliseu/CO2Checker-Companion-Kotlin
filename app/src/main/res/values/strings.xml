@@ -84,9 +84,12 @@
     <string name="saved_locations">Lugares Salvos</string>
     <string name="not_have_measure_sensor">Não há medidas para este sensor!</string>
     <string name="not_have_measure_location">Não há medidas para este lugar!</string>
-    <string name="adicionar">adicionar</string>
+    <string name="add">adicionar</string>
+    <string name="save">Salvar</string>
     <string name="name_your_sensor">Dê um nome ao seu sensor!</string>
+    <string name="name_your_location">Dê um nome a este local!</string>
     <string name="add_sensor_text">Adicione um sensor</string>
+    <string name="add_location_text">Adicione um novo local</string>
     <string name="type_ssid">Digite a rede do seu sensor</string>
     <string name="type_password">Digite a senha da rede do seu sensor</string>
     <string name="type_mac">Digite o mac do seu sensor</string>

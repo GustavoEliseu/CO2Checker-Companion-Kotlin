@@ -46,8 +46,6 @@ class NewSensorDialog(
         }
 
         val dialog: AlertDialog = alert.create()
-        dialog.setOnShowListener {
-        }
         sensor?.let {
             nameEditText?.setText(it.name)
             macEditText?.setText(it.mac)

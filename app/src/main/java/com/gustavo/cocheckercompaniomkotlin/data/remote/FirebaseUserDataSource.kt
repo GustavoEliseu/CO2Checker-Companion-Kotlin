@@ -24,7 +24,7 @@ class FirebaseUserDataSource {
     private var userRef: DatabaseReference? = FirebaseDatabaseManager.getCurrentUserReference()
     private var sensorsRef: DatabaseReference? = FirebaseDatabaseManager.getFireBaseDatabaseSensors()
 
-    private fun fetchUserData(onDataFetched: (DatabaseReference) -> Unit) {
+    fun fetchUserData(onDataFetched: (DatabaseReference) -> Unit) {
         if (userRef == null) {
             userRef = FirebaseDatabaseManager.getCurrentUserReference()
         }
@@ -32,7 +32,7 @@ class FirebaseUserDataSource {
             onDataFetched(it)
         }
         if (userRef == null) {
-            //TODO(IMPLEMENT NULL SAFETY CASE)
+            //TODO - (IMPLEMENT NULL SAFETY CASE)
         }
     }
 

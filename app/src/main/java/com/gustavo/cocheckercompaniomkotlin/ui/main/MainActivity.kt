@@ -97,7 +97,7 @@ class MainActivity : BaseActivity<MainViewModel>(),
     private fun finishAddLocation() {
         getLocation()
         if(currentLocation != null) {
-            startActivity(configNewLocationIntent(currentLocation, null))
+            startActivity(configNewLocationIntent(currentLocation))
         } else{
             toast("Não foi possível detectar sua localização")
         }

@@ -8,13 +8,13 @@ import com.gustavo.cocheckercompaniomkotlin.model.data.NewSensorData
 class AddSensorUseCase {
     val firebaseUserDataSource = FirebaseUserDataSource()
     interface UserAddSensorDataListener {
-        fun onChildAdded(locationItemList: NewSensorData)
-        fun onChildChanged(locationItemList: NewSensorData)
-        fun onChildRemoved(locationItemList: NewSensorData)
+        fun onChildAdded(sensorItemList: NewSensorData)
+        fun onChildChanged(sensorItemList: NewSensorData)
+        fun onChildRemoved(sensorItemList: NewSensorData)
         fun onCancelled(error: DatabaseError)
     }
 
-    fun addSensor(newSensorData: NewSensorData, userLocationListener: UserAddSensorDataListener){
-        firebaseUserDataSource.addSensorToUser(newSensorData,userLocationListener)
+    fun addSensor(newSensorData: NewSensorData, userSensorListener: UserAddSensorDataListener){
+        firebaseUserDataSource.addSensorToUser(newSensorData,userSensorListener)
     }
 }

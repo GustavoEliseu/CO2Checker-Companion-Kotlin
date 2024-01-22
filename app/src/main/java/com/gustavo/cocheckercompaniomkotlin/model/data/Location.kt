@@ -19,7 +19,7 @@ data class LocationItemList(
 }
 data class NewLocationData(
     @Json(name = "UUID")
-    var uuid: String? = null,
+    var uuid: String,
     @Json(name = "Name")
     var Name: String? = null,
     var Latitude: String? = null,

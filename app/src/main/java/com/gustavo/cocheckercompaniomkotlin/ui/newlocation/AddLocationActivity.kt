@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.compose.ui.unit.dp
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -26,27 +25,27 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.gustavo.cocheckercompaniomkotlin.base.BaseActivity
 import com.gustavo.cocheckercompaniomkotlin.model.data.NewLocationData
+import com.gustavo.cocheckercompaniomkotlin.ui.newlocation.custom.AddLocationDialog
 import com.gustavo.cocheckercompaniomkotlin.ui.newlocation.custom.SearchLocationAdapter
 import com.gustavo.cocheckercompaniomkotlin.ui.newlocation.viewmodel.AddLocationViewModel
-import com.gustavo.cocheckercompaniomkotlin.utils.LOCATION_DATA_EXTRA
 import com.gustavo.cocheckercompaniomkotlin.utils.LOCATION_EXTRA
 import com.gustavo.cocheckercompaniomkotlin.utils.LoggerUtil
+import com.gustavo.cocheckercompaniomkotlin.utils.toast
 import com.gustavo.cocheckercompanionkotlin.BuildConfig.MAPS_API_KEY
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityAddLocationBinding
 import kotlinx.coroutines.launch
 import java.util.Locale
+import java.util.UUID
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 
 fun Context.configNewLocationIntent(
-    tempLocationData: Location?,
-    currentEditLocation: NewLocationData?
+    tempLocationData: Location?
 ): Intent {
     return Intent(this, AddLocationActivity::class.java).apply {
         this.putExtra(LOCATION_EXTRA, tempLocationData)
-        this.putExtra(LOCATION_DATA_EXTRA, currentEditLocation)
     }
 }
 
@@ -62,13 +61,6 @@ class AddLocationActivity : BaseActivity<AddLocationViewModel>(),
             intent.getParcelableExtra(LOCATION_EXTRA, Location::class.java)
         } else {
             intent.getParcelableExtra(LOCATION_EXTRA) as? Location
-        }
-    }
-    val userEditLocation by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getSerializableExtra(LOCATION_DATA_EXTRA, NewLocationData::class.java)
-        } else {
-            intent.getSerializableExtra(LOCATION_DATA_EXTRA) as? NewLocationData
         }
     }
 
@@ -91,7 +83,7 @@ class AddLocationActivity : BaseActivity<AddLocationViewModel>(),
 
         Places.initialize(applicationContext, MAPS_API_KEY, Locale.getDefault())
         mBinding.map.getFragment<SupportMapFragment>().getMapAsync(this)
-        if(!this::placesClient.isInitialized ){
+        if (!this::placesClient.isInitialized) {
             placesClient = Places.createClient(this)
         }
         val adapter = SearchLocationAdapter(placesClient) {
@@ -101,42 +93,33 @@ class AddLocationActivity : BaseActivity<AddLocationViewModel>(),
                 mViewModel.selectedLatLng.value = getPlaceCoordinatesById(it.placeId)
             }
         }
-        mBinding.addressSuggestionRecycler.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+        mBinding.addressSuggestionRecycler.addItemDecoration(
+            DividerItemDecoration(
+                this,
+                LinearLayoutManager.VERTICAL
+            )
+        )
         mBinding.addressSuggestionRecycler.adapter = adapter
         mBinding.autoCompleteEditText.doOnTextChanged { text, _, _, _ ->
-            if(text.isNullOrEmpty()){
+            if (text.isNullOrEmpty()) {
                 mViewModel.predictionsMutableVisibility.value = View.GONE
-            }else{
+            } else {
                 mViewModel.predictionsMutableVisibility.value = View.VISIBLE
                 lifecycleScope.launch {
                     try {
                         adapter.filterWithPredictions(text.toString())
-                    } catch (e:Exception){
+                    } catch (e: Exception) {
                         LoggerUtil.printStackTraceOnlyInDebug(e)
                     }
                 }
             }
         }
 
-
-//        val autoCompleteFragment = mBinding.mapSearchView.getFragment<AutocompleteSupportFragment>()
-//        autoCompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG))
-//
-//        autoCompleteFragment.setOnPlaceSelectedListener(object: PlaceSelectionListener {
-//            override fun onError(p0: Status) {
-//
-//            }
-//
-//            override fun onPlaceSelected(p0: Place) {
-//                mViewModel.selectedLatLng.value = p0.latLng
-//            }
-//        })
-
         addObservers()
         mViewModel.markerDescriptionVisibility.value = View.GONE
     }
 
-    suspend fun getPlaceCoordinatesById(placeId: String): LatLng? =
+    private suspend fun getPlaceCoordinatesById(placeId: String): LatLng? =
         suspendCoroutine { continuation ->
             placesClient.fetchPlace(
                 FetchPlaceRequest.newInstance(placeId, listOf(Place.Field.LAT_LNG))
@@ -147,7 +130,56 @@ class AddLocationActivity : BaseActivity<AddLocationViewModel>(),
             }
         }
 
+    private fun showSaveLocationDialog() {
+        currentPosition?.let {
+            val newLocationData = NewLocationData(
+                UUID.randomUUID().toString(),
+                null,
+                it.latitude.toString(),
+                it.longitude.toString()
+            )
+            val dialog = AddLocationDialog(newLocationData, ::finishSaveLocation) {
+                mViewModel.saveLocationResult.value = AddLocationViewModel.SaveLocationResult.NONE
+            }
+            dialog.show(supportFragmentManager, null)
+        }
+        if (currentPosition == null) {
+            toast("Não foi possível identificar o local selecionado")
+        }
+    }
+
+    private fun finishSaveLocation(locationToSave: NewLocationData) {
+        mViewModel.finishSaveLocation(locationToSave)
+    }
+
     private fun addObservers() {
+        mViewModel.saveLocationButtonClicked.observe(this) {
+            if (it == true) {
+                showSaveLocationDialog()
+                mViewModel.saveLocationButtonClicked.value = false
+            }
+        }
+        mViewModel.saveLocationResult.observe(this) {
+            when (it) {
+                AddLocationViewModel.SaveLocationResult.NONE -> {
+                    mViewModel.showSaveLoading(false)
+                }
+
+                AddLocationViewModel.SaveLocationResult.LOADING -> {
+                    mViewModel.showSaveLoading(true)
+                }
+
+                AddLocationViewModel.SaveLocationResult.SUCCESS -> {
+                    toast("Local salvo com sucesso")
+                    finish()
+                }
+
+                else -> {
+                    mViewModel.saveLocationResult.value =
+                        AddLocationViewModel.SaveLocationResult.NONE
+                }
+            }
+        }
         mViewModel.selectedLatLng.observe(this) {
             if (it == null) {
                 userCurrentLocation?.let { default ->
@@ -169,9 +201,15 @@ class AddLocationActivity : BaseActivity<AddLocationViewModel>(),
         }
     }
 
+    override fun onDestroy() {
+        mViewModel.saveLocationButtonClicked.removeObservers(this)
+        mViewModel.selectedLatLng.removeObservers(this)
+        super.onDestroy()
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap = googleMap
-        mGoogleMap?.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.custom_map_style))
+        mGoogleMap?.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.custom_map_style))
 
         mGoogleMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
 
