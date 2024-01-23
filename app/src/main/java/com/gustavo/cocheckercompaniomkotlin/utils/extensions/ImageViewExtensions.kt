@@ -1,4 +1,4 @@
-package com.gustavo.cocheckercompaniomkotlin.utils
+package com.gustavo.cocheckercompaniomkotlin.utils.extensions
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
@@ -29,7 +29,7 @@ fun ImageView.load(
 
     glide.apply(myRequestOptionGlide())
     glide.centerCrop()
-    if(isRound){
+    if (isRound) {
         glide.into(object : BitmapImageViewTarget(this) {
             override fun setResource(resource: Bitmap?) {
                 val circular = RoundedBitmapDrawableFactory
@@ -42,7 +42,7 @@ fun ImageView.load(
                 this.setDrawable(circular)
             }
         })
-    }else {
+    } else {
         glide.into(this)
     }
 }

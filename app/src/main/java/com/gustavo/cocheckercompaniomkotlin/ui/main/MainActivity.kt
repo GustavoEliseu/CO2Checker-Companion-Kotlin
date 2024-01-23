@@ -27,8 +27,8 @@ import com.gustavo.cocheckercompaniomkotlin.ui.sensor.sensorDetailsIntent
 import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_COARSE_LOCATION
 import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_FINE_LOCATION
 import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_REQUEST
-import com.gustavo.cocheckercompaniomkotlin.utils.longToast
-import com.gustavo.cocheckercompaniomkotlin.utils.toast
+import com.gustavo.cocheckercompaniomkotlin.utils.extensions.longToast
+import com.gustavo.cocheckercompaniomkotlin.utils.extensions.toast
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityMainBinding
 import java.util.UUID
@@ -76,15 +76,15 @@ class MainActivity : BaseActivity<MainViewModel>(),
     }
 
     fun openSensor(deviceMac: String) {
-       startActivity(sensorDetailsIntent(deviceMac))
+        startActivity(sensorDetailsIntent(deviceMac))
     }
 
     fun openLocation(locationUid: String, locationName: String) {
         startActivity(locationDetailsIntent(locationUid, locationName))
     }
 
-    fun addLocation(){
-        tempLocationData = NewLocationData(uuid = UUID.randomUUID().toString(),)
+    fun addLocation() {
+        tempLocationData = NewLocationData(uuid = UUID.randomUUID().toString())
         val permissionsArray = arrayOf(
             PERMISSION_COARSE_LOCATION,
             PERMISSION_FINE_LOCATION
@@ -96,9 +96,9 @@ class MainActivity : BaseActivity<MainViewModel>(),
     @RequiresPermission(anyOf = [permission.ACCESS_COARSE_LOCATION, permission.ACCESS_FINE_LOCATION])
     private fun finishAddLocation() {
         getLocation()
-        if(currentLocation != null) {
+        if (currentLocation != null) {
             startActivity(configNewLocationIntent(currentLocation))
-        } else{
+        } else {
             toast("Não foi possível detectar sua localização")
         }
         requestResult = ::blank
@@ -107,11 +107,11 @@ class MainActivity : BaseActivity<MainViewModel>(),
     @RequiresPermission(anyOf = [permission.ACCESS_COARSE_LOCATION, permission.ACCESS_FINE_LOCATION])
     private fun getLocation() {
         currentLocation = locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        if(currentLocation== null){
+        if (currentLocation == null) {
         }
     }
 
-    fun addSensor(sensor: NewSensorData?){
+    fun addSensor(sensor: NewSensorData?) {
         val dialog = NewSensorDialog(sensor, ::startQRCodeNewSensor, ::finishAddSensor)
         dialog.show(supportFragmentManager, null)
     }
@@ -125,6 +125,7 @@ class MainActivity : BaseActivity<MainViewModel>(),
             mViewModel.finishAddSensor(it)
         }
     }
+
     private fun blank() {}
 
     override fun onRequestPermissionsResult(
@@ -140,9 +141,9 @@ class MainActivity : BaseActivity<MainViewModel>(),
                     anyPermissionGranted = true
                 }
             }
-            if(anyPermissionGranted) {
+            if (anyPermissionGranted) {
                 onPermissionGranted(permissions)
-            }else{
+            } else {
                 grantResults.forEachIndexed { index, result ->
                     if (shouldShowRequestPermissionRationale(permissions[index])) {
                         onPermissionDenied()
@@ -158,6 +159,7 @@ class MainActivity : BaseActivity<MainViewModel>(),
         if (permanently) longToast(R.string.permissions_location_settings)
         else toast(R.string.permissions_location)
     }
+
     override fun onPermissionGranted(permissions: Array<out String>) {
         requestResult()
     }

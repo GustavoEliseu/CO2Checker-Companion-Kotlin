@@ -3,7 +3,6 @@ package com.gustavo.cocheckercompaniomkotlin.model.domain
 import com.google.firebase.database.DatabaseError
 import com.gustavo.cocheckercompaniomkotlin.data.remote.FirebaseUserDataSource
 import com.gustavo.cocheckercompaniomkotlin.model.data.LocationItemList
-import com.gustavo.cocheckercompaniomkotlin.model.data.SensorItemList
 
 class FetchLocationsUseCase {
     val firebaseUserDataSource = FirebaseUserDataSource()
@@ -16,10 +15,11 @@ class FetchLocationsUseCase {
         fun onCancelled(error: DatabaseError)
     }
 
-    fun fetchUserLocationsData(userLocationListener: UserLocationsDataListener){
-        firebaseUserDataSource.fetchUserDataLocations(currentLocationsPage,userLocationListener)
+    fun fetchUserLocationsData(userLocationListener: UserLocationsDataListener) {
+        firebaseUserDataSource.fetchUserDataLocations(currentLocationsPage, userLocationListener)
     }
-    fun fetchSensorsList(result:(List<LocationItemList>?)->Unit){
+
+    fun fetchSensorsList(result: (List<LocationItemList>?) -> Unit) {
         firebaseUserDataSource.fetchUserDataInitialLocations(result)
     }
 }

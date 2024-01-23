@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.gustavo.cocheckercompaniomkotlin.model.data.LocationItemList
-import com.gustavo.cocheckercompaniomkotlin.model.data.SensorItemList
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.LocationItemViewModel
+import com.gustavo.cocheckercompaniomkotlin.utils.extensions.load
 import com.gustavo.cocheckercompaniomkotlin.utils.getSafeMapUrlString
-import com.gustavo.cocheckercompaniomkotlin.utils.load
 import com.gustavo.cocheckercompaniomkotlin.utils.safeRun
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.LocationItemBinding
@@ -41,7 +40,8 @@ class LocationsListAdapter(
         currentLocations.add(0, locationData)
         notifyItemInserted(0)
     }
-    fun removeLocation(locationData: LocationItemList){
+
+    fun removeLocation(locationData: LocationItemList) {
         safeRun {
             val index = currentLocations.indexOf(locationData)
             currentLocations.removeAt(index)

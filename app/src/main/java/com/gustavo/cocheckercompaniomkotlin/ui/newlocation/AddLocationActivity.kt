@@ -30,7 +30,7 @@ import com.gustavo.cocheckercompaniomkotlin.ui.newlocation.custom.SearchLocation
 import com.gustavo.cocheckercompaniomkotlin.ui.newlocation.viewmodel.AddLocationViewModel
 import com.gustavo.cocheckercompaniomkotlin.utils.LOCATION_EXTRA
 import com.gustavo.cocheckercompaniomkotlin.utils.LoggerUtil
-import com.gustavo.cocheckercompaniomkotlin.utils.toast
+import com.gustavo.cocheckercompaniomkotlin.utils.extensions.toast
 import com.gustavo.cocheckercompanionkotlin.BuildConfig.MAPS_API_KEY
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityAddLocationBinding

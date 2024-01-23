@@ -11,7 +11,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.gustavo.cocheckercompaniomkotlin.model.data.NewSensorData
-import com.gustavo.cocheckercompaniomkotlin.utils.isNotNullOrNotEmptyOrNotBlank
+import com.gustavo.cocheckercompaniomkotlin.utils.extensions.isNotNullOrNotEmptyOrNotBlank
 import com.gustavo.cocheckercompanionkotlin.R
 
 class NewSensorDialog(
@@ -41,7 +41,7 @@ class NewSensorDialog(
 
 
         qrButton?.setOnClickListener {
-            fabClickListener(NewSensorData("",  nameEditText?.text.toString()))
+            fabClickListener(NewSensorData("", nameEditText?.text.toString()))
             dismiss()
         }
 

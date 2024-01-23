@@ -12,17 +12,15 @@ import com.gustavo.cocheckercompaniomkotlin.model.data.SensorItemList
 import com.gustavo.cocheckercompaniomkotlin.model.domain.AddSensorUseCase
 import com.gustavo.cocheckercompaniomkotlin.model.domain.FetchLocationsUseCase
 import com.gustavo.cocheckercompaniomkotlin.model.domain.FetchSensorsUseCase
-import com.gustavo.cocheckercompaniomkotlin.utils.DEVICES
-import com.gustavo.cocheckercompaniomkotlin.utils.LOCATIONS
 import com.gustavo.cocheckercompaniomkotlin.utils.OWNERS
 import com.gustavo.cocheckercompaniomkotlin.utils.SAVED_DEVICES
 import com.gustavo.cocheckercompaniomkotlin.utils.SAVED_LOCATIONS
-import com.gustavo.cocheckercompanionkotlin.R
 
 
 class FirebaseUserDataSource {
     private var userRef: DatabaseReference? = FirebaseDatabaseManager.getCurrentUserReference()
-    private var sensorsRef: DatabaseReference? = FirebaseDatabaseManager.getFireBaseDatabaseSensors()
+    private var sensorsRef: DatabaseReference? =
+        FirebaseDatabaseManager.getFireBaseDatabaseSensors()
 
     fun fetchUserData(onDataFetched: (DatabaseReference) -> Unit) {
         if (userRef == null) {
@@ -163,24 +161,30 @@ class FirebaseUserDataSource {
         }
     }
 
-    fun addSensorToUser(sensor: NewSensorData,addSensorListener: AddSensorUseCase.UserAddSensorDataListener){
+    fun addSensorToUser(
+        sensor: NewSensorData,
+        addSensorListener: AddSensorUseCase.UserAddSensorDataListener
+    ) {
         sensorsRef?.child(sensor.mac)
-                ?.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.exists()) {
-                            createSensorOwners(sensor,addSensorListener)
-                        } else {
-                            executeCreationSensor(sensor,addSensorListener)
-                        }
+            ?.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        createSensorOwners(sensor, addSensorListener)
+                    } else {
+                        executeCreationSensor(sensor, addSensorListener)
                     }
+                }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        addSensorListener.onCancelled(error)
-                    }
-                })
+                override fun onCancelled(error: DatabaseError) {
+                    addSensorListener.onCancelled(error)
+                }
+            })
     }
 
-    fun createSensorOwners(sensor: NewSensorData,addSensorListener: AddSensorUseCase.UserAddSensorDataListener) {
+    fun createSensorOwners(
+        sensor: NewSensorData,
+        addSensorListener: AddSensorUseCase.UserAddSensorDataListener
+    ) {
         FirebaseAuth.getInstance().currentUser?.uid?.let { uid ->
             sensor.mac.let { myMac ->
                 sensorsRef?.child(myMac)?.child(OWNERS)
@@ -190,12 +194,12 @@ class FirebaseUserDataSource {
                                 val oldValue = snapshot.value as String
                                 val newValue = "$oldValue,${uid}"
                                 if (!oldValue.contains(uid)) {
-                                    addSensorNewOwner(sensor, newValue,addSensorListener)
+                                    addSensorNewOwner(sensor, newValue, addSensorListener)
                                 } else {
-                                    addUserSavedSensor(sensor,addSensorListener)
+                                    addUserSavedSensor(sensor, addSensorListener)
                                 }
                             } else {
-                                addSensorFirstOwner(sensor,addSensorListener)
+                                addSensorFirstOwner(sensor, addSensorListener)
                             }
                         }
 
@@ -207,15 +211,23 @@ class FirebaseUserDataSource {
         }
     }
 
-    fun addSensorNewOwner(sensor: NewSensorData, newValue: String,addSensorListener: AddSensorUseCase.UserAddSensorDataListener) {
-        sensorsRef?.child(sensor.mac)?.updateChildren(mapOf(Pair(OWNERS, newValue)))?.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                addUserSavedSensor(sensor,addSensorListener)
+    fun addSensorNewOwner(
+        sensor: NewSensorData,
+        newValue: String,
+        addSensorListener: AddSensorUseCase.UserAddSensorDataListener
+    ) {
+        sensorsRef?.child(sensor.mac)?.updateChildren(mapOf(Pair(OWNERS, newValue)))
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    addUserSavedSensor(sensor, addSensorListener)
+                }
             }
-        }
     }
 
-    private fun addUserSavedSensor(sensor: NewSensorData,addSensorListener: AddSensorUseCase.UserAddSensorDataListener) {
+    private fun addUserSavedSensor(
+        sensor: NewSensorData,
+        addSensorListener: AddSensorUseCase.UserAddSensorDataListener
+    ) {
         FirebaseAuth.getInstance().currentUser?.uid?.let { uid ->
             userRef?.child(uid)
                 ?.child(SAVED_DEVICES)?.child(sensor.mac)?.setValue(sensor) { error, ref ->
@@ -228,20 +240,27 @@ class FirebaseUserDataSource {
         }
     }
 
-    fun addSensorFirstOwner(sensor: NewSensorData,addSensorListener: AddSensorUseCase.UserAddSensorDataListener) {
-        FirebaseAuth.getInstance().currentUser?.uid?.let {  userId->
-                sensorsRef?.child(sensor.mac)?.child(OWNERS)?.setValue(userId)?.addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            addUserSavedSensor(sensor,addSensorListener)
-                        }
-                    }
-        }
-    }
-    fun executeCreationSensor(sensor: NewSensorData,addSensorListener: AddSensorUseCase.UserAddSensorDataListener) {
-            sensorsRef?.child(sensor.mac)?.setValue(sensor)?.addOnCompleteListener {
+    fun addSensorFirstOwner(
+        sensor: NewSensorData,
+        addSensorListener: AddSensorUseCase.UserAddSensorDataListener
+    ) {
+        FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
+            sensorsRef?.child(sensor.mac)?.child(OWNERS)?.setValue(userId)?.addOnCompleteListener {
                 if (it.isSuccessful) {
-                    createSensorOwners(sensor,addSensorListener)
+                    addUserSavedSensor(sensor, addSensorListener)
                 }
             }
+        }
+    }
+
+    fun executeCreationSensor(
+        sensor: NewSensorData,
+        addSensorListener: AddSensorUseCase.UserAddSensorDataListener
+    ) {
+        sensorsRef?.child(sensor.mac)?.setValue(sensor)?.addOnCompleteListener {
+            if (it.isSuccessful) {
+                createSensorOwners(sensor, addSensorListener)
+            }
+        }
     }
 }

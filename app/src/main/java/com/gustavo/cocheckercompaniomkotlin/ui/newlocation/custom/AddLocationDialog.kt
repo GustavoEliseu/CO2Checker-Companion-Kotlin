@@ -10,8 +10,7 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.gustavo.cocheckercompaniomkotlin.model.data.NewLocationData
-import com.gustavo.cocheckercompaniomkotlin.model.data.NewSensorData
-import com.gustavo.cocheckercompaniomkotlin.utils.isNotNullOrNotEmptyOrNotBlank
+import com.gustavo.cocheckercompaniomkotlin.utils.extensions.isNotNullOrNotEmptyOrNotBlank
 import com.gustavo.cocheckercompanionkotlin.R
 
 class AddLocationDialog(
@@ -23,6 +22,7 @@ class AddLocationDialog(
 
     var nameEditText: TextInputEditText? = null
     var nameTextInput: TextInputLayout? = null
+
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val view: View? = activity?.layoutInflater?.inflate(R.layout.new_location_dialog, null)
@@ -60,6 +60,7 @@ class AddLocationDialog(
 
         return dialog
     }
+
     override fun onDismiss(dialog: DialogInterface) {
         cancelled()
         super.onDismiss(dialog)

@@ -1,4 +1,4 @@
-package com.gustavo.cocheckercompaniomkotlin.utils
+package com.gustavo.cocheckercompaniomkotlin.utils.extensions
 
 import android.content.ContextWrapper
 import android.view.View

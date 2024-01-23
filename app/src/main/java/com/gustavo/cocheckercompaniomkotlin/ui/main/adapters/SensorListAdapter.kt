@@ -8,14 +8,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.gustavo.cocheckercompaniomkotlin.model.data.SensorItemList
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.SensorItemViewModel
+import com.gustavo.cocheckercompaniomkotlin.utils.extensions.load
 import com.gustavo.cocheckercompaniomkotlin.utils.getSafeMapUrlString
-import com.gustavo.cocheckercompaniomkotlin.utils.load
 import com.gustavo.cocheckercompaniomkotlin.utils.safeRun
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.SensorItemBinding
 
-class SensorListAdapter(private val viewMoreClick: (String) -> Unit,
-private val currentSensors: MutableList<SensorItemList> = mutableListOf()
+class SensorListAdapter(
+    private val viewMoreClick: (String) -> Unit,
+    private val currentSensors: MutableList<SensorItemList> = mutableListOf()
 ) : RecyclerView.Adapter<SensorListAdapter.SensorViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SensorViewHolder {
         return SensorViewHolder(
@@ -39,7 +40,7 @@ private val currentSensors: MutableList<SensorItemList> = mutableListOf()
         notifyItemInserted(0)
     }
 
-    fun removeSensor(sensorWifiData: SensorItemList){
+    fun removeSensor(sensorWifiData: SensorItemList) {
         safeRun {
             val index = currentSensors.indexOf(sensorWifiData)
             currentSensors.removeAt(index)
