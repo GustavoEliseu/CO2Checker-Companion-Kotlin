@@ -9,9 +9,12 @@ import com.google.firebase.database.ValueEventListener
 import com.gustavo.cocheckercompaniomkotlin.model.data.LocationItemList
 import com.gustavo.cocheckercompaniomkotlin.model.data.NewSensorData
 import com.gustavo.cocheckercompaniomkotlin.model.data.SensorItemList
+import com.gustavo.cocheckercompaniomkotlin.model.data.SensorWifiData
 import com.gustavo.cocheckercompaniomkotlin.model.domain.AddSensorUseCase
 import com.gustavo.cocheckercompaniomkotlin.model.domain.FetchLocationsUseCase
 import com.gustavo.cocheckercompaniomkotlin.model.domain.FetchSensorsUseCase
+import com.gustavo.cocheckercompaniomkotlin.model.domain.SensorExistsUseCase
+import com.gustavo.cocheckercompaniomkotlin.utils.MAC
 import com.gustavo.cocheckercompaniomkotlin.utils.OWNERS
 import com.gustavo.cocheckercompaniomkotlin.utils.SAVED_DEVICES
 import com.gustavo.cocheckercompaniomkotlin.utils.SAVED_LOCATIONS
@@ -32,6 +35,18 @@ class FirebaseUserDataSource {
         if (userRef == null) {
             //TODO - (IMPLEMENT NULL SAFETY CASE)
         }
+    }
+
+    fun checkIfSensorAlreadyRegistered(sensor: SensorWifiData,userListener: SensorExistsUseCase.SensorExistsDataListener) {
+            userRef?.child(SAVED_DEVICES)?.orderByChild(MAC)?.equalTo(sensor.mac)?.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            userListener.onItemExists(sensor,dataSnapshot.exists())
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        userListener.onCancelled(error)
+                    }
+                })
     }
 
     fun fetchUserDataInitialSensors(result: (List<SensorItemList>?) -> Unit) {

@@ -117,6 +117,11 @@ class MainActivity : BaseActivity<MainViewModel>(),
     }
 
     private fun startQRCodeNewSensor(sensor: NewSensorData? = null) {
+        if(sensor!= null){
+        toast(sensor.name ?: sensor.mac)
+        }else{
+            toast("sensor nulo")
+        }
         //startActivityForResult(QRReaderIntent(fromAddSensor = true, sensor), SENSOR_DATA_REQUEST)
     }
 
