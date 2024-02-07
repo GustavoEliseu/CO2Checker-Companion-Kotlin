@@ -9,7 +9,7 @@ import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_REQUEST
+import com.gustavo.cocheckercompaniomkotlin.utils.LOCATION_PERMISSION_REQUEST
 import com.gustavo.cocheckercompanionkotlin.R
 
 abstract class BaseActivity<out VM : BaseViewModel> : AppCompatActivity() {
@@ -64,7 +64,7 @@ abstract class BaseActivity<out VM : BaseViewModel> : AppCompatActivity() {
 
         permissions?.forEach {
             if (checkSelfPermission(it) != PackageManager.PERMISSION_GRANTED) {
-                val requestCode = PERMISSION_REQUEST
+                val requestCode = LOCATION_PERMISSION_REQUEST
                 requestPermissions(permissions, requestCode)
                 return
             }

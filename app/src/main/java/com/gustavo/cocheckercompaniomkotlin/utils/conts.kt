@@ -7,7 +7,8 @@ import android.Manifest
 const val SENSOR_DATA_RESULT = 5001
 const val SENSOR_DATA_REQUEST = 1001
 
-const val PERMISSION_REQUEST = 111
+const val LOCATION_PERMISSION_REQUEST = 111
+const val CAMERA_PERMISSION_REQUEST = 112
 const val FROM_LOGIN = "from_login"
 
 const val ESP_WIFI_TIMEOUT = 20L

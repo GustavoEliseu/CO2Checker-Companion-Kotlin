@@ -185,9 +185,8 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
         initializeUi()
     }
 
-    fun startActivityFromEsp(contents: String) {
+    private fun startActivityFromEsp(contents: String) {
         val json = QRCodeHelper.getNewEspWifi(contents)
-
         json?.let {
             if (!controller) {
                 beepManager?.playBeepSoundAndVibrate()
@@ -210,8 +209,7 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
                 when (it) {
                     SensorOptions.CONFIGURE_SENSOR -> {
                         safeRun {
-                            //startActivity(configSensorIntent(sensorWifiData, currentLocation))
-                            toast("detectou")
+                            startActivity(configSensorIntent(sensorWifiData, currentLocation))
                         }
                     }
                     SensorOptions.ADD_SENSOR -> {

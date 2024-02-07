@@ -1,13 +1,19 @@
 package com.gustavo.cocheckercompaniomkotlin.ui.main
 
 import android.Manifest.permission
+import android.app.Activity
+import android.app.Instrumentation
+import android.app.Instrumentation.ActivityResult
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresPermission
 import androidx.navigation.fragment.NavHostFragment
@@ -23,10 +29,14 @@ import com.gustavo.cocheckercompaniomkotlin.ui.location.locationDetailsIntent
 import com.gustavo.cocheckercompaniomkotlin.ui.main.custom.NewSensorDialog
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.MainViewModel
 import com.gustavo.cocheckercompaniomkotlin.ui.newlocation.configNewLocationIntent
+import com.gustavo.cocheckercompaniomkotlin.ui.qrcode.QRReaderIntent
 import com.gustavo.cocheckercompaniomkotlin.ui.sensor.sensorDetailsIntent
+import com.gustavo.cocheckercompaniomkotlin.utils.CAMERA_PERMISSION_REQUEST
 import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_COARSE_LOCATION
 import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_FINE_LOCATION
-import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_REQUEST
+import com.gustavo.cocheckercompaniomkotlin.utils.LOCATION_PERMISSION_REQUEST
+import com.gustavo.cocheckercompaniomkotlin.utils.SENSOR_DATA_RESULT
+import com.gustavo.cocheckercompaniomkotlin.utils.WIFI_DATA
 import com.gustavo.cocheckercompaniomkotlin.utils.extensions.longToast
 import com.gustavo.cocheckercompaniomkotlin.utils.extensions.toast
 import com.gustavo.cocheckercompanionkotlin.R
@@ -41,9 +51,26 @@ fun Context.mainIntent(): Intent {
 class MainActivity : BaseActivity<MainViewModel>(),
     LocationListener {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var mBinding: ActivityMainBinding
     override val mViewModel: MainViewModel by viewModels()
     override fun getLayoutId(): Int = R.layout.activity_main
+
+    val startForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result->
+        if (result.resultCode == SENSOR_DATA_RESULT) {
+            val mySensorData: NewSensorData? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                result.data?.getSerializableExtra(WIFI_DATA, NewSensorData::class.java)
+            } else {
+                result.data?.getSerializableExtra(WIFI_DATA) as? NewSensorData?
+            }
+
+
+            Toast.makeText(this,mySensorData?.mac,Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(this,"failure",Toast.LENGTH_SHORT).show()
+        }
+    }
 
     var requestResult: () -> Unit? = ::blank
     private var locationManager: LocationManager? = null
@@ -52,11 +79,11 @@ class MainActivity : BaseActivity<MainViewModel>(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        mBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
         FirebaseDatabaseManager.initializeFirebase()
 
-        val navView: BottomNavigationView = binding.navView
+        val navView: BottomNavigationView = mBinding.navView
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
@@ -68,7 +95,10 @@ class MainActivity : BaseActivity<MainViewModel>(),
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        initializeUi()
+
+        mBinding.QrFABButton.setOnClickListener {
+            startForResult.launch(QRReaderIntent(fromAddSensor = false, null))
+        }
     }
 
     override fun initializeUi() {
@@ -108,6 +138,7 @@ class MainActivity : BaseActivity<MainViewModel>(),
     private fun getLocation() {
         currentLocation = locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
         if (currentLocation == null) {
+            //TODO - check null safety
         }
     }
 
@@ -122,6 +153,8 @@ class MainActivity : BaseActivity<MainViewModel>(),
         }else{
             toast("sensor nulo")
         }
+
+        //TODO - call activity for result
         //startActivityForResult(QRReaderIntent(fromAddSensor = true, sensor), SENSOR_DATA_REQUEST)
     }
 
@@ -140,22 +173,27 @@ class MainActivity : BaseActivity<MainViewModel>(),
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         var anyPermissionGranted = false
-        if (requestCode == PERMISSION_REQUEST) {
-            grantResults.forEachIndexed { index, result ->
-                if (result == PackageManager.PERMISSION_GRANTED) {
-                    anyPermissionGranted = true
-                }
-            }
-            if (anyPermissionGranted) {
-                onPermissionGranted(permissions)
-            } else {
+        when(requestCode){
+            LOCATION_PERMISSION_REQUEST->{
                 grantResults.forEachIndexed { index, result ->
-                    if (shouldShowRequestPermissionRationale(permissions[index])) {
-                        onPermissionDenied()
-                    } else {
-                        onPermissionDenied(permanently = true)
+                    if (result == PackageManager.PERMISSION_GRANTED) {
+                        anyPermissionGranted = true
                     }
                 }
+                if (anyPermissionGranted) {
+                    onPermissionGranted(permissions)
+                } else {
+                    grantResults.forEachIndexed { index, result ->
+                        if (shouldShowRequestPermissionRationale(permissions[index])) {
+                            onPermissionDenied()
+                        } else {
+                            onPermissionDenied(permanently = true)
+                        }
+                    }
+                }
+            }
+            CAMERA_PERMISSION_REQUEST->{
+
             }
         }
     }
