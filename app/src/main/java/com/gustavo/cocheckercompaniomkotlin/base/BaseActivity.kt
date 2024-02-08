@@ -24,6 +24,10 @@ abstract class BaseActivity<out VM : BaseViewModel> : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         initializeUi()
     }
+
+    fun onCreateOnly(savedInstanceState: Bundle?){
+        super.onCreate(savedInstanceState)
+    }
     open fun onPermissionGranted(permissions: Array<out String>) {}
     open fun onPermissionDenied(permanently: Boolean = false) {}
 

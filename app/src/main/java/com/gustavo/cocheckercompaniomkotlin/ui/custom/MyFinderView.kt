@@ -10,8 +10,6 @@ import com.journeyapps.barcodescanner.ViewfinderView
 
 class MyViewFinderView(context: Context?, attrs: AttributeSet?) :
     ViewfinderView(context, attrs) {
-
-    private var laserVisibility = false
     private var cameraMaskPaddingTop: Float? = null
     private var cameraMaskPaddingBottom: Float? = null
 

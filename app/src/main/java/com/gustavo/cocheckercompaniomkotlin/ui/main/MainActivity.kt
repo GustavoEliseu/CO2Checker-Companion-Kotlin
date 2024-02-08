@@ -1,9 +1,6 @@
 package com.gustavo.cocheckercompaniomkotlin.ui.main
 
 import android.Manifest.permission
-import android.app.Activity
-import android.app.Instrumentation
-import android.app.Instrumentation.ActivityResult
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -32,10 +29,12 @@ import com.gustavo.cocheckercompaniomkotlin.ui.newlocation.configNewLocationInte
 import com.gustavo.cocheckercompaniomkotlin.ui.qrcode.QRReaderIntent
 import com.gustavo.cocheckercompaniomkotlin.ui.sensor.sensorDetailsIntent
 import com.gustavo.cocheckercompaniomkotlin.utils.CAMERA_PERMISSION_REQUEST
+import com.gustavo.cocheckercompaniomkotlin.utils.EDIT_SENSOR_DATA_RESULT
 import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_COARSE_LOCATION
 import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_FINE_LOCATION
 import com.gustavo.cocheckercompaniomkotlin.utils.LOCATION_PERMISSION_REQUEST
-import com.gustavo.cocheckercompaniomkotlin.utils.SENSOR_DATA_RESULT
+import com.gustavo.cocheckercompaniomkotlin.utils.SENSOR_DATA_REQUEST
+import com.gustavo.cocheckercompaniomkotlin.utils.NEW_SENSOR_DATA_RESULT
 import com.gustavo.cocheckercompaniomkotlin.utils.WIFI_DATA
 import com.gustavo.cocheckercompaniomkotlin.utils.extensions.longToast
 import com.gustavo.cocheckercompaniomkotlin.utils.extensions.toast
@@ -52,23 +51,32 @@ class MainActivity : BaseActivity<MainViewModel>(),
     LocationListener {
 
     private lateinit var mBinding: ActivityMainBinding
+
+    var dialog = NewSensorDialog(NewSensorData(), ::startQRCodeNewSensor, ::finishAddSensor)
     override val mViewModel: MainViewModel by viewModels()
     override fun getLayoutId(): Int = R.layout.activity_main
 
     val startForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result->
-        if (result.resultCode == SENSOR_DATA_RESULT) {
-            val mySensorData: NewSensorData? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                result.data?.getSerializableExtra(WIFI_DATA, NewSensorData::class.java)
-            } else {
-                result.data?.getSerializableExtra(WIFI_DATA) as? NewSensorData?
+        when(result.resultCode){
+            NEW_SENSOR_DATA_RESULT->{
+                val mySensorData: NewSensorData? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    result.data?.getSerializableExtra(WIFI_DATA, NewSensorData::class.java)
+                } else {
+                    result.data?.getSerializableExtra(WIFI_DATA) as? NewSensorData?
+                }
+
+                Toast.makeText(this,mySensorData?.mac,Toast.LENGTH_SHORT).show()
             }
-
-
-            Toast.makeText(this,mySensorData?.mac,Toast.LENGTH_SHORT).show()
-        }else{
-            Toast.makeText(this,"failure",Toast.LENGTH_SHORT).show()
+            EDIT_SENSOR_DATA_RESULT->{
+                val mySensorData: NewSensorData? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    result.data?.getSerializableExtra(WIFI_DATA, NewSensorData::class.java)
+                } else {
+                    result.data?.getSerializableExtra(WIFI_DATA) as? NewSensorData?
+                }
+                dialog.updateValuesFromQR(mySensorData)
+            }
         }
     }
 
@@ -136,6 +144,9 @@ class MainActivity : BaseActivity<MainViewModel>(),
 
     @RequiresPermission(anyOf = [permission.ACCESS_COARSE_LOCATION, permission.ACCESS_FINE_LOCATION])
     private fun getLocation() {
+        if (locationManager == null) {
+            //TODO - check null safety
+        }
         currentLocation = locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
         if (currentLocation == null) {
             //TODO - check null safety
@@ -143,19 +154,16 @@ class MainActivity : BaseActivity<MainViewModel>(),
     }
 
     fun addSensor(sensor: NewSensorData?) {
-        val dialog = NewSensorDialog(sensor, ::startQRCodeNewSensor, ::finishAddSensor)
+        dialog = NewSensorDialog(sensor, ::startQRCodeNewSensor, ::finishAddSensor)
         dialog.show(supportFragmentManager, null)
     }
 
     private fun startQRCodeNewSensor(sensor: NewSensorData? = null) {
         if(sensor!= null){
-        toast(sensor.name ?: sensor.mac)
+            startForResult.launch(QRReaderIntent(fromAddSensor = true, sensor))
         }else{
-            toast("sensor nulo")
+            toast("Não foi possível identificar o sensor, feche o aplicativo e tente novamente")
         }
-
-        //TODO - call activity for result
-        //startActivityForResult(QRReaderIntent(fromAddSensor = true, sensor), SENSOR_DATA_REQUEST)
     }
 
     private fun finishAddSensor(sensor: NewSensorData?) {

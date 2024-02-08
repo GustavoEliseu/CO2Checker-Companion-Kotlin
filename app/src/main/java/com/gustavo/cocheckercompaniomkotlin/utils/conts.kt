@@ -4,7 +4,8 @@ import android.Manifest
 
 
 
-const val SENSOR_DATA_RESULT = 5001
+const val NEW_SENSOR_DATA_RESULT = 5001
+const val EDIT_SENSOR_DATA_RESULT = 5002
 const val SENSOR_DATA_REQUEST = 1001
 
 const val LOCATION_PERMISSION_REQUEST = 111

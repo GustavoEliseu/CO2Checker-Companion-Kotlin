@@ -1,5 +1,6 @@
 package com.gustavo.cocheckercompaniomkotlin.ui.qrcode
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.location.Location
@@ -8,7 +9,6 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
@@ -16,18 +16,19 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.ResultPoint
 import com.google.zxing.client.android.BeepManager
 import com.google.zxing.client.android.Intents
-import com.google.zxing.integration.android.IntentIntegrator
 import com.gustavo.cocheckercompaniomkotlin.base.BaseActivity
 import com.gustavo.cocheckercompaniomkotlin.model.data.NewSensorData
 import com.gustavo.cocheckercompaniomkotlin.model.data.SensorWifiData
 import com.gustavo.cocheckercompaniomkotlin.ui.custom.MyViewFinderView
 import com.gustavo.cocheckercompaniomkotlin.ui.qrcode.viewmodel.QRCodeReaderViewModel
 import com.gustavo.cocheckercompaniomkotlin.ui.sensor.sensorDetailsIntent
+import com.gustavo.cocheckercompaniomkotlin.ui.sensorconfig.configSensorIntent
 import com.gustavo.cocheckercompaniomkotlin.utils.ADD_SENSOR
+import com.gustavo.cocheckercompaniomkotlin.utils.EDIT_SENSOR_DATA_RESULT
 import com.gustavo.cocheckercompaniomkotlin.utils.LOCATION_EXTRA
+import com.gustavo.cocheckercompaniomkotlin.utils.NEW_SENSOR_DATA_RESULT
 import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_CAMERA
 import com.gustavo.cocheckercompaniomkotlin.utils.QRCodeHelper
-import com.gustavo.cocheckercompaniomkotlin.utils.SENSOR_DATA_RESULT
 import com.gustavo.cocheckercompaniomkotlin.utils.SensorOptions
 import com.gustavo.cocheckercompaniomkotlin.utils.WIFI_DATA
 import com.gustavo.cocheckercompaniomkotlin.utils.extensions.getDialog
@@ -56,25 +57,27 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
     override val mViewModel: QRCodeReaderViewModel by viewModels()
     private lateinit var mBinding: ActivityQrReaderBinding
     private var imageMask: ImageView? = null
-    private var auditionInstructions: AppCompatTextView? = null
+    private var instructions: AppCompatTextView? = null
     private var pauseCamera = false
     private var beepManager: BeepManager? = null
-    private var dialog: AlertDialog? = null
-    private var controller: Boolean = false
 
     var sensorData: NewSensorData? = null
+
+    private val fromAddSensor by lazy { intent?.getBooleanExtra(ADD_SENSOR, false) ?: false }
+
+    private val currentLocation by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent?.getParcelableExtra(LOCATION_EXTRA,Location::class.java )
+        }else{intent?.getParcelableExtra(LOCATION_EXTRA) as? Location
+        }
+    }
 
     private val mySensorData by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getSerializableExtra(WIFI_DATA, NewSensorData::class.java)
         } else{
-        intent?.getSerializableExtra(WIFI_DATA) as? NewSensorData }}
-    private val fromAddSensor by lazy { intent?.getBooleanExtra(ADD_SENSOR, false) ?: false }
-    private val currentLocation by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent?.getParcelableExtra(LOCATION_EXTRA,Location::class.java )
-        }else{intent?.getParcelableExtra(LOCATION_EXTRA) as? Location
-        } }
+            intent?.getSerializableExtra(WIFI_DATA) as? NewSensorData }
+    }
 
     private val callback: BarcodeCallback = object : BarcodeCallback {
         override fun barcodeResult(result: BarcodeResult) {
@@ -110,13 +113,14 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
 
     override fun initializeUi() {
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
+        beepManager = BeepManager(this)
         initScan()
     }
 
     private fun initScan() {
         mBinding.barcodeScanner.findViewById<AppCompatImageView>(R.id.close)?.setOnClickListener { finish() }
         imageMask = findViewById(R.id.cameraMask)
-        auditionInstructions = findViewById(R.id.auditionInstructions)
+        instructions = findViewById(R.id.Instructions)
         updateMaskPosition()
         val formats: Collection<BarcodeFormat> = listOf(BarcodeFormat.QR_CODE)
         mBinding.barcodeScanner.barcodeView?.decoderFactory = DefaultDecoderFactory(formats)
@@ -138,8 +142,10 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
         (mBinding.barcodeScanner.viewFinder as? MyViewFinderView)?.setCameraMaskPaddingBottom(0F)
         (imageMask?.layoutParams as? FrameLayout.LayoutParams)?.setMargins(0, 0, 0, 0)
     }
+
+    @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        super.onCreateOnly(savedInstanceState)
         setContentView(getLayoutId())
         sensorData = mySensorData
         if (sensorData == null) {
@@ -158,23 +164,6 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
         pause()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        sensorData = mySensorData
-        if (sensorData == null) {
-            sensorData = NewSensorData()
-        }
-        if (result != null) {
-            if (result.contents == null) {
-                toast(R.string.canceled)
-            } else {
-                startActivityFromEsp(result.contents)
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
-        }
-    }
-
     override fun onPermissionDenied(permanently: Boolean) {
         if (permanently) longToast(R.string.permissions_camera_settings)
         else toast(R.string.permissions_camera)
@@ -185,20 +174,7 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
         initializeUi()
     }
 
-    private fun startActivityFromEsp(contents: String) {
-        val json = QRCodeHelper.getNewEspWifi(contents)
-        json?.let {
-            if (!controller) {
-                beepManager?.playBeepSoundAndVibrate()
-                pause()
-                mViewModel.isSensorRegistered(it)
-                return
-            }
-        }
-    }
-
     fun openEspDialog(sensorWifiData: SensorWifiData, exists: Boolean, failure: Boolean) {
-        // open options
         val dialog = getDialog(
             titleString = getString(R.string.sensor_options),
             elements = SensorOptions.array(
@@ -236,7 +212,7 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
     fun setResultAndLeave(mySensorData: NewSensorData?) {
         val intent = Intent()
         intent.putExtra(WIFI_DATA, mySensorData)
-        setResult(SENSOR_DATA_RESULT, intent)
+        setResult(if(fromAddSensor) EDIT_SENSOR_DATA_RESULT else NEW_SENSOR_DATA_RESULT, intent)
         finish()
     }
     fun pause() {

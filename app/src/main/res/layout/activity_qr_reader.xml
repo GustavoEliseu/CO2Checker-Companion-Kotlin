@@ -23,7 +23,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:zxing_scanner_layout="@layout/custom_barcode_scanner2" />
+        app:zxing_scanner_layout="@layout/custom_view_barcode_scanner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

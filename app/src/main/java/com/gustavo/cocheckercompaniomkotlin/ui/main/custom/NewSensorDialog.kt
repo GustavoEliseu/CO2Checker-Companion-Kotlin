@@ -25,6 +25,9 @@ class NewSensorDialog(
     var macEditText: TextInputEditText? = null
     var macTextInput: TextInputLayout? = null
 
+    fun updateValuesFromQR(sensor: NewSensorData?){
+        macEditText?.setText(sensor?.mac)
+    }
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
 
@@ -42,7 +45,6 @@ class NewSensorDialog(
 
         qrButton?.setOnClickListener {
             fabClickListener(NewSensorData("", nameEditText?.text.toString()))
-            dismiss()
         }
 
         val dialog: AlertDialog = alert.create()
