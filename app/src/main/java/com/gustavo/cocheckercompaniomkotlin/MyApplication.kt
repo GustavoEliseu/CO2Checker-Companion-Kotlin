@@ -8,7 +8,13 @@ import dagger.hilt.android.HiltAndroidApp
 class MyApplication: Application(){
 
     override fun onCreate() {
+        context = this
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         super.onCreate()
+    }
+
+    companion object{
+
+        var context: Application? = null
     }
 }

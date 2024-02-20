@@ -112,7 +112,6 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
     override fun getLayoutId(): Int = R.layout.activity_qr_reader
 
     override fun initializeUi() {
-        mBinding = DataBindingUtil.setContentView(this, getLayoutId())
         beepManager = BeepManager(this)
         initScan()
     }
@@ -146,7 +145,9 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
     @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreateOnly(savedInstanceState)
-        setContentView(getLayoutId())
+        mBinding = DataBindingUtil.setContentView(this, getLayoutId())
+        setContentView(mBinding.root)
+        mBinding.viewModel = mViewModel
         sensorData = mySensorData
         if (sensorData == null) {
             sensorData = NewSensorData()
@@ -170,7 +171,7 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
         finish()
     }
 
-    override fun onPermissionGranted(permissions: Array<out String>) {
+    override fun onPermissionGranted(permissions: Array<out String>, requestCode:Int?) {
         initializeUi()
     }
 
@@ -186,6 +187,7 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
                     SensorOptions.CONFIGURE_SENSOR -> {
                         safeRun {
                             startActivity(configSensorIntent(sensorWifiData, currentLocation))
+                            finish()
                         }
                     }
                     SensorOptions.ADD_SENSOR -> {
@@ -194,6 +196,7 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
                     SensorOptions.VIEW_SENSOR -> {
                         safeRun {
                             startActivity(sensorDetailsIntent(sensorWifiData.mac))
+                            finish()
                         }
                     }
                 }

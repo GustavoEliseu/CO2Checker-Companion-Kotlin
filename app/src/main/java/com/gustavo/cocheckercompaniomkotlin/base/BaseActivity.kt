@@ -10,6 +10,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.gustavo.cocheckercompaniomkotlin.utils.LOCATION_PERMISSION_REQUEST
+import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_REQUEST
 import com.gustavo.cocheckercompanionkotlin.R
 
 abstract class BaseActivity<out VM : BaseViewModel> : AppCompatActivity() {
@@ -28,7 +29,7 @@ abstract class BaseActivity<out VM : BaseViewModel> : AppCompatActivity() {
     fun onCreateOnly(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
     }
-    open fun onPermissionGranted(permissions: Array<out String>) {}
+    open fun onPermissionGranted(permissions: Array<out String>, requestCode : Int? = null) {}
     open fun onPermissionDenied(permanently: Boolean = false) {}
 
     @SuppressLint("PrivateResource")
@@ -55,8 +56,7 @@ abstract class BaseActivity<out VM : BaseViewModel> : AppCompatActivity() {
             imgClose?.setImageResource(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    fun askPermissions(permissions: Array<out String>? = null) {
+    fun askPermissions(permissions: Array<out String>? = null, requestCode : Int? = null) {
         val lPermissions = mutableListOf<String>()
         if (permissions != null) lPermissions.addAll(permissions)
         else lPermissions.addAll(
@@ -68,12 +68,12 @@ abstract class BaseActivity<out VM : BaseViewModel> : AppCompatActivity() {
 
         permissions?.forEach {
             if (checkSelfPermission(it) != PackageManager.PERMISSION_GRANTED) {
-                val requestCode = LOCATION_PERMISSION_REQUEST
+                val requestCode = requestCode ?: PERMISSION_REQUEST
                 requestPermissions(permissions, requestCode)
                 return
             }
         }
 
-        this.onPermissionGranted(lPermissions.toTypedArray())
+        this.onPermissionGranted(lPermissions.toTypedArray(), requestCode)
     }
 }

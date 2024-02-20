@@ -19,7 +19,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gustavo.cocheckercompaniomkotlin.base.BaseActivity
-import com.gustavo.cocheckercompaniomkotlin.data.remote.FirebaseDatabaseManager
+import com.gustavo.cocheckercompaniomkotlin.data.remote.firebase.FirebaseDatabaseManager
 import com.gustavo.cocheckercompaniomkotlin.model.data.NewLocationData
 import com.gustavo.cocheckercompaniomkotlin.model.data.NewSensorData
 import com.gustavo.cocheckercompaniomkotlin.ui.location.locationDetailsIntent
@@ -33,7 +33,6 @@ import com.gustavo.cocheckercompaniomkotlin.utils.EDIT_SENSOR_DATA_RESULT
 import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_COARSE_LOCATION
 import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_FINE_LOCATION
 import com.gustavo.cocheckercompaniomkotlin.utils.LOCATION_PERMISSION_REQUEST
-import com.gustavo.cocheckercompaniomkotlin.utils.SENSOR_DATA_REQUEST
 import com.gustavo.cocheckercompaniomkotlin.utils.NEW_SENSOR_DATA_RESULT
 import com.gustavo.cocheckercompaniomkotlin.utils.WIFI_DATA
 import com.gustavo.cocheckercompaniomkotlin.utils.extensions.longToast
@@ -211,7 +210,7 @@ class MainActivity : BaseActivity<MainViewModel>(),
         else toast(R.string.permissions_location)
     }
 
-    override fun onPermissionGranted(permissions: Array<out String>) {
+    override fun onPermissionGranted(permissions: Array<out String>, requestCode: Int?) {
         requestResult()
     }
 

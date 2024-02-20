@@ -1,4 +1,4 @@
-package com.gustavo.cocheckercompaniomkotlin.data.remote
+package com.gustavo.cocheckercompaniomkotlin.data.remote.firebase
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -25,7 +25,7 @@ object FirebaseDatabaseManager {
         if(firebaseDatabase == null){
             Timber.e("FirebaseDatabaseManager.initializeFirebase is null, have you called before starting?")
         }
-        firebaseDatabase?.let {database->
+        firebaseDatabase?.let { database->
         currentUser?.uid?.let {
             val user = database.getReference(USERS).child(it)
             user.keepSynced(true)

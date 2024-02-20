@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+        <variable name="viewModel" type="com.gustavo.cocheckercompaniomkotlin.ui.sensorconfig.viewmodel.SensorConfigViewModel"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.sensor.ConfigSensorActivity">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:text="@string/send_wifi_data"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="36dp"
+            android:text="@string/wifi_name"
+            android:textSize="16sp"
+            android:importantForAutofill="no"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <EditText
+            android:id="@+id/ssidText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:hint="@string/wifi_name"
+            android:visibility="gone"
+            mutableVisibility="@{viewModel.wifiEditTextVisibility}"
+            app:layout_constraintEnd_toStartOf="@+id/changeWifiTextBtn"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            android:importantForAutofill="no"
+            android:inputType="text" />
+
+        <Spinner
+            android:id="@+id/wifi_spinner"
+            mutableVisibility="@{viewModel.wifiSpinnerVisibility}"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:spinnerMode="dropdown"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@+id/changeWifiTextBtn"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <ImageView
+            android:id="@+id/changeWifiTextBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="36dp"
+            android:contentDescription="@string/select_wifi_description"
+            android:onClick="@{() -> viewModel.editButtonOnClick()}"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toTopOf="@+id/textView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:tint="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/wifi_password"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/ssidText"
+            app:layout_goneMarginTop="45dp"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/setPasswordLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            app:layout_constraintEnd_toEndOf="@+id/ssidText"
+            app:layout_constraintHorizontal_bias="1.0"
+            android:importantForAutofill="no"
+            app:layout_constraintStart_toStartOf="@+id/textView2"
+            android:textColorHint="@android:color/secondary_text_light_nodisable"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/setPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:hint="@string/password"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textViewLocations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/select_location"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/setPasswordLayout" />
+
+        <Spinner
+            android:id="@+id/locations_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:spinnerMode="dropdown"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLocations" />
+
+        <TextView
+            android:id="@+id/saveLocationCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:text="@string/save_as_new_location"
+            mutableVisibility="@{viewModel.saveLocationCheckVisibility}"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/locations_spinner"
+            app:layout_constraintTop_toBottomOf="@+id/locations_spinner" />
+
+        <TextView
+            android:id="@+id/selected_location_error"
+            mutableText="@{viewModel.mutableLocationWarningText}"
+            mutableVisibility="@{viewModel.mutableTextLocationVisibility}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="36dp"
+            android:textColor="@color/red"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/saveLocationCheckBox" />
+
+        <TextView
+            android:id="@+id/textView4"
+            mutableText="@{viewModel.mutableSSIDWarningText}"
+            mutableVisibility="@{viewModel.mutableTextVisibility}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="36dp"
+            android:textColor="@color/red"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selected_location_error" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/reconnect_wifi_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/try_reconnect"
+            style="@style/TextAppearance.MaterialComponents.Button"
+            mutableVisibility="@{viewModel.mutableReconnectVisibility}"
+            android:onClick="@{() -> viewModel.retryConnectionClick()}"
+            android:layout_marginBottom="100dp"
+            android:enabled="true"
+            android:visibility="gone"
+            mutableTextColor="@{viewModel.mutableBtnTextColor}"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/btn_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/connect_wifi_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_to_sensor"
+            style="@style/TextAppearance.MaterialComponents.Button"
+            mutableIsEnabled= "@{viewModel.mutableButtonEnabled}"
+            mutableVisibility="@{viewModel.mutableConnectVisibility}"
+            android:layout_marginBottom="100dp"
+            android:enabled="true"
+            android:onClick="@{() -> viewModel.sendDataClick()}"
+            mutableText="@{viewModel.mutableSendBtnText}"
+            mutableTextColor="@{viewModel.mutableBtnTextColor}"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/btn_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/loading_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            mutableVisibility="@{viewModel.mutableLoadingVisibility}"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="100dp"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

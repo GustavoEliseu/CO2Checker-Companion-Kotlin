@@ -70,6 +70,8 @@
     <string name="permissions_camera_settings">Vá nas configurações e ative a permissão de câmera para prosseguir.</string>
     <string name="permissions_location">Você precisa garantir a permissão de localização para seguir com esta operação</string>
     <string name="permissions_location_settings">Vá nas configurações e ative a permissão de localização para prosseguir.</string>
+    <string name="permissions_internet_location">Você precisa garantir a permissão de internet e localização para seguir com esta operação</string>
+    <string name="permissions_internet_location_settings">Vá nas configurações e ative a permissão de internet e localização para prosseguir.</string>
     <string name="send_to_sensor">Enviar ao sensor</string>
     <string name="camera_hint">Alinhar o código QR dentro do quadro para digitalizar</string>
     <string name="invalid_qr_code">QRCode inválido</string>

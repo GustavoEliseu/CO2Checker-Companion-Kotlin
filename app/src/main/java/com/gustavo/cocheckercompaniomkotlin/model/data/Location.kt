@@ -27,4 +27,8 @@ data class NewLocationData(
     var Owners: String? = null
 ) : Serializable
 
-data class SimpleLocation(val locationId: String,val locationName:String)
+data class SimpleLocation(val locationId: String,val locationName:String, val longitude: String? = null, val latitude: String? = null){
+        fun toNewLocationData(): NewLocationData{
+            return NewLocationData(locationId,locationName,latitude,longitude)
+        }
+}

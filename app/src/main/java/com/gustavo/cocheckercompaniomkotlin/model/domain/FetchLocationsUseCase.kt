@@ -1,7 +1,7 @@
 package com.gustavo.cocheckercompaniomkotlin.model.domain
 
 import com.google.firebase.database.DatabaseError
-import com.gustavo.cocheckercompaniomkotlin.data.remote.FirebaseUserDataSource
+import com.gustavo.cocheckercompaniomkotlin.data.remote.firebase.FirebaseUserDataSource
 import com.gustavo.cocheckercompaniomkotlin.model.data.LocationItemList
 
 class FetchLocationsUseCase {

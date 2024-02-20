@@ -1,6 +1,10 @@
 package com.gustavo.cocheckercompaniomkotlin.di
 
 
+import com.gustavo.cocheckercompaniomkotlin.data.remote.sensor.Api
+import com.gustavo.cocheckercompaniomkotlin.data.remote.sensor.SensorRepository
+import com.gustavo.cocheckercompaniomkotlin.model.domain.CheckIfSensorConnectionUseCase
+import com.gustavo.cocheckercompaniomkotlin.model.domain.SendWifiToSensorUseCase
 import com.gustavo.cocheckercompaniomkotlin.utils.ESP_WIFI_TIMEOUT
 import com.gustavo.cocheckercompanionkotlin.BuildConfig
 import com.gustavo.cocheckercompanionkotlin.BuildConfig.ESP_URL
@@ -8,6 +12,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.reactivex.schedulers.Schedulers
@@ -24,7 +29,9 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+object NetworkModule {
+
+
 
     @Provides
     @Singleton
@@ -35,6 +42,19 @@ class NetworkModule {
             .connectTimeout(ESP_WIFI_TIMEOUT, TimeUnit.SECONDS)
             .addInterceptor(interceptor)
             .build()
+    }
+
+    @Provides
+    @Reusable
+    @JvmStatic
+    internal fun provideApi(retrofit: Retrofit): Api {
+        return retrofit.create(Api::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesSensorRepository(api: Api): SensorRepository{
+        return SensorRepository(api)
     }
     @Provides
     @Singleton

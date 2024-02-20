@@ -4,9 +4,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.google.android.material.button.MaterialButton
 import com.gustavo.cocheckercompaniomkotlin.utils.extensions.getParentActivity
 
 @BindingAdapter("mutableVisibility")
@@ -16,6 +18,28 @@ fun setMutableVisibility(view: View, visibility: MutableLiveData<Int>?) {
         visibility.observe(
             parentActivity,
             Observer { value -> view.visibility = value ?: View.VISIBLE })
+    }
+}
+
+@BindingAdapter("mutableTextColor")
+fun setMutableTextColor(view: TextView, color: MutableLiveData<Int>?) {
+    val parentActivity: AppCompatActivity? = view.getParentActivity()
+    if (parentActivity != null && color != null) {
+        color.observe(parentActivity, Observer { value ->
+            view.setTextColor(ContextCompat.getColor(parentActivity, value))
+        })
+    }
+}
+
+@BindingAdapter("mutableIsEnabled")
+fun setMutableIsEnabled(view: MaterialButton, checked: MutableLiveData<Boolean>?) {
+    val parentActivity: AppCompatActivity? = view.getParentActivity()
+    if (parentActivity != null && checked != null) {
+        checked.observe(parentActivity, Observer { value ->
+            value?.let {
+                view.isEnabled = it
+            }
+        })
     }
 }
 
