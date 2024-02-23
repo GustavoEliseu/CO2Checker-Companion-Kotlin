@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.gustavo.cocheckercompaniomkotlin.base.BaseViewModel
-import com.gustavo.cocheckercompaniomkotlin.model.data.Result
+import com.gustavo.cocheckercompaniomkotlin.model.data.CustomResult
 import com.gustavo.cocheckercompaniomkotlin.model.domain.creteUserWithEmailAndPasswordSuspend
 import com.gustavo.cocheckercompaniomkotlin.model.domain.sendPasswordResetEmailSuspend
 import com.gustavo.cocheckercompaniomkotlin.model.domain.signInWithEmailAndPasswordSuspend
@@ -22,30 +22,30 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
         auth = FirebaseAuth.getInstance()
     }
 
-    suspend fun login(email: String, password: String): Result<FirebaseUser?> {
+    suspend fun login(email: String, password: String): CustomResult<FirebaseUser?> {
         return try {
             val authResult = auth?.signInWithEmailAndPasswordSuspend(email, password)
-            Result.Success(authResult?.user)
+            CustomResult.Success(authResult?.user)
         } catch (e: Exception) {
-            Result.Error(e)
+            CustomResult.Error(e)
         }
     }
 
-    suspend fun register(email: String, password: String): Result<FirebaseUser?> {
+    suspend fun register(email: String, password: String): CustomResult<FirebaseUser?> {
         return try {
             val authResult = auth?.creteUserWithEmailAndPasswordSuspend(email, password)
-            Result.Success(authResult?.user)
+            CustomResult.Success(authResult?.user)
         } catch (e: Exception) {
-            Result.Error(e)
+            CustomResult.Error(e)
         }
     }
 
-    suspend fun forgot(email: String): Result<Any?> {
+    suspend fun forgot(email: String): CustomResult<Any?> {
         return try {
             val authResult = auth?.sendPasswordResetEmailSuspend(email)
-            Result.Success(authResult)
+            CustomResult.Success(authResult)
         } catch (e: Exception) {
-            Result.Error(e)
+            CustomResult.Error(e)
         }
     }
 

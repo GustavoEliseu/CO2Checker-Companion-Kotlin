@@ -60,6 +60,8 @@
     <string name="ForgotErrorEmail">Email não encontrado no sistema.</string>
     <string name="loginError">Não foi possível logar com o Email informado, verifique se os dados corretos foram informados</string>
 
+    <string name="genericMeasureError">Não foi possível receber mais medidas do servidor.</string>
+
     <!-- Locations Strings-->
     <string name="hint_location_name">Nome do lugar</string>
     <string name="hint_location_name_marker">Digite um nome abaixo</string>

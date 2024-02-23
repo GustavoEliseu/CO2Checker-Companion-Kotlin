@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.gustavo.cocheckercompaniomkotlin.base.BaseAdapter
 import com.gustavo.cocheckercompaniomkotlin.model.data.LocationItemList
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.LocationItemViewModel
 import com.gustavo.cocheckercompaniomkotlin.utils.extensions.load
@@ -61,11 +62,10 @@ class LocationsListAdapter(
 
     override fun getItemCount(): Int = currentLocations.size
 
-    abstract class LocationListViewHolder(view: View) : RecyclerView.ViewHolder(view)
     class LocationViewHolder(
         private val binding: LocationItemBinding,
         val clickListener: (String, String) -> Unit
-    ) : LocationListViewHolder(binding.root) {
+    ) : BaseAdapter.BaseViewHolder(binding.root) {
 
         private val viewModel = LocationItemViewModel()
 

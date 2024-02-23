@@ -32,9 +32,6 @@ class FirebaseUserDataSource {
         userRef?.let {
             onDataFetched(it)
         }
-        if (userRef == null) {
-            //TODO - (IMPLEMENT NULL SAFETY CASE)
-        }
     }
 
     fun checkIfSensorAlreadyRegistered(sensor: SensorWifiData,userListener: SensorExistsUseCase.SensorExistsDataListener) {

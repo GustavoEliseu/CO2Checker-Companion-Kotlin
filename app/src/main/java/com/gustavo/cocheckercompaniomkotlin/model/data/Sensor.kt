@@ -6,7 +6,7 @@ data class SensorItemList(
     var mac: String,
     var name: String,
     var LastLocation: LastMeasure? = null
-) : Serializable {
+) : Serializable, GenericData() {
     constructor() : this("", "", null)
 }
 data class SimpleSensor(val mac: String)
@@ -16,7 +16,7 @@ data class NewSensorData(
     var name: String? = null,
     var ssid: String? = null,
     var password: String? = null
-) : Serializable {
+) : Serializable, GenericData() {
     fun toSensorItemList(): SensorItemList {
         return SensorItemList(mac = mac.toString(), name = name.toString(), LastLocation = null)
     }

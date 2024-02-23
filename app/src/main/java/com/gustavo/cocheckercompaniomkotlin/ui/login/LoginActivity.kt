@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuthEmailException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.gustavo.cocheckercompaniomkotlin.base.BaseActivity
-import com.gustavo.cocheckercompaniomkotlin.model.data.Result
+import com.gustavo.cocheckercompaniomkotlin.model.data.CustomResult
 import com.gustavo.cocheckercompaniomkotlin.ui.login.viewmodel.LoginViewModel
 import com.gustavo.cocheckercompaniomkotlin.ui.main.mainIntent
 import com.gustavo.cocheckercompaniomkotlin.utils.LoggerUtil
@@ -125,13 +125,13 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                             password = mBinding.passwordEditText.text.toString()
                         )
                         when (result) {
-                            is Result.Success -> {
+                            is CustomResult.Success -> {
                                 mViewModel.changeLoadingVisibility(false)
                                 startActivity(mainIntent())
                                 activeButton = true
                             }
 
-                            is Result.Error -> {
+                            is CustomResult.Error -> {
                                 activeButton = true
                                 mViewModel.changeLoadingVisibility(false)
                                 when (result.exception) {
@@ -183,13 +183,13 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                         password = mBinding.passwordEditText.text.toString()
                     )
                     when (result) {
-                        is Result.Success -> {
+                        is CustomResult.Success -> {
                             mViewModel.changeLoadingVisibility(false)
                             startActivity(mainIntent())
                             activeButton = true
                         }
 
-                        is Result.Error -> {
+                        is CustomResult.Error -> {
                             activeButton = true
                             mViewModel.changeLoadingVisibility(false)
                             when (result.exception) {
@@ -230,12 +230,12 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
             try {
                 val result = mViewModel.forgot(mBinding.emailEditText.text.toString())
                 when (result) {
-                    is Result.Success -> {
+                    is CustomResult.Success -> {
                         toast(R.string.forgot_password_result)
                         mViewModel.changeLoadingVisibility(false)
                     }
 
-                    is Result.Error -> {
+                    is CustomResult.Error -> {
                         activeButton = true
                         mViewModel.changeLoadingVisibility(false)
                         when (result.exception) {
