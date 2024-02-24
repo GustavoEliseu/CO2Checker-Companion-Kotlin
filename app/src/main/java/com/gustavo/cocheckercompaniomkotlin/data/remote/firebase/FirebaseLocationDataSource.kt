@@ -6,7 +6,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.gustavo.cocheckercompaniomkotlin.model.data.FirebaseResult
 import com.gustavo.cocheckercompaniomkotlin.utils.MEASURES
-import com.gustavo.cocheckercompaniomkotlin.utils.TIMEDATE
+import com.gustavo.cocheckercompaniomkotlin.utils.TIME_STAMP
+import com.gustavo.cocheckercompaniomkotlin.utils.extensions.isNotNullOrNotEmptyOrNotBlank
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -23,9 +24,9 @@ class FirebaseLocationDataSource {
                 continuation.resume(FirebaseResult.Changed(snapshot))
             }
         }
-        locationsBaseRef?.child(locationUid)?.orderByChild(TIMEDATE)?.limitToFirst(1)?.addListenerForSingleValueEvent(valueEventListener)
+        locationsBaseRef?.child(locationUid)?.orderByChild(TIME_STAMP)?.limitToLast(1)?.addListenerForSingleValueEvent(valueEventListener)
     }
-    suspend fun getCurrentLocationMeasures(locationUid:String,currentLastItem:Int): FirebaseResult = suspendCoroutine { continuation ->
+    suspend fun getCurrentLocationMeasures(locationUid:String,currentLastItem:String?): FirebaseResult = suspendCoroutine { continuation ->
         val valueEventListener = object: ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
                 continuation.resume(FirebaseResult.Cancelled(error))
@@ -35,6 +36,10 @@ class FirebaseLocationDataSource {
                 continuation.resume(FirebaseResult.Changed(snapshot))
             }
         }
-        locationsBaseRef?.child(locationUid)?.child(MEASURES)?.orderByChild(TIMEDATE)?.limitToFirst(currentLastItem)?.limitToLast(currentLastItem+20)?.addListenerForSingleValueEvent(valueEventListener)
+        if(currentLastItem.isNotNullOrNotEmptyOrNotBlank()){
+            locationsBaseRef?.child(locationUid)?.child(MEASURES)?.orderByChild(TIME_STAMP)?.startAt(currentLastItem)?.limitToLast(20)?.addListenerForSingleValueEvent(valueEventListener)
+        }else{
+            locationsBaseRef?.child(locationUid)?.child(MEASURES)?.orderByChild(TIME_STAMP)?.limitToLast(20)?.addListenerForSingleValueEvent(valueEventListener)
+        }
     }
 }

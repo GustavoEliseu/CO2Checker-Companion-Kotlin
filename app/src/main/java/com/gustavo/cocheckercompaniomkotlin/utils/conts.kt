@@ -36,7 +36,7 @@ const val MEASURES = "Measures"
 const val SAVED_DEVICES = "SavedSensors"
 const val SAVED_LOCATIONS = "SavedLocations"
 const val MAC = "mac"
-const val TIMEDATE = "TIMEDATE"
+const val TIME_STAMP = "TimeStamp"
 
 const val SENSOR_MAC = "SENSOR_MAC"
 const val LOCATION_UID = "LOCATION_UID"

@@ -1,6 +1,6 @@
 package com.gustavo.cocheckercompaniomkotlin.model.domain
 
-import com.gustavo.cocheckercompaniomkotlin.data.remote.firebase.FirebaseSensorDataSource
+import com.gustavo.cocheckercompaniomkotlin.data.remote.firebase.FirebaseLocationDataSource
 import com.gustavo.cocheckercompaniomkotlin.model.data.CustomResult
 import com.gustavo.cocheckercompaniomkotlin.model.data.FirebaseResult
 import com.gustavo.cocheckercompaniomkotlin.model.data.MeasureItem
@@ -8,12 +8,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class GetLocationMeasureUseCase {
-    val firebaseDataSource = FirebaseSensorDataSource()
-    var currentLastItem = 0
+    val firebaseDataSource = FirebaseLocationDataSource()
+    var currentLastItem:String? = null
 
     suspend fun fetchLocationsMeasureData(sensorUid: String): CustomResult<MutableList<MeasureItem>?> = withContext(
         Dispatchers.IO){
-        when(val firebaseResult = firebaseDataSource.getCurrentSensorMeasures(sensorUid,currentLastItem)){
+        when(val firebaseResult = firebaseDataSource.getCurrentLocationMeasures(sensorUid,currentLastItem)){
             is FirebaseResult.Cancelled->{
                 return@withContext CustomResult.Error(firebaseResult.error.toException())
             }
@@ -26,7 +26,7 @@ class GetLocationMeasureUseCase {
                     }
                 }
                 if (list.isNotEmpty()) {
-                    currentLastItem += list.size
+                    currentLastItem = list.last().TimeStamp
                     return@withContext CustomResult.Success(list)
                 } else {
                     return@withContext CustomResult.Success(null)

@@ -10,11 +10,12 @@ import kotlinx.coroutines.withContext
 
 class GetSensorMeasureUseCase() {
     val firebaseDataSource = FirebaseSensorDataSource()
-    var currentLastItem = 0
+    var currentLastItem:String? = null
+    var currentPage = 20
 
 
      suspend fun fetchUserSensorsData(sensorUid: String): CustomResult<MutableList<MeasureItem>?> = withContext(Dispatchers.IO){
-        when(val firebaseResult = firebaseDataSource.getCurrentSensorMeasures(sensorUid,currentLastItem)){
+        when(val firebaseResult = firebaseDataSource.getCurrentSensorMeasures(sensorUid,currentLastItem,currentPage)){
             is FirebaseResult.Cancelled->{
                 return@withContext CustomResult.Error(firebaseResult.error.toException())
             }
@@ -27,7 +28,7 @@ class GetSensorMeasureUseCase() {
                     }
                 }
                 if (list.isNotEmpty()) {
-                    currentLastItem += list.size
+                    currentLastItem = list.last().TimeStamp
                     return@withContext CustomResult.Success(list)
                 } else {
                     return@withContext CustomResult.Success(null)

@@ -19,8 +19,7 @@ import javax.inject.Inject
 class LocationDetailsViewModel @Inject constructor() : BaseViewModel() {
     val getLocationMeasureUseCase: GetLocationMeasureUseCase = GetLocationMeasureUseCase()
     val getLocationDetailsUseCase: GetLocationDetailsUseCase = GetLocationDetailsUseCase()
-    val myMeasuresListAdapter: MeasureListAdapter =
-        MeasureListAdapter(::loadMoreMeasures)
+    val myMeasuresListAdapter: MeasureListAdapter = MeasureListAdapter()
 
 
     val emptyMessageVisibility = MutableLiveData<Int>()
@@ -74,14 +73,7 @@ class LocationDetailsViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
-    private fun loadMoreMeasures() {
-        viewModelScope.launch {
-            getLocationMeasures(locationUid)
-        }
-    }
-
     override fun initialize() {
-
 
     }
 }

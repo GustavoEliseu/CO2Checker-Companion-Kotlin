@@ -7,7 +7,6 @@ import com.gustavo.cocheckercompaniomkotlin.model.data.CustomResult
 import com.gustavo.cocheckercompaniomkotlin.model.domain.GetSensorMeasureUseCase
 import com.gustavo.cocheckercompaniomkotlin.ui.measure.MeasureListAdapter
 import com.gustavo.cocheckercompaniomkotlin.utils.LoggerUtil
-import com.gustavo.cocheckercompaniomkotlin.utils.extensions.isNotNullOrNotEmptyOrNotBlank
 import com.gustavo.cocheckercompanionkotlin.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,8 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SensorDetailsViewModel @Inject constructor() : BaseViewModel() {
     val getSensorMeasureUseCase: GetSensorMeasureUseCase = GetSensorMeasureUseCase()
-    val myMeasuresListAdapter: MeasureListAdapter =
-        MeasureListAdapter(::loadMoreMeasures)
+    val myMeasuresListAdapter: MeasureListAdapter = MeasureListAdapter()
 
 
     val emptyMessageVisibility = MutableLiveData<Int>()
@@ -32,7 +30,11 @@ class SensorDetailsViewModel @Inject constructor() : BaseViewModel() {
         when (val result = getSensorMeasureUseCase.fetchUserSensorsData(deviceUid)) {
             is CustomResult.Success -> {
                 if (result.data != null) {
-                    myMeasuresListAdapter.addAll(result.data)
+                    if (myMeasuresListAdapter.isDataEmpty()){
+                        myMeasuresListAdapter.setCurrentData(result.data)
+                    }else{
+                        myMeasuresListAdapter.addAll(result.data)
+                    }
                 } else {
                     isLastPage = true
                 }
