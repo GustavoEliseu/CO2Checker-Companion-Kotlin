@@ -40,6 +40,10 @@ class MeasureListAdapter() : BaseAdapter<MeasureViewHolder,MeasureItem>() {
         safeRun {
             val measureData = dataList[position]
             (holder as? MeasureViewHolder)?.bind(measureData)
+            holder.itemView.setOnClickListener {
+                dataList[position].expanded = !dataList[position].expanded
+                notifyItemChanged(position)
+            }
         }
     }
 

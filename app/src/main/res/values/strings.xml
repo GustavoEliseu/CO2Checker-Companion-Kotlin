@@ -149,5 +149,12 @@
     <string name="error_register">Não foi possível registrar o usuário!</string>
     <string name="no_devices_found">Nenhum dispositivo encontrado, adicione um novo!</string>
     <string name="logo_description">App\'s logo</string>
+    <string name="unknown_quality">Não foi possível avaliar</string>
+    <string name="great">Ótimo</string>
+    <string name="bad">Ruim</string>
+    <string name="very_bad">Muito Ruim</string>
+    <string name="extremly_bad">Terrível</string>
+    <string name="decent">Moderado</string>
+    <string name="good">Bom</string>
 
 </resources>

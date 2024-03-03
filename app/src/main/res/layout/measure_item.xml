@@ -11,96 +11,172 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        app:cardCornerRadius="15dp"
+        app:cardCornerRadius="10dp"
         app:cardElevation="2dp">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/sensorName"
-                mutableText="@{viewModel.mutableMeasureUID}"
+                mutableText="@{viewModel.locationName}"
+                mutableVisibility="@{viewModel.locationNameVisibility}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/quality_text_fixed"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="Meu esp" />
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/sensorTimeStamp"
-                mutableText="@{viewModel.mutableMeasureTimeStamp}"
+                android:id="@+id/quality_text_fixed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_below="@id/sensorName"
-                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="20dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Qualidade do ar medido"/>
+
+            <TextView
+                android:id="@+id/date_text"
+                mutableText="@{viewModel.mutableMeasureDate}"
+                android:layout_width="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/sensorName"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                tools:text="Meu esp" />
+                tools:text = "11/03/1994"/>
 
-<!--            <TextView-->
-<!--                android:id="@+id/lastLocation"-->
-<!--                mutableReferenceText="@{viewModel.mutableSensorLastLocationReference}"-->
-<!--                mutableText="@{viewModel.mutableSensorLastLocation}"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/sensorName"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:layout_marginTop="3dp"-->
-<!--                android:layout_toEndOf="@id/sensorImage"-->
-<!--                android:ellipsize="end"-->
-<!--                android:maxWidth="250dp"-->
-<!--                android:maxLines="1"-->
-<!--                android:textColor="@color/black"-->
-<!--                tools:text="Parque das Crianças" />-->
+                <TextView
+                    android:id="@+id/time_text"
+                    mutableText="@{viewModel.mutableMeasureTime}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/date_text"
+                    app:layout_constraintTop_toTopOf="@id/date_text"
+                    android:layout_marginStart="8dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text = "11:39:00"/>
 
-<!--            <TextView-->
-<!--                android:id="@+id/lastMeasureDate"-->
-<!--                mutableText="@{viewModel.mutableSensorLastMeasure}"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/lastLocation"-->
-<!--                android:layout_alignStart="@+id/lastLocation"-->
-<!--                android:layout_alignEnd="@+id/lastLocation"-->
-<!--                android:textColor="@color/black"-->
-<!--                tools:text="25/05/03" />-->
+                <TextView
+                    android:id="@+id/quality_text"
+                    mutableReferenceText="@{viewModel.mutableMeasureQualityTextReference}"
+                    mutableTextColor="@{viewModel.mutableMeasureQualityTextColor}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@id/sensorName"
+                    app:layout_constraintTop_toTopOf="@+id/quality_text_fixed"
+                    app:layout_constraintEnd_toStartOf="@+id/expand_arrow"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="15dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:textColor="@color/sensor_green"
+                    tools:text="Bom" />
 
+            <ImageView
+                android:id="@+id/expand_arrow"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow"
+                />
 
-            <!--            <LinearLayout-->
-            <!--                android:layout_marginBottom="10dp"-->
-            <!--                android:layout_marginStart="15dp"-->
-            <!--                android:layout_below="@id/locationName"-->
-            <!--                android:layout_alignStart="@id/locationImage"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content">-->
-            <!--            <TextView-->
-            <!--                android:id="@+id/locationMeasureTitle"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:gravity="center"-->
-            <!--                android:textColor="@color/black"-->
-            <!--                android:textSize="16sp"-->
-            <!--                android:text="@string/measure" />-->
+            <TextView
+                android:id="@+id/co_fixed_text"
+                mutableVisibility="@{viewModel.mutableExpandedVisibility}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/date_text"
+                app:layout_constraintTop_toBottomOf="@id/date_text"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Medida de co:" />
 
-            <!--            <TextView-->
-            <!--                android:id="@+id/locationMeasure"-->
-            <!--                mutableText="@{viewModel.locationMeasure}"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginStart="5dp"-->
-            <!--                android:gravity="center"-->
-            <!--                android:textColor="@color/black"-->
-            <!--                android:textSize="16sp"-->
-            <!--                tools:text="25/06/2022" />-->
-            <!--            </LinearLayout>-->
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/co_text"
+                mutableVisibility="@{viewModel.mutableExpandedVisibility}"
+                mutableText=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/co_fixed_text"
+                app:layout_constraintTop_toTopOf="@id/co_fixed_text"
+                android:layout_marginStart="5dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:textColor="@color/sensor_green"
+                tools:text="5.0"/>
+
+            <TextView
+                android:id="@+id/co2_fixed_text"
+                mutableVisibility="@{viewModel.mutableExpandedVisibility}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/co_fixed_text"
+                app:layout_constraintTop_toBottomOf="@id/co_fixed_text"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Medida de co2:" />
+
+            <TextView
+                android:id="@+id/co2_text"
+                mutableVisibility="@{viewModel.mutableExpandedVisibility}"
+                mutableText=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/co2_fixed_text"
+                app:layout_constraintTop_toTopOf="@id/co2_fixed_text"
+                android:layout_marginStart="5dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:textColor="@color/sensor_green"
+                tools:text="355.0"/>
+
+            <TextView
+                android:id="@+id/temperature_fixed_text"
+                mutableVisibility="@{viewModel.mutableExpandedVisibility}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Temperatura:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/co2_fixed_text"
+                app:layout_constraintTop_toBottomOf="@id/co2_fixed_text" />
+
+            <TextView
+                android:id="@+id/temperature_text"
+                mutableVisibility="@{viewModel.mutableExpandedVisibility}"
+                mutableText=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                app:layout_constraintStart_toEndOf="@id/temperature_fixed_text"
+                app:layout_constraintTop_toTopOf="@id/temperature_fixed_text"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="32.0"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

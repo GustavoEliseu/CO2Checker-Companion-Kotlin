@@ -4,6 +4,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
@@ -21,12 +23,22 @@ fun setMutableVisibility(view: View, visibility: MutableLiveData<Int>?) {
     }
 }
 
-@BindingAdapter("mutableTextColor")
-fun setMutableTextColor(view: TextView, color: MutableLiveData<Int>?) {
+@BindingAdapter("mutableTextColorReference")
+fun setMutableTextColorReference(view: TextView, color: MutableLiveData<Int>?) {
     val parentActivity: AppCompatActivity? = view.getParentActivity()
     if (parentActivity != null && color != null) {
         color.observe(parentActivity, Observer { value ->
             view.setTextColor(ContextCompat.getColor(parentActivity, value))
+        })
+    }
+}
+
+@BindingAdapter("mutableTextColor")
+fun setMutableTextColor(view: TextView, color: MutableLiveData<Color>?) {
+    val parentActivity: AppCompatActivity? = view.getParentActivity()
+    if (parentActivity != null && color != null) {
+        color.observe(parentActivity, Observer { value ->
+            view.setTextColor(value.toArgb())
         })
     }
 }
@@ -44,11 +56,12 @@ fun setMutableIsEnabled(view: MaterialButton, checked: MutableLiveData<Boolean>?
 }
 
 @BindingAdapter("mutableText")
-fun setMutableText(view: ImageView, text: MutableLiveData<String>?) {
+fun setMutableTextReference(view: TextView, textReference: MutableLiveData<Int>?) {
     val parentActivity: AppCompatActivity? = view.getParentActivity()
-    if (parentActivity != null && text != null) {
-        text.observe(parentActivity, Observer { value ->
-            view.contentDescription = value ?: ""
+    if (parentActivity != null && textReference != null) {
+        textReference.observe(parentActivity, Observer { value ->
+            val text = parentActivity.getString(value)
+            view.contentDescription = text
         })
     }
 }
