@@ -30,11 +30,11 @@ enum class QualityEnum(val value:Int): ColorEnum{
     },
     DECENT(3){
         override val nameId = R.string.decent
-        override val tintColor = Color.Yellow
+        override val tintColor = Color(115,242,75)
     },
     GOOD(4){
         override val nameId = R.string.good
-        override val tintColor = Color.Green
+        override val tintColor = Color(115,180,75)
     },
 }
 enum class SensorOptions : DefaultEnum{

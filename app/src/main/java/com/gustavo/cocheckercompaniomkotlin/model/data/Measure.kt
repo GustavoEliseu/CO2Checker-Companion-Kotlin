@@ -13,8 +13,9 @@ data class MeasureItem(
     val locationLatitude: String?,
     val Humidity: Double,
     val locationUuid: String?,
+    val locationName: String?,
     var expanded: Boolean = false,
     var quality: QualityEnum? = null
 ): GenericData(){
-    constructor() : this(0.0, "","","",0.0,0.0,"","",0.0, "", false,null)
+    constructor() : this(0.0, "","","",0.0,0.0,"","",0.0, "", null,false,null)
 }

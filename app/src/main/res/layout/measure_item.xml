@@ -22,22 +22,6 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/sensorName"
-                mutableText="@{viewModel.locationName}"
-                mutableVisibility="@{viewModel.locationNameVisibility}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/quality_text_fixed"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="5dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
                 android:id="@+id/quality_text_fixed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,6 +31,38 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:text="Qualidade do ar medido"/>
+
+            <TextView
+                android:id="@+id/location_fixed_text"
+                mutableVisibility="@{viewModel.locationNameVisibility}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="5dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="@+id/quality_text_fixed"
+                app:layout_constraintTop_toBottomOf="@id/quality_text_fixed"
+                tools:text="Local:" />
+
+            <TextView
+                android:id="@+id/sensorName"
+                mutableText="@{viewModel.locationName}"
+                mutableVisibility="@{viewModel.locationNameVisibility}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="5dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintStart_toEndOf="@+id/location_fixed_text"
+                app:layout_constraintTop_toBottomOf="@id/quality_text_fixed"
+                tools:text="Casa" />
 
             <TextView
                 android:id="@+id/date_text"
@@ -116,7 +132,8 @@
             <TextView
                 android:id="@+id/co_text"
                 mutableVisibility="@{viewModel.mutableExpandedVisibility}"
-                mutableText=""
+                mutableText="@{viewModel.mutableCOText}"
+                mutableTextColor="@{viewModel.mutableCOTextColor}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toEndOf="@id/co_fixed_text"
@@ -141,7 +158,8 @@
             <TextView
                 android:id="@+id/co2_text"
                 mutableVisibility="@{viewModel.mutableExpandedVisibility}"
-                mutableText=""
+                mutableText="@{viewModel.mutableCO2Text}"
+                mutableTextColor="@{viewModel.mutableCO2TextColor}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toEndOf="@id/co2_fixed_text"
@@ -168,7 +186,7 @@
             <TextView
                 android:id="@+id/temperature_text"
                 mutableVisibility="@{viewModel.mutableExpandedVisibility}"
-                mutableText=""
+                mutableText="@{viewModel.mutableTemperatureText}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"

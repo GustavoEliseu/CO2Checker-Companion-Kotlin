@@ -388,7 +388,7 @@ class SensorConfigActivity : BaseActivity<SensorConfigViewModel>() {
             mViewModel.buttonLoading(true)
             val checked = mViewModel.saveLocationCheckVisibility.value == View.VISIBLE
             lifecycleScope.launch {
-                mViewModel.sendWifiData(userWifi, dateFormatted, location, espStatusError, checked)
+                mViewModel.sendWifiData(userWifi, dateFormatted, location, espStatusError,checked)
             }
         } else {
             val selectedLocationPosition = mBinding?.locationsSpinner?.selectedItemPosition
@@ -410,7 +410,7 @@ class SensorConfigActivity : BaseActivity<SensorConfigViewModel>() {
             val selectedLocation = myLocationsList[selectedPosition - 1]
             SimpleLocation(
                 selectedLocation.uuid,
-                "",
+                selectedLocation.name,
                 selectedLocation.latitude,
                 selectedLocation.longitude
             )

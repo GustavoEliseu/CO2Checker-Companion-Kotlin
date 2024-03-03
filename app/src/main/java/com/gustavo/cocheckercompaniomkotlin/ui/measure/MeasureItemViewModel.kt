@@ -5,28 +5,46 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import com.gustavo.cocheckercompaniomkotlin.model.data.MeasureItem
 import com.gustavo.cocheckercompaniomkotlin.utils.QualityEnum
+import com.gustavo.cocheckercompaniomkotlin.utils.extensions.isNotNullOrNotEmptyOrNotBlank
 
 class MeasureItemViewModel {
     val locationName : MutableLiveData<String?> = MutableLiveData("")
     val locationNameVisibility : MutableLiveData<Int> = MutableLiveData(View.GONE)
     val mutableMeasureTime : MutableLiveData<String?> = MutableLiveData(null)
+    val mutableCOText : MutableLiveData<String?> = MutableLiveData(null)
+    val mutableCO2Text : MutableLiveData<String?> = MutableLiveData(null)
+    val mutableTemperatureText : MutableLiveData<String?> = MutableLiveData(null)
 
     val mutableExpandedVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
 
     val mutableMeasureQualityTextReference : MutableLiveData<Int?> = MutableLiveData(null)
     val mutableMeasureQualityTextColor: MutableLiveData<Color?> = MutableLiveData(null)
+
+    val mutableCOTextColor: MutableLiveData<Color?> = MutableLiveData(null)
+    val mutableCO2TextColor: MutableLiveData<Color?> = MutableLiveData(null)
     val mutableMeasureDate : MutableLiveData<String?> = MutableLiveData(null)
 
     fun bind(measure: MeasureItem){
-        locationName.value = measure.locationUuid
+        mutableExpandedVisibility.value = if(measure.expanded) View.VISIBLE else View.GONE
+        if(measure.locationName.isNotNullOrNotEmptyOrNotBlank()){
+            locationName.value = measure.locationName
+            locationNameVisibility.value = View.VISIBLE
+        }else {
+            locationNameVisibility.value = View.GONE
+        }
         mutableMeasureDate.value = measure.Date
         mutableMeasureTime.value = measure.Time
+        val COQuality = checkCOQuality(measure.CO)
+        mutableCOText.value = measure.CO.toString()
+        mutableCOTextColor.value = COQuality.tintColor
+        mutableCO2Text.value = measure.CO2.toString()
+        mutableCO2TextColor.value = COQuality.tintColor
+        mutableTemperatureText.value = measure.Temperature.toString()
         val quality = measure.quality ?: getQualityMeasure(measure)
         quality.let {
         mutableMeasureQualityTextReference.value = it.nameId
         mutableMeasureQualityTextColor.value = it.tintColor
         }
-        mutableExpandedVisibility.value = if(measure.expanded) View.VISIBLE else View.GONE
     }
 
     private fun getQualityMeasure(measure: MeasureItem): QualityEnum{
