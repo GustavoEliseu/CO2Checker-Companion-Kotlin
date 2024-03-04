@@ -16,24 +16,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LocationDetailsViewModel @Inject constructor() : BaseViewModel() {
-    val getLocationDetailsUseCase: GetLocationDetailsUseCase = GetLocationDetailsUseCase()
+    private val getLocationDetailsUseCase: GetLocationDetailsUseCase = GetLocationDetailsUseCase()
     val myMeasuresListAdapter: MeasureListAdapter = MeasureListAdapter()
 
     val locationNameMutableText: MutableLiveData<String?> = MutableLiveData(null)
     val locationImageDecsription = MutableLiveData<String>()
     val locationUriMutableText = MutableLiveData<String?>()
-
-    val emptyMessageVisibility = MutableLiveData<Int>()
-    var locationUid: String = ""
-    private var isLastPage = false
-
     val toastMessageState = MutableLiveData<Int?>(null)
-    var currentLocation:LocationItemList? = null
 
 
     suspend fun getLocationDetails(uid: String) {
-        locationUid = uid
-        when (val result = getLocationDetailsUseCase.fetchUserLocationDetailsData(locationUid)) {
+        when (val result = getLocationDetailsUseCase.fetchUserLocationDetailsData(uid)) {
             is CustomResult.Success -> {
                 if (result.data != null) {
                     locationDetails(result.data)
@@ -58,7 +51,6 @@ class LocationDetailsViewModel @Inject constructor() : BaseViewModel() {
         if(locationUriMutableText.value.isNullOrEmptyOrBlank()){
             locationUriMutableText.value = getSafeMapUrlString(locationItem.latitude.toString(),locationItem.longitude.toString())
         }
-        currentLocation = locationItem
         locationItem.Measures?.let {measureMap->
             myMeasuresListAdapter.addAll(measureMap.map { it.value })
         }

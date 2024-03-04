@@ -17,6 +17,7 @@ import com.gustavo.cocheckercompaniomkotlin.utils.LOCATION_UID
 import com.gustavo.cocheckercompaniomkotlin.utils.LOCATION_URI
 import com.gustavo.cocheckercompaniomkotlin.utils.WIFI_DATA
 import com.gustavo.cocheckercompaniomkotlin.utils.extensions.isNotNullOrNotEmptyOrNotBlank
+import com.gustavo.cocheckercompaniomkotlin.utils.extensions.toast
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityLocationDetailsBinding
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityLoginBinding
@@ -57,6 +58,12 @@ class LocationDetailsActivity: BaseActivity<LocationDetailsViewModel>() {
 
             lifecycleScope.launch {
                 mViewModel.getLocationDetails(locationUid!!)
+            }
+            mViewModel.toastMessageState.observe(this) {
+                it?.let {
+                    toast(it)
+                    mViewModel.toastMessageState.value = null
+                }
             }
         }
     }
