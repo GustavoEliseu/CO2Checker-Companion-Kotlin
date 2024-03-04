@@ -46,11 +46,10 @@
                     android:layout_marginTop="28dp"
                     android:contentDescription="@string/qrcode_button_description"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_qr_code"
+                    android:src="@drawable/ic_qrcodescanner"
                     app:elevation="12dp"
                     app:fabCustomSize="36dp"
                     app:fabSize="mini"
-                    app:maxImageSize="@dimen/design_fab_content_size_add"
                     tools:layout_height="36dp"
                     tools:layout_width="36dp" />
         </RelativeLayout>
