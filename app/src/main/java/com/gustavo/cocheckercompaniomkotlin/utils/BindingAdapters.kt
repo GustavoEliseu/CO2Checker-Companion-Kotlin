@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.google.android.material.button.MaterialButton
 import com.gustavo.cocheckercompaniomkotlin.utils.extensions.getParentActivity
+import com.gustavo.cocheckercompaniomkotlin.utils.extensions.load
 
 @BindingAdapter("mutableVisibility")
 fun setMutableVisibility(view: View, visibility: MutableLiveData<Int>?) {
@@ -79,13 +80,22 @@ fun setMutableReferenceText(view: TextView, text: MutableLiveData<Int>?) {
     }
 }
 
+@BindingAdapter("mutableImageUri")
+fun setMutableImageUri(view: ImageView, uri: MutableLiveData<String>?) {
+    val parentActivity: AppCompatActivity? = view.getParentActivity()
+    if (parentActivity != null && uri != null) {
+        uri.observe(parentActivity) {
+            view.load(it, false)
+        }
+    }
+}
 
 @BindingAdapter("mutableText")
 fun setMutableText(view: TextView, text: MutableLiveData<String>?) {
     val parentActivity: AppCompatActivity? = view.getParentActivity()
     if (parentActivity != null && text != null) {
-        text.observe(parentActivity, Observer { value ->
-            view.text = value ?: ""
-        })
+        text.observe(parentActivity) {
+            view.text = it ?: ""
+        }
     }
 }

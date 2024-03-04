@@ -89,7 +89,7 @@ object ConnectionManager {
         val wifiConfig = WifiConfiguration()
         wifiConfig.SSID = String.format("\"%s\"", ssid)
         wifiConfig.preSharedKey = String.format("\"%s\"", password)
-        val wifiManager = MyApplication.context?.getSystemService(AppCompatActivity.WIFI_SERVICE) as WifiManager
+        val wifiManager = MyApplication.weakContext?.get()?.getSystemService(AppCompatActivity.WIFI_SERVICE) as WifiManager
         val netId = wifiManager.addNetwork(wifiConfig)
         wifiManager.disconnect()
         wifiManager.enableNetwork(netId, true)

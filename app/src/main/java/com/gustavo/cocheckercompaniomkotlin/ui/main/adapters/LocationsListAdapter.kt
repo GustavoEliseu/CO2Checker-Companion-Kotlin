@@ -2,7 +2,6 @@ package com.gustavo.cocheckercompaniomkotlin.ui.main.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -74,7 +73,6 @@ class LocationsListAdapter(
             binding.viewModel = viewModel
 
             val imageUrl = getSafeMapUrlString(
-                binding.root.context,
                 locationItemList.latitude.toString(),
                 locationItemList.longitude.toString()
             )

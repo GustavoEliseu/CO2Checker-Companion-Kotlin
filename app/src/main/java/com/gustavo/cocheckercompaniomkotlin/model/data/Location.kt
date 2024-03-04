@@ -13,9 +13,11 @@ data class LocationItemList(
     @Json(name = "Latitude")
     val latitude: String?,
     @Json(name = "Longitude")
-    val longitude: String?
+    val longitude: String?,
+    @Json(name = "Measures")
+    val Measures: HashMap<String,MeasureItem>?
 ) : Serializable{
-    constructor() : this("", "", "", null, null, null)
+    constructor() : this("", "", "", null, null, null, null)
 }
 data class NewLocationData(
     @Json(name = "UUID")

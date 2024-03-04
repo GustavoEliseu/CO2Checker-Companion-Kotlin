@@ -3,6 +3,8 @@ package com.gustavo.cocheckercompaniomkotlin.utils
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import androidx.annotation.StringRes
+import com.gustavo.cocheckercompaniomkotlin.MyApplication
 import com.gustavo.cocheckercompaniomkotlin.utils.extensions.isNullOrEmptyOrBlank
 import com.gustavo.cocheckercompanionkotlin.BuildConfig
 import com.gustavo.cocheckercompanionkotlin.R
@@ -25,8 +27,19 @@ fun safeRunOnUiThread(r: () -> Unit) {
     })
 }
 
+fun getStringNonNullable(@StringRes resString: Int): String {
+    return MyApplication.weakContext?.get()?.getString(resString).getValueOrEmpty()
+}
+
+fun getStringWithExtrasNonNullable(@StringRes resString: Int,  vararg formatArgs:Any): String {
+    return MyApplication.weakContext?.get()?.getString(resString,formatArgs).getValueOrEmpty()
+}
+
+fun String?.getValueOrEmpty(): String {
+    return this ?: ""
+}
+
 fun getSafeMapUrlString(
-    context: Context,
     latitude: String?,
     longitude: String?,
     height: Int = 600,
@@ -34,7 +47,7 @@ fun getSafeMapUrlString(
     zoom: Int = 14
 ): String? {
     if (latitude.isNullOrEmptyOrBlank() || longitude.isNullOrEmptyOrBlank()) return null
-    return context.getString(
+    return MyApplication.weakContext?.get()?.getString(
         R.string.glide_url_request,
         latitude,
         longitude,

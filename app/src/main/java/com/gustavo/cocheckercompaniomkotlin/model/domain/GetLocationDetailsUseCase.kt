@@ -14,9 +14,9 @@ class GetLocationDetailsUseCase {
     val firebaseLocationDataSource = FirebaseLocationDataSource()
 
 
-    suspend fun fetchUserLocationDetailsData(sensorUid: String): CustomResult<LocationItemList?> = withContext(
+    suspend fun fetchUserLocationDetailsData(locationUid: String): CustomResult<LocationItemList?> = withContext(
         Dispatchers.IO){
-        when(val firebaseResult = firebaseLocationDataSource.getCurrentLocationDetails(sensorUid)){
+        when(val firebaseResult = firebaseLocationDataSource.getCurrentLocationDetails(locationUid)){
             is FirebaseResult.Cancelled->{
                 return@withContext CustomResult.Error(firebaseResult.error.toException())
             }
@@ -25,6 +25,7 @@ class GetLocationDetailsUseCase {
 
                 val result = dataSnapshot.getValue(LocationItemList::class.java)
                 if (result!= null) {
+                    result.uuid = locationUid
                     return@withContext CustomResult.Success(result)
                 } else {
                     return@withContext CustomResult.Success(null)

@@ -8,10 +8,12 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingComponent
 import androidx.fragment.app.Fragment
 import com.gustavo.cocheckercompaniomkotlin.utils.LOCATION_PERMISSION_REQUEST
 import com.gustavo.cocheckercompaniomkotlin.utils.PERMISSION_REQUEST
 import com.gustavo.cocheckercompanionkotlin.R
+import com.gustavo.cocheckercompanionkotlin.databinding.ActivityMainBinding
 
 abstract class BaseActivity<out VM : BaseViewModel> : AppCompatActivity() {
 

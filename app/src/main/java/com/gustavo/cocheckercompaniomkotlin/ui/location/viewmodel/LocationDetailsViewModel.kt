@@ -1,26 +1,27 @@
 package com.gustavo.cocheckercompaniomkotlin.ui.location.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.gustavo.cocheckercompaniomkotlin.base.BaseViewModel
 import com.gustavo.cocheckercompaniomkotlin.model.data.CustomResult
 import com.gustavo.cocheckercompaniomkotlin.model.data.LocationItemList
 import com.gustavo.cocheckercompaniomkotlin.model.domain.GetLocationDetailsUseCase
-import com.gustavo.cocheckercompaniomkotlin.model.domain.GetLocationMeasureUseCase
-import com.gustavo.cocheckercompaniomkotlin.model.domain.GetSensorMeasureUseCase
 import com.gustavo.cocheckercompaniomkotlin.ui.measure.MeasureListAdapter
 import com.gustavo.cocheckercompaniomkotlin.utils.LoggerUtil
+import com.gustavo.cocheckercompaniomkotlin.utils.extensions.isNullOrEmptyOrBlank
+import com.gustavo.cocheckercompaniomkotlin.utils.getSafeMapUrlString
+import com.gustavo.cocheckercompaniomkotlin.utils.getStringWithExtrasNonNullable
 import com.gustavo.cocheckercompanionkotlin.R
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LocationDetailsViewModel @Inject constructor() : BaseViewModel() {
-    val getLocationMeasureUseCase: GetLocationMeasureUseCase = GetLocationMeasureUseCase()
     val getLocationDetailsUseCase: GetLocationDetailsUseCase = GetLocationDetailsUseCase()
     val myMeasuresListAdapter: MeasureListAdapter = MeasureListAdapter()
 
+    val locationNameMutableText: MutableLiveData<String?> = MutableLiveData(null)
+    val locationImageDecsription = MutableLiveData<String>()
+    val locationUriMutableText = MutableLiveData<String?>()
 
     val emptyMessageVisibility = MutableLiveData<Int>()
     var locationUid: String = ""
@@ -36,8 +37,6 @@ class LocationDetailsViewModel @Inject constructor() : BaseViewModel() {
             is CustomResult.Success -> {
                 if (result.data != null) {
                     locationDetails(result.data)
-                } else {
-                    isLastPage = true
                 }
             }
 
@@ -48,28 +47,20 @@ class LocationDetailsViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
-    suspend fun getLocationMeasures(uid: String) {
-        locationUid = uid
-        when (val result = getLocationMeasureUseCase.fetchLocationsMeasureData(locationUid)) {
-            is CustomResult.Success -> {
-                if (result.data != null) {
-                    myMeasuresListAdapter.addAll(result.data)
-                } else {
-                    isLastPage = true
-                }
-            }
-
-            is CustomResult.Error -> {
-                toastMessageState.value = R.string.genericMeasureError
-                LoggerUtil.printStackTraceOnlyInDebug(result.exception)
-            }
+    private fun locationDetails(locationItem: LocationItemList) {
+        if(locationNameMutableText.value.isNullOrEmptyOrBlank()) {
+            locationNameMutableText.value = locationItem.name
         }
-    }
-
-    private fun locationDetails(locationItemList: LocationItemList) {
-        currentLocation = locationItemList
-        viewModelScope.launch {
-            getLocationMeasures(locationItemList.uuid)
+        if(locationImageDecsription.value.isNullOrEmptyOrBlank()) {
+            locationImageDecsription.value =
+                getStringWithExtrasNonNullable(R.string.locationDescription, locationItem.name)
+        }
+        if(locationUriMutableText.value.isNullOrEmptyOrBlank()){
+            locationUriMutableText.value = getSafeMapUrlString(locationItem.latitude.toString(),locationItem.longitude.toString())
+        }
+        currentLocation = locationItem
+        locationItem.Measures?.let {measureMap->
+            myMeasuresListAdapter.addAll(measureMap.map { it.value })
         }
     }
 

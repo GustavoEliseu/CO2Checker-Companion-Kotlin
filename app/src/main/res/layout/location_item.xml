@@ -20,18 +20,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
 
             <ImageView
                 android:id="@+id/locationImage"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:contentDescription="@{}"
+                android:contentDescription="@{viewModel.locationImageDecsription}"
                 android:foregroundGravity="center" />
 
             <TextView
@@ -39,42 +38,11 @@
                 mutableText="@{viewModel.locationNameText}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/locationImage"
-                android:layout_alignStart="@id/locationImage"
-                android:layout_alignEnd="@id/locationImage"
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 tools:text="Meu lugar" />
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_marginBottom="10dp"-->
-            <!--                android:layout_marginStart="15dp"-->
-            <!--                android:layout_below="@id/locationName"-->
-            <!--                android:layout_alignStart="@id/locationImage"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content">-->
-            <!--            <TextView-->
-            <!--                android:id="@+id/locationMeasureTitle"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:gravity="center"-->
-            <!--                android:textColor="@color/black"-->
-            <!--                android:textSize="16sp"-->
-            <!--                android:text="@string/measure" />-->
-
-            <!--            <TextView-->
-            <!--                android:id="@+id/locationMeasure"-->
-            <!--                mutableText="@{viewModel.locationMeasure}"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginStart="5dp"-->
-            <!--                android:gravity="center"-->
-            <!--                android:textColor="@color/black"-->
-            <!--                android:textSize="16sp"-->
-            <!--                tools:text="25/06/2022" />-->
-            <!--            </LinearLayout>-->
-        </RelativeLayout>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

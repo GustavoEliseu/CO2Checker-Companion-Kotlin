@@ -5,6 +5,7 @@ import androidx.lifecycle.lifecycleScope
 import com.gustavo.cocheckercompaniomkotlin.base.BaseFragment
 import com.gustavo.cocheckercompaniomkotlin.ui.main.MainActivity
 import com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.LocationsListViewModel
+import com.gustavo.cocheckercompaniomkotlin.utils.getSafeMapUrlString
 import com.gustavo.cocheckercompanionkotlin.BR
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.FragmentLocationsListBinding
@@ -24,7 +25,12 @@ class LocationsListFragment: BaseFragment<LocationsListViewModel, FragmentLocati
         mViewModel.initialize()
         mViewModel.mutableClickedLocation.observe(this) {
             if (it != null) {
-                (activity as? MainActivity)?.openLocation(it.locationId, it.locationName)
+                (activity as? MainActivity)?.openLocation(it.locationId, it.locationName,
+                    getSafeMapUrlString(
+                    it.latitude.toString(),
+                    it.longitude.toString()
+                )
+                )
                 mViewModel.mutableClickedLocation.value = null
             }
         }

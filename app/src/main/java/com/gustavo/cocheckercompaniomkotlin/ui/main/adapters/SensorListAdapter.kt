@@ -80,7 +80,6 @@ class SensorListAdapter(
             val latitude = sensorItem.LastLocation?.locationLatitude
             val longitude = sensorItem.LastLocation?.locationLongitude
             val imageUrl = getSafeMapUrlString(
-                binding.root.context,
                 latitude,
                 longitude
             )

@@ -116,8 +116,8 @@ class MainActivity : BaseActivity<MainViewModel>(),
         startActivity(sensorDetailsIntent(deviceMac))
     }
 
-    fun openLocation(locationUid: String, locationName: String) {
-        startActivity(locationDetailsIntent(locationUid, locationName))
+    fun openLocation(locationUid: String, locationName: String, locationMapUri:String?) {
+        startActivity(locationDetailsIntent(locationUid, locationName,locationMapUri))
     }
 
     fun addLocation() {
