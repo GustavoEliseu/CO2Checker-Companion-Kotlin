@@ -110,7 +110,7 @@
 
     <!--DESCRIPTIONS-->
     <string name="add_sensor_button_description">Botão para adicionar dispositivos</string>
-    <string name="qrcode_button_description">Botão para abrir a cama e ler QRCodes</string>
+    <string name="qrcode_button_description">Botão para abrir a camera e ler QRCodes</string>
     <string name="type_your_email">Digite o seu email para resetar a senha!</string>
     <string name="get_location_error">Não foi possível identificar sua localização, verifique as permissões do aplicativo e tente novamente</string>
     <string name="broken_location_error">Algo de errado com o local selecionado, selecione outra ou edite ela na lista de locais</string>

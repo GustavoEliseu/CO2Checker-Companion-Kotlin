@@ -14,9 +14,6 @@ class QRCodeReaderViewModel @Inject constructor() : BaseViewModel() {
 
     val scannedQRcodeState : MutableLiveData<ScannedSensorResult?> = MutableLiveData(null)
     private val checkSensorsUseCase = SensorExistsUseCase()
-    override fun initialize() {
-
-    }
 
     fun isSensorRegistered(sensor: SensorWifiData){
         checkSensorsUseCase.checkIfSensorAlreadyRegistered(sensor,object :

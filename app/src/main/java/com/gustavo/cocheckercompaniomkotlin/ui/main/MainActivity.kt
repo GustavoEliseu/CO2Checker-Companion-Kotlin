@@ -46,34 +46,38 @@ fun Context.mainIntent(): Intent {
     return Intent(this, MainActivity::class.java)
 }
 
+@Suppress("DEPRECATION")
 class MainActivity : BaseActivity<MainViewModel>(),
     LocationListener {
 
     private lateinit var mBinding: ActivityMainBinding
 
-    var dialog = NewSensorDialog(NewSensorData(), ::startQRCodeNewSensor, ::finishAddSensor)
+    private var dialog = NewSensorDialog(NewSensorData(), ::startQRCodeNewSensor, ::finishAddSensor)
     override val mViewModel: MainViewModel by viewModels()
     override fun getLayoutId(): Int = R.layout.activity_main
 
-    val startForResult = registerForActivityResult(
+    private val startForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ) { result->
-        when(result.resultCode){
-            NEW_SENSOR_DATA_RESULT->{
-                val mySensorData: NewSensorData? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    result.data?.getSerializableExtra(WIFI_DATA, NewSensorData::class.java)
-                } else {
-                    result.data?.getSerializableExtra(WIFI_DATA) as? NewSensorData?
-                }
+    ) { result ->
+        when (result.resultCode) {
+            NEW_SENSOR_DATA_RESULT -> {
+                val mySensorData: NewSensorData? =
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        result.data?.getSerializableExtra(WIFI_DATA, NewSensorData::class.java)
+                    } else {
+                        result.data?.getSerializableExtra(WIFI_DATA) as? NewSensorData?
+                    }
 
-                Toast.makeText(this,mySensorData?.mac,Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, mySensorData?.mac, Toast.LENGTH_SHORT).show()
             }
-            EDIT_SENSOR_DATA_RESULT->{
-                val mySensorData: NewSensorData? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    result.data?.getSerializableExtra(WIFI_DATA, NewSensorData::class.java)
-                } else {
-                    result.data?.getSerializableExtra(WIFI_DATA) as? NewSensorData?
-                }
+
+            EDIT_SENSOR_DATA_RESULT -> {
+                val mySensorData: NewSensorData? =
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        result.data?.getSerializableExtra(WIFI_DATA, NewSensorData::class.java)
+                    } else {
+                        result.data?.getSerializableExtra(WIFI_DATA) as? NewSensorData?
+                    }
                 dialog.updateValuesFromQR(mySensorData)
             }
         }
@@ -89,21 +93,19 @@ class MainActivity : BaseActivity<MainViewModel>(),
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
         FirebaseDatabaseManager.initializeFirebase()
-
-        val navView: BottomNavigationView = mBinding.navView
-
+        val navView: BottomNavigationView = mBinding.navContainer.navView
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_sensors, R.id.navigation_dashboard, R.id.navigation_locations
+                R.id.navigation_sensors, R.id.navigation_locations
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        mBinding.QrFABButton.setOnClickListener {
+        mBinding.navContainer.QrFABButton.setOnClickListener {
             startForResult.launch(QRReaderIntent(fromAddSensor = false, null))
         }
     }
@@ -116,8 +118,8 @@ class MainActivity : BaseActivity<MainViewModel>(),
         startActivity(sensorDetailsIntent(deviceMac))
     }
 
-    fun openLocation(locationUid: String, locationName: String, locationMapUri:String?) {
-        startActivity(locationDetailsIntent(locationUid, locationName,locationMapUri))
+    fun openLocation(locationUid: String, locationName: String, locationMapUri: String?) {
+        startActivity(locationDetailsIntent(locationUid, locationName, locationMapUri))
     }
 
     fun addLocation() {
@@ -141,15 +143,14 @@ class MainActivity : BaseActivity<MainViewModel>(),
         requestResult = ::blank
     }
 
+    private fun blank(){}
+
     @RequiresPermission(anyOf = [permission.ACCESS_COARSE_LOCATION, permission.ACCESS_FINE_LOCATION])
     private fun getLocation() {
         if (locationManager == null) {
-            //TODO - check null safety
+            initializeUi()
         }
         currentLocation = locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        if (currentLocation == null) {
-            //TODO - check null safety
-        }
     }
 
     fun addSensor(sensor: NewSensorData?) {
@@ -158,9 +159,9 @@ class MainActivity : BaseActivity<MainViewModel>(),
     }
 
     private fun startQRCodeNewSensor(sensor: NewSensorData? = null) {
-        if(sensor!= null){
+        if (sensor != null) {
             startForResult.launch(QRReaderIntent(fromAddSensor = true, sensor))
-        }else{
+        } else {
             toast("Não foi possível identificar o sensor, feche o aplicativo e tente novamente")
         }
     }
@@ -171,8 +172,6 @@ class MainActivity : BaseActivity<MainViewModel>(),
         }
     }
 
-    private fun blank() {}
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -180,27 +179,22 @@ class MainActivity : BaseActivity<MainViewModel>(),
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         var anyPermissionGranted = false
-        when(requestCode){
-            LOCATION_PERMISSION_REQUEST->{
-                grantResults.forEachIndexed { index, result ->
-                    if (result == PackageManager.PERMISSION_GRANTED) {
-                        anyPermissionGranted = true
-                    }
-                }
-                if (anyPermissionGranted) {
-                    onPermissionGranted(permissions)
-                } else {
-                    grantResults.forEachIndexed { index, result ->
-                        if (shouldShowRequestPermissionRationale(permissions[index])) {
-                            onPermissionDenied()
-                        } else {
-                            onPermissionDenied(permanently = true)
-                        }
-                    }
+        if (requestCode == LOCATION_PERMISSION_REQUEST) {
+            grantResults.forEachIndexed { index, result ->
+                if (result == PackageManager.PERMISSION_GRANTED) {
+                    anyPermissionGranted = true
                 }
             }
-            CAMERA_PERMISSION_REQUEST->{
-
+            if (anyPermissionGranted) {
+                onPermissionGranted(permissions)
+            } else {
+                grantResults.forEachIndexed { index, result ->
+                    if (shouldShowRequestPermissionRationale(permissions[index])) {
+                        onPermissionDenied()
+                    } else {
+                        onPermissionDenied(permanently = true)
+                    }
+                }
             }
         }
     }

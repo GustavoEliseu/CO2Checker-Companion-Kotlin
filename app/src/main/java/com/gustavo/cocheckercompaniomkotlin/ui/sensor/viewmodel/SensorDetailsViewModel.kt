@@ -46,15 +46,4 @@ class SensorDetailsViewModel @Inject constructor() : BaseViewModel() {
             }
         }
     }
-
-    private fun loadMoreMeasures() {
-        viewModelScope.launch {
-            getMeasures(deviceUid)
-        }
-    }
-
-    override fun initialize() {
-
-
-    }
 }

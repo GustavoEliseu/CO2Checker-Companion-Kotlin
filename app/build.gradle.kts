@@ -18,21 +18,30 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
+        testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR,DEBUGGABLE,NOT-SELF-INSTRUMENTING"
+        testInstrumentationRunnerArguments["androidx.benchmark.dryRunMode.enable"] = "true"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig = signingConfigs.getByName("debug")
+    }
+    buildFeatures {
+        buildConfig = true
+    }
+    configurations.all {
+        resolutionStrategy {
+            force("com.android.support:support-annotations:23.1.1")
+        }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled =  false
+            isMinifyEnabled = false
             isDebuggable = false
             android.buildFeatures.dataBinding = true
             manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug"
-            proguardFiles (getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("Boolean", "DEBUG_MODE", "false")
             buildConfigField( "String", "ESP_URL", "\"http://192.168.4.1\"")
-            buildConfigField("String", "MAPS_API_KEY", "AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug")
-            buildConfigField ("okhttp3.logging.HttpLoggingInterceptor.Level", "INTERCEPTOR_LEVEL", "okhttp3.logging.HttpLoggingInterceptor.Level.HEADER")
+            buildConfigField("String", "MAPS_API_KEY", "\"AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug\"")
+            buildConfigField ("okhttp3.logging.HttpLoggingInterceptor.Level", "INTERCEPTOR_LEVEL", "okhttp3.logging.HttpLoggingInterceptor.Level.HEADERS")
         }
         debug{
             isMinifyEnabled = false
@@ -44,19 +53,8 @@ android {
             buildConfigField("String", "MAPS_API_KEY", "\"AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug\"")
             buildConfigField("okhttp3.logging.HttpLoggingInterceptor.Level", "INTERCEPTOR_LEVEL", "okhttp3.logging.HttpLoggingInterceptor.Level.BODY")
         }
-        create("localHost") {
-            isMinifyEnabled = false
-            buildFeatures.buildConfig= true
-            android.buildFeatures.dataBinding = true
-            manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug"
-            initWith(getByName("debug"))
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            buildConfigField("Boolean", "DEBUG_MODE", "true")
-            buildConfigField("String", "ESP_URL", "\"https://10.0.2.2:PORTHERE/\"") //ADD PORT for local server
-            buildConfigField("String", "MAPS_API_KEY", "AIzaSyCZKsJb1JgLqHe9HdUTlbxV2olTB1MwPug")
-            buildConfigField("okhttp3.logging.HttpLoggingInterceptor.Level", "INTERCEPTOR_LEVEL", "okhttp3.logging.HttpLoggingInterceptor.Level.BODY")
-        }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -67,6 +65,8 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    relativeProjectPath(":app")
+    experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 
 dependencies {
@@ -81,6 +81,8 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.libraries.places:places:3.3.0")
+    implementation("androidx.benchmark:benchmark-macro:1.3.0-alpha01")
+    implementation("androidx.benchmark:benchmark-macro-junit4:1.2.3")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

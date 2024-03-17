@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.Gustavo.COCheckerCompanionKotlin", appContext.packageName)
+        assertEquals("com.gustavo.cocheckercompanionkotlin", appContext.packageName)
     }
 }

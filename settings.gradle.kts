@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "CO2Checker Companion Kotlin"
 include(":app")
- 
+include(":app:benchmark")

@@ -25,9 +25,6 @@ class AddLocationViewModel @Inject constructor() : BaseViewModel() {
     val saveLocationResult: MutableLiveData<SaveLocationResult> =
         MutableLiveData(SaveLocationResult.NONE)
 
-    override fun initialize() {
-    }
-
     fun finishSaveLocation(newLocationData: NewLocationData) {
         saveLocationResult.value = SaveLocationResult.LOADING
         addNewLocationUseCase.addNewLocation(newLocationData,

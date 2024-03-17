@@ -23,7 +23,7 @@ class SensorsListViewModel @Inject constructor() : BaseViewModel() {
     val mutableSensorClick = MutableLiveData<SimpleSensor>()
     val fabAddSensorClick = MutableLiveData<Boolean>()
 
-    override fun initialize() {
+    fun initialize() {
         mySensorListAdapter.clear()
         fetchSensorsUseCase.fetchUserSensorsData(object : FetchSensorsUseCase.UserSensorsDataListener {
             override fun onChildAdded(sensor: SensorItemList) {

@@ -15,6 +15,7 @@
     <color name="lists_background">#f1f1f1</color>
     <color name="fab_background">#268945</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
 
     <color name="sensor_green">#0d7a1a</color>
     <color name="sensor_yellow">#7a660d</color>

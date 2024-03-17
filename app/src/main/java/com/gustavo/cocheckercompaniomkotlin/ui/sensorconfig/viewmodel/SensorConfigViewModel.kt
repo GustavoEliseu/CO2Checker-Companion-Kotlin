@@ -33,7 +33,6 @@ class SensorConfigViewModel @Inject constructor(
 ) : BaseViewModel() {
     private val getLocationListUseCase = FetchLocationsUseCase()
     private val addLocationUseCase = AddLocationUseCase()
-    //TODO FINISH REQUESTS AND ADD SUSPEND TO REQUEST FUNCTIONS
 
     val mutableSSIDWarningText = MutableLiveData<String>()
     val mutableLocationWarningText = MutableLiveData<String>()
@@ -61,10 +60,9 @@ class SensorConfigViewModel @Inject constructor(
     val retryConnectionClickedState = MutableLiveData(false)
     val locationListChangeState = MutableLiveData<LocationItemList?>(null)
 
-    override fun initialize() {
+    fun initialize() {
         wifiEditTextVisibility.value = View.GONE
         wifiSpinnerVisibility.value = View.VISIBLE
-
     }
 
     suspend fun sendWifiData(

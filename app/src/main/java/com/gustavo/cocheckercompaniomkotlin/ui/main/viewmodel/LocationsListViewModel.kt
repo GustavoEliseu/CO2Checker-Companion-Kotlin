@@ -22,7 +22,7 @@ class LocationsListViewModel: BaseViewModel() {
     val fabAddLocationsClick = MutableLiveData<Boolean>()
 
 
-    override fun initialize() {
+    fun initialize() {
         myLocationsListAdapter.clear()
         fetchLocationsUseCase.fetchUserLocationsData(object : FetchLocationsUseCase.UserLocationsDataListener {
             override fun onChildAdded(locationItemList: LocationItemList) {

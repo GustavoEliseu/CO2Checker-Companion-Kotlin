@@ -10,7 +10,7 @@ import javax.inject.Inject
 @HiltViewModel
 class StartViewModel @Inject constructor(): BaseViewModel() {
     val startState = MutableLiveData(StartStateEnum.CHECKING)
-    override fun initialize() {
+    fun initialize() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if(currentUser == null){
             startState.value = StartStateEnum.LOGIN

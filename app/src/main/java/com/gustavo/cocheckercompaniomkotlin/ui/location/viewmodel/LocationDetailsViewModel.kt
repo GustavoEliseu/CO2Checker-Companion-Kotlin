@@ -56,7 +56,4 @@ class LocationDetailsViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
-    override fun initialize() {
-
-    }
 }

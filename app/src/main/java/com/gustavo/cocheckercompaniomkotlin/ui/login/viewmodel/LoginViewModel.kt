@@ -18,7 +18,7 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
     val errorVisibility = MutableLiveData<Int>()
     private var auth: FirebaseAuth? = null
 
-    override fun initialize() {
+    fun initialize() {
         auth = FirebaseAuth.getInstance()
     }
 

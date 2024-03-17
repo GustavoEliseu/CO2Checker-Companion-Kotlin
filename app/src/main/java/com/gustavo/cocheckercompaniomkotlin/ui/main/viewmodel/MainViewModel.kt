@@ -11,9 +11,6 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor() : BaseViewModel() {
     private val addSensorsUseCase = AddSensorUseCase()
 
-    override fun initialize() {
-    }
-
     fun finishAddSensor(sensor: NewSensorData) {
         addSensorsUseCase.addSensor(sensor,
             object : AddSensorUseCase.UserAddSensorDataListener {
