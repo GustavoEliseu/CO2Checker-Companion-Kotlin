@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.gustavo.cocheckercompaniomkotlin.ui.sensor.viewmodel.SensorDetailsViewModel" />
+            type="com.gustavo.cocheckercompanionkotlin.ui.sensor.viewmodel.SensorDetailsViewModel" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"

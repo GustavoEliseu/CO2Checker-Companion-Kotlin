@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.gustavo.cocheckercompaniomkotlin.ui.start.viewmodel.StartViewModel" />
+            type="com.gustavo.cocheckercompanionkotlin.ui.start.viewmodel.StartViewModel" />
     </data>
 
     <ScrollView

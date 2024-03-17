@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.gustavo.cocheckercompaniomkotlin.ui.qrcode.viewmodel.QRCodeReaderViewModel" />
+            type="com.gustavo.cocheckercompanionkotlin.ui.qrcode.viewmodel.QRCodeReaderViewModel" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

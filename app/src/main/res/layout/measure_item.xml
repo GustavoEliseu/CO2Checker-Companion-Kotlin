@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.gustavo.cocheckercompaniomkotlin.ui.measure.MeasureItemViewModel" />
+            type="com.gustavo.cocheckercompanionkotlin.ui.measure.MeasureItemViewModel" />
         <import type="android.view.View" />
     </data>
 

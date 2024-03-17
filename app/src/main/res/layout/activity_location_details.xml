@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.gustavo.cocheckercompaniomkotlin.ui.location.viewmodel.LocationDetailsViewModel" />
+            type="com.gustavo.cocheckercompanionkotlin.ui.location.viewmodel.LocationDetailsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.gustavo.cocheckercompaniomkotlin.ui.main.viewmodel.SensorsListViewModel" />
+            type="com.gustavo.cocheckercompanionkotlin.ui.main.viewmodel.SensorsListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

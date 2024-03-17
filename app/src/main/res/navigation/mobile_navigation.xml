@@ -6,13 +6,13 @@
     app:startDestination="@+id/navigation_sensors">
     <fragment
         android:id="@+id/navigation_sensors"
-        android:name="com.gustavo.cocheckercompaniomkotlin.ui.main.sensors.SensorsListFragment"
+        android:name="com.gustavo.cocheckercompanionkotlin.ui.main.sensors.SensorsListFragment"
         android:label="@string/title_devices"
         tools:layout="@layout/fragment_sensors_list" />
 
     <fragment
         android:id="@+id/navigation_locations"
-        android:name="com.gustavo.cocheckercompaniomkotlin.ui.main.locations.LocationsListFragment"
+        android:name="com.gustavo.cocheckercompanionkotlin.ui.main.locations.LocationsListFragment"
         android:label="@string/title_locations"
         tools:layout="@layout/fragment_locations_list" />
 

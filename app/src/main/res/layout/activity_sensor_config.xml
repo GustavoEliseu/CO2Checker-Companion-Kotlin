@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
 
-        <variable name="viewModel" type="com.gustavo.cocheckercompaniomkotlin.ui.sensorconfig.viewmodel.SensorConfigViewModel"/>
+        <variable name="viewModel" type="com.gustavo.cocheckercompanionkotlin.ui.sensorconfig.viewmodel.SensorConfigViewModel"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

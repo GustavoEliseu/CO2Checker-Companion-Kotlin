@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.gustavo.cocheckercompaniomkotlin.ui.newlocation.viewmodel.AddLocationViewModel" />
+            type="com.gustavo.cocheckercompanionkotlin.ui.newlocation.viewmodel.AddLocationViewModel" />
 
         <import type="android.view.View" />
     </data>

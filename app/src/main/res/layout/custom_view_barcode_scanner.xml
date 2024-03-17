@@ -12,7 +12,7 @@
         app:zxing_framing_rect_height="200dp"
         app:zxing_framing_rect_width="200dp" />
 
-    <com.gustavo.cocheckercompaniomkotlin.ui.custom.MyViewFinderView
+    <com.gustavo.cocheckercompanionkotlin.ui.custom.MyViewFinderView
         android:id="@+id/zxing_viewfinder_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
