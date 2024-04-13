@@ -167,12 +167,14 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
     private fun registerClick() {
         if (!mBinding.passwordEditText.text.isPasswordValid()) {
             mBinding.passwordTextInput.error = getString(R.string.error_password)
+            return
         } else {
             mBinding.passwordTextInput.error = null
         }
 
         if (!mBinding.emailEditText.text.isValidEmail()) {
             mBinding.emailTextInput.error = getString(R.string.error_email)
+            return
         } else {
             mBinding.emailTextInput.error = null
             mViewModel.changeLoadingVisibility(true)
@@ -258,20 +260,5 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
                 LoggerUtil.printStackTraceOnlyInDebug(e)
             }
         }
-//        mViewModel.forgot(mBinding.emailEditText.text.toString()){success, exception ->
-//            if (success) {
-//                toast(R.string.forgot_password_result)
-//            } else {
-//                when (exception) {
-//                    is FirebaseAuthEmailException -> {
-//                        longToast(R.string.ForgotErrorEmail)
-//                    }
-//                    else -> {
-//                        longToast(R.string.registerError)
-//                        if(exception!= null) LoggerUtil.printStackTraceOnlyInDebug(exception)
-//                    }
-//                }
-//            }
-//        }
     }
 }

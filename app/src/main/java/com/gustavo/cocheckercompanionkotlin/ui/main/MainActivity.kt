@@ -158,11 +158,7 @@ class MainActivity : BaseActivity<MainViewModel>(),
     }
 
     private fun startQRCodeNewSensor(sensor: NewSensorData? = null) {
-        if (sensor != null) {
-            startForResult.launch(QRReaderIntent(fromAddSensor = true, sensor))
-        } else {
-            toast("Não foi possível identificar o sensor, feche o aplicativo e tente novamente")
-        }
+        startForResult.launch(QRReaderIntent(fromAddSensor = true, sensor))
     }
 
     private fun finishAddSensor(sensor: NewSensorData?) {

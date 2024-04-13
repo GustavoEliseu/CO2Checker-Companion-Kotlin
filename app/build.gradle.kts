@@ -83,10 +83,10 @@ dependencies {
     implementation("com.google.android.libraries.places:places:3.3.0")
     implementation("androidx.benchmark:benchmark-macro:1.3.0-alpha01")
     implementation("androidx.benchmark:benchmark-macro-junit4:1.2.3")
+    implementation("androidx.compose.ui:ui-graphics-android:1.6.3")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-
 
     implementation("com.google.firebase:firebase-crashlytics:18.2.10")
     implementation("com.google.firebase:firebase-analytics:21.0.0")
@@ -109,7 +109,6 @@ dependencies {
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-compiler:2.48")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     //OKHTTP3
     implementation("com.squareup.okhttp3:okhttp:4.12.0")

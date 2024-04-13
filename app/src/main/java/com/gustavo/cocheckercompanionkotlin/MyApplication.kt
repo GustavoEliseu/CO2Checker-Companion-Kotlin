@@ -11,13 +11,11 @@ class MyApplication: Application(){
 
     override fun onCreate() {
         weakContext = WeakReference(this)
-        myPackageName = this.packageName
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         super.onCreate()
     }
 
     companion object{
-        lateinit var myPackageName: String
         var weakContext: WeakReference<Application>? = null
     }
 }
