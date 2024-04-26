@@ -120,5 +120,9 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
     implementation("com.squareup.moshi:moshi-adapters:1.12.0")
 
+    // MAPS
+    implementation("com.google.maps.android:maps-compose:2.11.4")
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 }

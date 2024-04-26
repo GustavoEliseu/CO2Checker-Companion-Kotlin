@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.content.IntentCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -57,11 +58,11 @@ class AddLocationActivity : BaseActivity<AddLocationViewModel>(),
     private lateinit var placesClient: PlacesClient
 
     private val userCurrentLocation by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(LOCATION_EXTRA, Location::class.java)
-        } else {
-            intent.getParcelableExtra(LOCATION_EXTRA) as? Location
-        }
+        IntentCompat.getParcelableExtra(
+            intent,
+            LOCATION_EXTRA,
+            Location::class.java
+        )
     }
 
     var currentPosition: LatLng? = null

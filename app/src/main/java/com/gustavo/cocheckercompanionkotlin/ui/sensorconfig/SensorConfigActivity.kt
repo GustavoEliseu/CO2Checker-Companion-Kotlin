@@ -20,7 +20,9 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.SpinnerAdapter
 import androidx.activity.viewModels
+import androidx.core.content.IntentCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.textfield.TextInputEditText
 import com.gustavo.cocheckercompanionkotlin.base.BaseActivity
 import com.gustavo.cocheckercompanionkotlin.model.data.LocationItemList
@@ -44,6 +46,7 @@ import com.gustavo.cocheckercompanionkotlin.utils.extensions.toast
 import com.gustavo.cocheckercompanionkotlin.utils.safeRun
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivitySensorConfigBinding
+import com.gustavo.cocheckercompanionkotlin.utils.extensions.getSerializable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -71,19 +74,11 @@ class SensorConfigActivity : BaseActivity<SensorConfigViewModel>() {
     }
 
     private val currentLocation by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent?.getParcelableExtra(LOCATION_EXTRA, Location::class.java)
-        } else {
-            intent?.getParcelableExtra(LOCATION_EXTRA) as? Location
-        }
+        IntentCompat.getParcelableExtra(intent, LOCATION_EXTRA, Location::class.java)
     }
 
     private val sensorWifiData by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getSerializableExtra(WIFI_DATA, SensorWifiData::class.java)
-        } else {
-            intent.getSerializableExtra(WIFI_DATA) as? SensorWifiData
-        }
+        getSerializable(intent, WIFI_DATA, SensorWifiData::class.java)
     }
 
     private var newLocationUuid =

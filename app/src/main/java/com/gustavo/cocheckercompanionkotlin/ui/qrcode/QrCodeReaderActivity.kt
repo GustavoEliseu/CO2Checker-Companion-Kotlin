@@ -4,19 +4,21 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.location.Location
-import android.os.Build
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.IntentCompat
 import androidx.databinding.DataBindingUtil
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.ResultPoint
 import com.google.zxing.client.android.BeepManager
 import com.google.zxing.client.android.Intents
+import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.base.BaseActivity
+import com.gustavo.cocheckercompanionkotlin.databinding.ActivityQrReaderBinding
 import com.gustavo.cocheckercompanionkotlin.model.data.NewSensorData
 import com.gustavo.cocheckercompanionkotlin.model.data.SensorWifiData
 import com.gustavo.cocheckercompanionkotlin.ui.custom.MyViewFinderView
@@ -35,8 +37,6 @@ import com.gustavo.cocheckercompanionkotlin.utils.extensions.getDialog
 import com.gustavo.cocheckercompanionkotlin.utils.extensions.longToast
 import com.gustavo.cocheckercompanionkotlin.utils.extensions.toast
 import com.gustavo.cocheckercompanionkotlin.utils.safeRun
-import com.gustavo.cocheckercompanionkotlin.R
-import com.gustavo.cocheckercompanionkotlin.databinding.ActivityQrReaderBinding
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.DefaultDecoderFactory
@@ -66,17 +66,19 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
     private val fromAddSensor by lazy { intent?.getBooleanExtra(ADD_SENSOR, false) ?: false }
 
     private val currentLocation by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent?.getParcelableExtra(LOCATION_EXTRA,Location::class.java )
-        }else{intent?.getParcelableExtra(LOCATION_EXTRA) as? Location
-        }
+        IntentCompat.getParcelableExtra(
+            intent,
+            LOCATION_EXTRA,
+            Location::class.java
+        )
     }
 
     private val mySensorData by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getSerializableExtra(WIFI_DATA, NewSensorData::class.java)
-        } else{
-            intent?.getSerializableExtra(WIFI_DATA) as? NewSensorData }
+        IntentCompat.getParcelableExtra(
+            intent,
+            WIFI_DATA,
+            NewSensorData::class.java
+        )
     }
 
     private val callback: BarcodeCallback = object : BarcodeCallback {
@@ -117,7 +119,8 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
     }
 
     private fun initScan() {
-        mBinding.barcodeScanner.findViewById<AppCompatImageView>(R.id.close)?.setOnClickListener { finish() }
+        mBinding.barcodeScanner.findViewById<AppCompatImageView>(R.id.close)
+            ?.setOnClickListener { finish() }
         imageMask = findViewById(R.id.cameraMask)
         instructions = findViewById(R.id.Instructions)
         updateMaskPosition()
@@ -130,8 +133,8 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
         mBinding.barcodeScanner.resume()
 
         mViewModel.scannedQRcodeState.observe(this) {
-            if(it != null){
-                openEspDialog(it.sensorWifiData,it.exists,it.failure)
+            if (it != null) {
+                openEspDialog(it.sensorWifiData, it.exists, it.failure)
             }
         }
     }
@@ -171,7 +174,7 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
         finish()
     }
 
-    override fun onPermissionGranted(permissions: Array<out String>, requestCode:Int?) {
+    override fun onPermissionGranted(permissions: Array<out String>, requestCode: Int?) {
         initializeUi()
     }
 
@@ -190,9 +193,11 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
                             finish()
                         }
                     }
+
                     SensorOptions.ADD_SENSOR -> {
                         setResultAndLeave(sensorWifiData.toNewSensorData())
                     }
+
                     SensorOptions.VIEW_SENSOR -> {
                         safeRun {
                             startActivity(sensorDetailsIntent(sensorWifiData.mac))
@@ -215,9 +220,10 @@ class QrCodeReaderActivity : BaseActivity<QRCodeReaderViewModel>() {
     fun setResultAndLeave(mySensorData: NewSensorData?) {
         val intent = Intent()
         intent.putExtra(WIFI_DATA, mySensorData)
-        setResult(if(fromAddSensor) EDIT_SENSOR_DATA_RESULT else NEW_SENSOR_DATA_RESULT, intent)
+        setResult(if (fromAddSensor) EDIT_SENSOR_DATA_RESULT else NEW_SENSOR_DATA_RESULT, intent)
         finish()
     }
+
     fun pause() {
         mBinding.barcodeScanner.pause()
         pauseCamera = true

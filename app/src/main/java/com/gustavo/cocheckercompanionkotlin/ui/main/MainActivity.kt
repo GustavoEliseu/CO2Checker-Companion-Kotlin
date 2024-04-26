@@ -38,6 +38,7 @@ import com.gustavo.cocheckercompanionkotlin.utils.extensions.toast
 import com.gustavo.cocheckercompanionkotlin.R
 import com.gustavo.cocheckercompanionkotlin.base.BaseActivity
 import com.gustavo.cocheckercompanionkotlin.databinding.ActivityMainBinding
+import com.gustavo.cocheckercompanionkotlin.utils.extensions.getSerializable
 import java.util.UUID
 
 
@@ -60,23 +61,13 @@ class MainActivity : BaseActivity<MainViewModel>(),
     ) { result ->
         when (result.resultCode) {
             NEW_SENSOR_DATA_RESULT -> {
-                val mySensorData: NewSensorData? =
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        result.data?.getSerializableExtra(WIFI_DATA, NewSensorData::class.java)
-                    } else {
-                        result.data?.getSerializableExtra(WIFI_DATA) as? NewSensorData?
-                    }
-
+                val mySensorData: NewSensorData? = getSerializable(result.data, WIFI_DATA, NewSensorData::class.java)
                 Toast.makeText(this, mySensorData?.mac, Toast.LENGTH_SHORT).show()
             }
 
             EDIT_SENSOR_DATA_RESULT -> {
                 val mySensorData: NewSensorData? =
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        result.data?.getSerializableExtra(WIFI_DATA, NewSensorData::class.java)
-                    } else {
-                        result.data?.getSerializableExtra(WIFI_DATA) as? NewSensorData?
-                    }
+                    getSerializable(result.data, WIFI_DATA,NewSensorData::class.java)
                 dialog.updateValuesFromQR(mySensorData)
             }
         }
