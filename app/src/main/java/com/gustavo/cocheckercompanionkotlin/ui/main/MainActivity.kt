@@ -83,7 +83,7 @@ class MainActivity : BaseActivity<MainViewModel>(),
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
         FirebaseDatabaseManager.initializeFirebase()
-        val navView: BottomNavigationView = mBinding.navContainer.navView
+        val navView: BottomNavigationView = mBinding.navView
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
@@ -95,7 +95,7 @@ class MainActivity : BaseActivity<MainViewModel>(),
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        mBinding.navContainer.QrFABButton.setOnClickListener {
+        mBinding.QrFABButton.setOnClickListener {
             startForResult.launch(QRReaderIntent(fromAddSensor = false, null))
         }
     }
