@@ -1,4 +1,4 @@
-Este projeto é intencionalmente "incompleto", tendo sido implementadas apenas as telas que serão comparadas com o outro projeto: https://github.com/GustavoEliseu/CO2Checker-Companion-Kotlin <br>
+Este projeto é intencionalmente "incompleto", tendo sido implementadas apenas as telas que serão comparadas com o outro projeto: [https://github.com/GustavoEliseu/CO2Checker-Companion-Kotlin](https://github.com/GustavoEliseu/Co2CheckerCompanionCompose/tree/main) <br>
 O intuito deste projeto é realizar uma comparação de performance entre telas semelhantes XML e Jetpack Compose <br>
 Poucos testes foram implementados no projeto, devido a ser um projeto fixo que não haverá mudanças consideráveis.
 
